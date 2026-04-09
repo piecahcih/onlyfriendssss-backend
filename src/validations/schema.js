@@ -1,40 +1,66 @@
-import {z} from "zod";
-import bcrypt from 'bcrypt';
+import { z } from "zod";
+import bcrypt from "bcrypt";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const registerSchema = z.object({
-    email : z.string().min(2, "Must have morethan 2 characters")
-    .refine( val => emailRegex.test(val) , "Email is required"),
-    password : z.string().min(3, "Password must be morethan 3 characters"),
-    confirmPassword : z.string().min(2, "Confirm password is required"),
-    role: z.enum(["USER", "ADMIN"]).optional().default("USER") 
-}).refine( inp => inp.password === inp.confirmPassword, {
-    message : "Password do not match",
-    path : ["confirmPassword"]
-}).transform( async data => ({
+// Register schema
+export const registerSchema = z
+  .object({
+    email: z
+      .string()
+      .trim()
+      .min(2, "Must have morethan 2 characters")
+      .email("Invalid email")
+      .refine((val) => emailRegex.test(val), "Email is required"),
+    password: z.string().min(6, "Password must be morethan 6 characters"),
+    confirmPassword: z.string().min(2, "Confirm password is required"),
+    firstname: z
+      .string()
+      .trim()
+      .min(3, "firstname must be at least 3 characters"),
+    lastname: z
+      .string()
+      .trim()
+      .min(3, "lasttname must be at least 3 characters"),
+    role: z.enum(["USER", "ADMIN"]).optional().default("USER"),
+  })
+  .refine((inp) => inp.password === inp.confirmPassword, {
+    message: "Password do not match",
+    path: ["confirmPassword"],
+  })
+  .transform(async (data) => ({
     email: data.email,
     password: await bcrypt.hash(data.password, 8),
-    role: data.role
-}))
+    role: data.role,
+  }));
 
-
-export const loginSchema = z.object({
-    email : z.string().min(2, "Email is required")
-    .refine( val => emailRegex.test(val) , {
-        message : "Email invalid"
-    }),
-    password : z.string().min(3, "Password must be least 3 characters")
-}).transform(data => ({
+//Login schema
+export const loginSchema = z
+  .object({
+    email: z
+      .string()
+      .min(2, "Email is required")
+      .refine((val) => emailRegex.test(val), {
+        message: "Email invalid",
+      }),
+    password: z.string().min(3, "Password must be least 3 characters"),
+  })
+  .transform((data) => ({
     email: data.email,
-    password: data.password
-}))
+    password: data.password,
+  }));
 
-
+//Update schema
 export const updateSchema = z.object({
-    email : z.string().min(2, "Must have morethan 2 characters")
-    .refine( val => emailRegex.test(val) , "Email is required").optional(),
-    password : z.string().min(3, "Password must be morethan 3 characters").optional(),
-    name : z.string().min(2, "Name must be morethan 2 characters").optional(),
-    profileImg: z.string().url().optional()
-})
+  email: z
+    .string()
+    .min(2, "Must have morethan 2 characters")
+    .refine((val) => emailRegex.test(val), "Email is required")
+    .optional(),
+  password: z
+    .string()
+    .min(3, "Password must be morethan 3 characters")
+    .optional(),
+  name: z.string().min(2, "Name must be morethan 2 characters").optional(),
+  profileImg: z.string().url().optional(),
+});
