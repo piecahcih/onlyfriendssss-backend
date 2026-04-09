@@ -12,6 +12,11 @@ datasource db {
   provider = "mysql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 enum genderStatus {
   MALE
   FEMALE
@@ -66,6 +71,7 @@ model User {
   email        String       @unique
   password     String
   gender       genderStatus
+  role         Role
   profileImg   String?
   bio          String?
 
