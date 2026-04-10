@@ -1,5 +1,6 @@
 import { prisma } from '../src/lib/prisma.js'
 import bcrypt from 'bcrypt'
+import { activityData } from '../data/activities.js'
 
 
 const hashedPassword = ()=> bcrypt.hashSync('123456', 8)
@@ -33,9 +34,14 @@ async function main() {
         data: userData,
         skipDuplicates: true
     })
+    const createdActivities = await prisma.activity.createMany({
+        data: activityData,
+        skipDuplicates: true
+    })
 
 
     console.log(`Created : ${createdUsers.count} users`)
+    console.log(`Created : ${createdActivities.count} activities`)
 }
 
 main().then( async ()=>{
