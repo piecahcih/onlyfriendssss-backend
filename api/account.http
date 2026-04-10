@@ -1,0 +1,15 @@
+@baseURL = http://localhost:3999
+
+### Get Current User Profile
+GET {{baseURL}}/api/account/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzc1ODE4ODYyLCJleHAiOjE3Nzg0MTA4NjJ9.c78Z5COQW9jyfyG1t06etFhXkhwlGABtjR0asL5bskg
+
+
+### Patch
+PATCH {{baseURL}}/api/account/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNzc1ODE4ODYyLCJleHAiOjE3Nzg0MTA4NjJ9.c78Z5COQW9jyfyG1t06etFhXkhwlGABtjR0asL5bskg
+
+{
+    "username": "HERA"
+}
