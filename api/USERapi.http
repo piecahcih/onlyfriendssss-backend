@@ -1,0 +1,15 @@
+@baseURL = http://localhost:3999
+@token = 
+
+### POST Activity
+POST {{baseURL}}/api/activity
+Authorization: Bearer {{token}}
+
+    {
+        "category": "ART",
+        "title": "Watercolor Workshop @Ari 🎨",
+        "description": "Workshops ระบายสีน้ำแถวอารีย์ ไม่ต้องมีพื้นฐานก็มาได้นะ มาลองสร้าง Masterpiece ของตัวเองในคาเฟ่บรรยากาศ Cozy สุดๆ",
+        "eventStartTime": new Date("2026-04-21T13:00:00"),
+        "hostId": 5,
+        "placeId": 5
+    },
