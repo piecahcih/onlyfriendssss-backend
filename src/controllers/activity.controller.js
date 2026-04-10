@@ -6,7 +6,7 @@ export async function getAllActivitiesCtrl (req,res,next) {
 }
 
 export async function createActivitiesCtrl (req,res,next) {
-    const {id} = req.user
+    const {id} = req.result
 
     const createActivity = await createActivities(userid,Adata)
     res.json({ activities: createActivity })
