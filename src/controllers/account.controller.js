@@ -70,7 +70,6 @@ export const deleteMe = async (req, res, next) => {
         : user.data.profileImg;
 
       const filePath = path.join(process.cwd(), 'public', relativePath);
-
       try {
         await fs.unlink(filePath);
         console.log(`Deleted file: ${filePath}`);

@@ -1,0 +1,5 @@
+@baseURL = http://localhost:3999
+
+### Get Current User Profile
+GET {{baseURL}}/api/account/profile
+Authorization: Bearer
