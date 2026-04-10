@@ -5,3 +5,10 @@ export async function getAllActivities () {
         orderBy : { id : 'desc' }
     })
 }
+
+export async function createActivities (userid,Adata) {
+    return await prisma.activity.create({
+        where: { userId: userid },
+        data: Adata
+    })
+}
