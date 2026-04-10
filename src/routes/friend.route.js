@@ -8,3 +8,5 @@ friendRoute.post("/request/:id", authCheckUser, friendController);
 friendRoute.patch("/accept/:id", authCheckUser, friendController);
 friendRoute.delete("/accept/:id", authCheckUser, friendController);
 friendRoute.get("/list", authCheckUser, friendController);
+
+export default friendRoute;
