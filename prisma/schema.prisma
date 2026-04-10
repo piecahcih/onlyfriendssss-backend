@@ -65,6 +65,7 @@ enum ActivityInterest {
 
 model User {
   id           Int          @id @default(autoincrement())
+  username String?
   firebase_uid String       @unique
   firstName    String
   lastName     String
