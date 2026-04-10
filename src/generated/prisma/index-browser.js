@@ -120,9 +120,223 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  firebase_uid: 'firebase_uid',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  password: 'password',
+  gender: 'gender',
+  role: 'role',
+  profileImg: 'profileImg',
+  bio: 'bio',
+  isVerified: 'isVerified',
+  faceDescriptor: 'faceDescriptor',
+  trustScore: 'trustScore',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ActivityScalarFieldEnum = {
+  id: 'id',
+  category: 'category',
+  title: 'title',
+  description: 'description',
+  maxParticipants: 'maxParticipants',
+  status: 'status',
+  eventStartDate: 'eventStartDate',
+  eventEndDate: 'eventEndDate',
+  isPublic: 'isPublic',
+  createdAt: 'createdAt',
+  hostId: 'hostId',
+  placeId: 'placeId'
+};
+
+exports.Prisma.JoinRequestScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  createdAt: 'createdAt',
+  userId: 'userId',
+  activityId: 'activityId'
+};
+
+exports.Prisma.PlaceScalarFieldEnum = {
+  id: 'id',
+  placeName: 'placeName',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  address: 'address'
+};
+
+exports.Prisma.ReviewScalarFieldEnum = {
+  id: 'id',
+  rating: 'rating',
+  comment: 'comment',
+  imageUrl: 'imageUrl',
+  createdAt: 'createdAt',
+  reviewerId: 'reviewerId',
+  receiverId: 'receiverId',
+  activityId: 'activityId'
+};
+
+exports.Prisma.RouteScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  creatorId: 'creatorId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.RouteItemScalarFieldEnum = {
+  id: 'id',
+  order: 'order',
+  routeId: 'routeId',
+  placeId: 'placeId'
+};
+
+exports.Prisma.FriendShipScalarFieldEnum = {
+  id: 'id',
+  status: 'status',
+  createdAt: 'createdAt',
+  senderId: 'senderId',
+  receiverId: 'receiverId'
+};
+
+exports.Prisma.VisitedPlaceScalarFieldEnum = {
+  id: 'id',
+  at: 'at',
+  userId: 'userId',
+  placeId: 'placeId'
+};
+
+exports.Prisma.ChatGroupScalarFieldEnum = {
+  id: 'id',
+  activityId: 'activityId'
+};
+
+exports.Prisma.MessageScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  senderId: 'senderId',
+  chatGroupId: 'chatGroupId'
+};
+
+exports.Prisma.InterestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  category: 'category',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SortOrder = {
+  asc: 'asc',
+  desc: 'desc'
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  firebase_uid: 'firebase_uid',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  email: 'email',
+  password: 'password',
+  profileImg: 'profileImg',
+  bio: 'bio',
+  faceDescriptor: 'faceDescriptor'
+};
+
+exports.Prisma.ActivityOrderByRelevanceFieldEnum = {
+  title: 'title',
+  description: 'description'
+};
+
+exports.Prisma.PlaceOrderByRelevanceFieldEnum = {
+  placeName: 'placeName',
+  address: 'address'
+};
+
+exports.Prisma.ReviewOrderByRelevanceFieldEnum = {
+  comment: 'comment',
+  imageUrl: 'imageUrl'
+};
+
+exports.Prisma.RouteOrderByRelevanceFieldEnum = {
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.MessageOrderByRelevanceFieldEnum = {
+  content: 'content'
+};
+exports.genderStatus = exports.$Enums.genderStatus = {
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER'
+};
+
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ADMIN: 'ADMIN'
+};
+
+exports.ActivityCategory = exports.$Enums.ActivityCategory = {
+  HEALTH: 'HEALTH',
+  ENTERTAINMENT: 'ENTERTAINMENT',
+  ART: 'ART',
+  FOOD: 'FOOD',
+  TRAVEL: 'TRAVEL'
+};
+
+exports.ActivityStatus = exports.$Enums.ActivityStatus = {
+  OPEN: 'OPEN',
+  FULL: 'FULL',
+  FINISHED: 'FINISHED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.RequestStatus = exports.$Enums.RequestStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.FriendshipStatus = exports.$Enums.FriendshipStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED'
+};
+
+exports.ActivityInterest = exports.$Enums.ActivityInterest = {
+  foodie: 'foodie',
+  camping: 'camping',
+  slowlife: 'slowlife',
+  health: 'health',
+  art: 'art',
+  travel: 'travel',
+  entertainment: 'entertainment',
+  sport: 'sport',
+  volunteer: 'volunteer',
+  workation: 'workation'
+};
 
 exports.Prisma.ModelName = {
-
+  User: 'User',
+  Activity: 'Activity',
+  JoinRequest: 'JoinRequest',
+  Place: 'Place',
+  Review: 'Review',
+  Route: 'Route',
+  RouteItem: 'RouteItem',
+  FriendShip: 'FriendShip',
+  VisitedPlace: 'VisitedPlace',
+  ChatGroup: 'ChatGroup',
+  Message: 'Message',
+  Interest: 'Interest'
 };
 
 /**
