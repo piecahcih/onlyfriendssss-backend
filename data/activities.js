@@ -1,3 +1,1 @@
-export const activityData = [
-    {}
-]
+export const activityData = [{}];

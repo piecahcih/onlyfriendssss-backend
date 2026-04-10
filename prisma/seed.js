@@ -6,29 +6,41 @@ const hashedPassword = () => bcrypt.hashSync("123456", 8);
 const userData = [
   {
     name: "ADMINPeach",
-    email: "ADMINpeach@gmail.com",
+    email: "ADMINpeach@mail.com",
     password: hashedPassword(),
     role: "ADMIN",
     profileImg:
       "https://i.pinimg.com/564x/2b/bc/af/2bbcaf8b5d4409e227782d4fe4484b59.jpg",
   },
   {
-    name: "Peach",
-    email: "peach@gmail.com",
+    name: "Hera",
+    email: "Hera@mail.com",
     password: hashedPassword(),
     role: "USER",
     profileImg:
       "https://i.pinimg.com/736x/82/b5/59/82b5591589b5b545726a31fd54728fd4.jpg",
   },
   {
-    name: "PeachPatchara",
-    email: "peachpatch@gmail.com",
+    name: "Artto",
+    email: "Arttoh@mail.com",
+    password: hashedPassword(),
+    role: "USER",
+    profileImg:
+      "https://res.cloudinary.com/piecahcih/image/upload/v1774238072/y9x0bjp2guf5q7ds8lmb.jpg",
+  },
+  {
+    name: "Ben",
+    email: "Ben@mail.com",
     password: hashedPassword(),
     role: "USER",
     profileImg:
       "https://res.cloudinary.com/piecahcih/image/upload/v1774238072/y9x0bjp2guf5q7ds8lmb.jpg",
   },
 ];
+
+// const activityMemberData ={[]}
+// const chatData ={[]}
+// const reviewData ={[]}
 
 async function main() {
   console.log("Clear Data...");
