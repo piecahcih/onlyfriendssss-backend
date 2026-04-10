@@ -14,6 +14,6 @@ app.use(
 );
 
 app.use('/api/auth', authRoute)
-app,use('/api/activity', activityRoute)
+app.use('/api/activity', activityRoute)
 
 export default app;
