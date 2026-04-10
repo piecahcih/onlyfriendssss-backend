@@ -22,3 +22,9 @@ Authorization: Bearer {{token}}
 
 ### GET act id
 GET {{baseURL}}/api/activity/2
+
+### GET act
+GET {{baseURL}}/api/activity
+
+### GET act
+GET {{baseURL}}/api/account/profile
