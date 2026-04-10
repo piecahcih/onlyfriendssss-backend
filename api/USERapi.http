@@ -7,9 +7,13 @@ Authorization: Bearer {{token}}
 
     {
         "category": "ART",
-        "title": "Watercolor Workshop @Ari 🎨",
+        "title": "TODLONG Workshop @Ari 🎨",
         "description": "Workshops ระบายสีน้ำแถวอารีย์ ไม่ต้องมีพื้นฐานก็มาได้นะ มาลองสร้าง Masterpiece ของตัวเองในคาเฟ่บรรยากาศ Cozy สุดๆ",
-        "eventStartTime": new Date("2026-04-21T13:00:00"),
+        "eventStartTime": "2026-04-21T13:00:00.000Z",
         "hostId": 5,
         "placeId": 5
-    },
+    }
+
+
+### GET act id
+GET {{baseURL}}/api/activity/2
