@@ -38,10 +38,6 @@ const userData = [
   },
 ];
 
-// const activityMemberData ={[]}
-// const chatData ={[]}
-// const reviewData ={[]}
-
 async function main() {
   console.log("Clear Data...");
 
