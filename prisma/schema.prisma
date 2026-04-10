@@ -99,10 +99,10 @@ model Activity {
   category        ActivityCategory
   title           String
   description     String           @db.Text
-  maxParticipants Int
+  maxParticipants Int? 
   status          ActivityStatus   @default(OPEN)
-  eventStartDate  DateTime
-  eventEndDate    DateTime
+  eventStartTime  DateTime
+  eventEndTime    DateTime?
   isPublic        Boolean          @default(true)
   createdAt       DateTime         @default(now())
 
