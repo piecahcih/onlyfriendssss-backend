@@ -218,7 +218,7 @@ model Message {
 
 model Interest {
   id        Int               @id @default(autoincrement())
-  userId    Int 
-  category  ActivityInterest? 
+  userId    Int
+  category  ActivityInterest?
   createdAt DateTime          @default(now())
 }
