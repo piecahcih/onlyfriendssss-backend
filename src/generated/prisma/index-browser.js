@@ -122,6 +122,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
+  username: 'username',
   firebase_uid: 'firebase_uid',
   firstName: 'firstName',
   lastName: 'lastName',
@@ -240,6 +241,7 @@ exports.Prisma.NullsOrder = {
 };
 
 exports.Prisma.UserOrderByRelevanceFieldEnum = {
+  username: 'username',
   firebase_uid: 'firebase_uid',
   firstName: 'firstName',
   lastName: 'lastName',

@@ -2153,6 +2153,7 @@ export namespace Prisma {
 
   export type UserMinAggregateOutputType = {
     id: number | null
+    username: string | null
     firebase_uid: string | null
     firstName: string | null
     lastName: string | null
@@ -2170,6 +2171,7 @@ export namespace Prisma {
 
   export type UserMaxAggregateOutputType = {
     id: number | null
+    username: string | null
     firebase_uid: string | null
     firstName: string | null
     lastName: string | null
@@ -2187,6 +2189,7 @@ export namespace Prisma {
 
   export type UserCountAggregateOutputType = {
     id: number
+    username: number
     firebase_uid: number
     firstName: number
     lastName: number
@@ -2216,6 +2219,7 @@ export namespace Prisma {
 
   export type UserMinAggregateInputType = {
     id?: true
+    username?: true
     firebase_uid?: true
     firstName?: true
     lastName?: true
@@ -2233,6 +2237,7 @@ export namespace Prisma {
 
   export type UserMaxAggregateInputType = {
     id?: true
+    username?: true
     firebase_uid?: true
     firstName?: true
     lastName?: true
@@ -2250,6 +2255,7 @@ export namespace Prisma {
 
   export type UserCountAggregateInputType = {
     id?: true
+    username?: true
     firebase_uid?: true
     firstName?: true
     lastName?: true
@@ -2354,7 +2360,8 @@ export namespace Prisma {
 
   export type UserGroupByOutputType = {
     id: number
-    firebase_uid: string
+    username: string | null
+    firebase_uid: string | null
     firstName: string | null
     lastName: string | null
     email: string
@@ -2390,6 +2397,7 @@ export namespace Prisma {
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    username?: boolean
     firebase_uid?: boolean
     firstName?: boolean
     lastName?: boolean
@@ -2419,6 +2427,7 @@ export namespace Prisma {
 
   export type UserSelectScalar = {
     id?: boolean
+    username?: boolean
     firebase_uid?: boolean
     firstName?: boolean
     lastName?: boolean
@@ -2434,7 +2443,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firebase_uid" | "firstName" | "lastName" | "email" | "password" | "gender" | "role" | "profileImg" | "bio" | "isVerified" | "faceDescriptor" | "trustScore" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firebase_uid" | "firstName" | "lastName" | "email" | "password" | "gender" | "role" | "profileImg" | "bio" | "isVerified" | "faceDescriptor" | "trustScore" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdActivities?: boolean | User$createdActivitiesArgs<ExtArgs>
     joinRequests?: boolean | User$joinRequestsArgs<ExtArgs>
@@ -2463,7 +2472,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      firebase_uid: string
+      username: string | null
+      firebase_uid: string | null
       firstName: string | null
       lastName: string | null
       email: string
@@ -2855,6 +2865,7 @@ export namespace Prisma {
    */
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'Int'>
+    readonly username: FieldRef<"User", 'String'>
     readonly firebase_uid: FieldRef<"User", 'String'>
     readonly firstName: FieldRef<"User", 'String'>
     readonly lastName: FieldRef<"User", 'String'>
@@ -14496,6 +14507,7 @@ export namespace Prisma {
 
   export const UserScalarFieldEnum: {
     id: 'id',
+    username: 'username',
     firebase_uid: 'firebase_uid',
     firstName: 'firstName',
     lastName: 'lastName',
@@ -14656,6 +14668,7 @@ export namespace Prisma {
 
 
   export const UserOrderByRelevanceFieldEnum: {
+    username: 'username',
     firebase_uid: 'firebase_uid',
     firstName: 'firstName',
     lastName: 'lastName',
@@ -14805,7 +14818,8 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     id?: IntFilter<"User"> | number
-    firebase_uid?: StringFilter<"User"> | string
+    username?: StringNullableFilter<"User"> | string | null
+    firebase_uid?: StringNullableFilter<"User"> | string | null
     firstName?: StringNullableFilter<"User"> | string | null
     lastName?: StringNullableFilter<"User"> | string | null
     email?: StringFilter<"User"> | string
@@ -14831,7 +14845,8 @@ export namespace Prisma {
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
-    firebase_uid?: SortOrder
+    username?: SortOrderInput | SortOrder
+    firebase_uid?: SortOrderInput | SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     email?: SortOrder
@@ -14858,6 +14873,7 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    username?: string
     firebase_uid?: string
     email?: string
     AND?: UserWhereInput | UserWhereInput[]
@@ -14883,11 +14899,12 @@ export namespace Prisma {
     createdRoutes?: RouteListRelationFilter
     sentFriendRequests?: FriendShipListRelationFilter
     receivedFriendRequests?: FriendShipListRelationFilter
-  }, "id" | "firebase_uid" | "email">
+  }, "id" | "username" | "firebase_uid" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
-    firebase_uid?: SortOrder
+    username?: SortOrderInput | SortOrder
+    firebase_uid?: SortOrderInput | SortOrder
     firstName?: SortOrderInput | SortOrder
     lastName?: SortOrderInput | SortOrder
     email?: SortOrder
@@ -14912,7 +14929,8 @@ export namespace Prisma {
     OR?: UserScalarWhereWithAggregatesInput[]
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"User"> | number
-    firebase_uid?: StringWithAggregatesFilter<"User"> | string
+    username?: StringNullableWithAggregatesFilter<"User"> | string | null
+    firebase_uid?: StringNullableWithAggregatesFilter<"User"> | string | null
     firstName?: StringNullableWithAggregatesFilter<"User"> | string | null
     lastName?: StringNullableWithAggregatesFilter<"User"> | string | null
     email?: StringWithAggregatesFilter<"User"> | string
@@ -15624,13 +15642,14 @@ export namespace Prisma {
   }
 
   export type UserCreateInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -15650,13 +15669,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -15675,7 +15695,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -15701,7 +15722,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -15727,13 +15749,14 @@ export namespace Prisma {
 
   export type UserCreateManyInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -15743,7 +15766,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateManyMutationInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -15760,7 +15784,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -16413,21 +16438,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type StringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringFilter<$PrismaModel> | string
-  }
-
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -16441,6 +16451,21 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type StringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type EnumgenderStatusFilter<$PrismaModel = never> = {
@@ -16556,6 +16581,7 @@ export namespace Prisma {
 
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
+    username?: SortOrder
     firebase_uid?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
@@ -16578,6 +16604,7 @@ export namespace Prisma {
 
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
+    username?: SortOrder
     firebase_uid?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
@@ -16595,6 +16622,7 @@ export namespace Prisma {
 
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
+    username?: SortOrder
     firebase_uid?: SortOrder
     firstName?: SortOrder
     lastName?: SortOrder
@@ -16631,24 +16659,6 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -16665,6 +16675,24 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type EnumgenderStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -17474,12 +17502,12 @@ export namespace Prisma {
     connect?: FriendShipWhereUniqueInput | FriendShipWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
   }
 
   export type EnumgenderStatusFieldUpdateOperationsInput = {
@@ -18373,21 +18401,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedStringFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringFilter<$PrismaModel> | string
-  }
-
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -18401,6 +18414,21 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     search?: string
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedStringFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type NestedEnumgenderStatusFilter<$PrismaModel = never> = {
@@ -18460,24 +18488,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    search?: string
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -18505,6 +18515,24 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    search?: string
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type NestedEnumgenderStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -19147,13 +19175,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutCreatedActivitiesInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19172,13 +19201,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutCreatedActivitiesInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19302,7 +19332,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutCreatedActivitiesInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -19327,7 +19358,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutCreatedActivitiesInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -19433,13 +19465,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutJoinRequestsInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19458,13 +19491,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutJoinRequestsInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19536,7 +19570,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutJoinRequestsInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -19561,7 +19596,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutJoinRequestsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -19772,13 +19808,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutReviewsGivenInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19797,13 +19834,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutReviewsGivenInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19826,13 +19864,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutReviewsReceivedInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19851,13 +19890,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutReviewsReceivedInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -19929,7 +19969,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutReviewsGivenInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -19954,7 +19995,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutReviewsGivenInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -19989,7 +20031,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutReviewsReceivedInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20014,7 +20057,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutReviewsReceivedInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20082,13 +20126,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutCreatedRoutesInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20107,13 +20152,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutCreatedRoutesInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20168,7 +20214,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutCreatedRoutesInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20193,7 +20240,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutCreatedRoutesInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20333,13 +20381,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutSentFriendRequestsInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20358,13 +20407,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutSentFriendRequestsInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20387,13 +20437,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutReceivedFriendRequestsInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20412,13 +20463,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutReceivedFriendRequestsInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20452,7 +20504,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutSentFriendRequestsInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20477,7 +20530,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutSentFriendRequestsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20512,7 +20566,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutReceivedFriendRequestsInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20537,7 +20592,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutReceivedFriendRequestsInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20561,13 +20617,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutVisitedPlacesInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20586,13 +20643,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutVisitedPlacesInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20650,7 +20708,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutVisitedPlacesInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20675,7 +20734,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutVisitedPlacesInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20850,13 +20910,14 @@ export namespace Prisma {
   }
 
   export type UserCreateWithoutMessagesInput = {
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20875,13 +20936,14 @@ export namespace Prisma {
 
   export type UserUncheckedCreateWithoutMessagesInput = {
     id?: number
-    firebase_uid: string
+    username?: string | null
+    firebase_uid?: string | null
     firstName?: string | null
     lastName?: string | null
     email: string
     password: string
-    gender: $Enums.genderStatus
-    role: $Enums.Role
+    gender?: $Enums.genderStatus
+    role?: $Enums.Role
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
@@ -20929,7 +20991,8 @@ export namespace Prisma {
   }
 
   export type UserUpdateWithoutMessagesInput = {
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
@@ -20954,7 +21017,8 @@ export namespace Prisma {
 
   export type UserUncheckedUpdateWithoutMessagesInput = {
     id?: IntFieldUpdateOperationsInput | number
-    firebase_uid?: StringFieldUpdateOperationsInput | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    firebase_uid?: NullableStringFieldUpdateOperationsInput | string | null
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     email?: StringFieldUpdateOperationsInput | string
