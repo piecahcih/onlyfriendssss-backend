@@ -17,5 +17,8 @@ app.use(
 app.use('/api/auth', authRoute)
 app.use('/api/activity', activityRoute)
 app.use('/api/account', accountRoute)
+app.use("/api/friends", (req, res) => {
+  res.json("friendskub");
+});
 
 export default app;
