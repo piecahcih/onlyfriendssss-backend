@@ -1,6 +1,7 @@
-import { prisma } from '../src/lib/prisma.js'
-import bcrypt from 'bcrypt'
-import { activityData } from '../data/activities.js'
+import { prisma } from "../src/lib/prisma.js";
+import bcrypt from "bcrypt";
+import { activityData } from "../data/activities.js";
+import { activityMemberData, joinRequestData } from "../data/joinRequest.js";
 
 const hashedPassword = () => bcrypt.hashSync("123456", 8);
 
@@ -46,18 +47,24 @@ async function main() {
     await tx.$executeRawUnsafe("SET FOREIGN_KEY_CHECKS = 1;");
   });
 
-  console.log(`Start seeding...`)
+  console.log(`Start seeding...`);
   const createdUsers = await prisma.user.createMany({
-        data: userData,
-        skipDuplicates: true
-    })
+    data: userData,
+    skipDuplicates: true,
+  });
   const createdActivities = await prisma.activity.createMany({
-        data: activityData,
-        skipDuplicates: true
-    })
+    data: activityData,
+    skipDuplicates: true,
+  });
 
-    console.log(`Created : ${createdUsers.count} users`)
-    console.log(`Created : ${createdActivities.count} activities`)
+  const createdJoinRequests = await prisma.joinRequest.createMany({
+    data: joinRequestData,
+    skipDuplicates: true,
+  });
+
+  console.log(`Created : ${createdUsers.count} users`);
+  console.log(`Created : ${createdActivities.count} activities`);
+  console.log(`Created : ${createdJoinRequests.count} members`);
 }
 
 main()
