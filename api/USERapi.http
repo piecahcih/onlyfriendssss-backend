@@ -1,6 +1,11 @@
 @baseURL = http://localhost:3999
 @token = 
 
+### Login
+POST {{baseURL}}/api/auth/login
+
+
+
 ### POST Activity
 POST {{baseURL}}/api/activity
 Authorization: Bearer {{token}}
@@ -17,3 +22,9 @@ Authorization: Bearer {{token}}
 
 ### GET act id
 GET {{baseURL}}/api/activity/2
+
+### GET act
+GET {{baseURL}}/api/activity
+
+### GET act
+GET {{baseURL}}/api/account/profile
