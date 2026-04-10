@@ -22,7 +22,7 @@ export const getUserById = async (userId) => {
         trustScore: true,
         createdAt: true,
 
-        // ข้อมูลรีวิวที่ได้รับ (Relation: reviewsReceived) 
+        // ข้อมูลรีวิวที่ได้รับ 
         reviewsReceived: {
           select: {
             rating: true,
@@ -41,7 +41,6 @@ export const getUserById = async (userId) => {
           take: 10 // ดึงมาแค่ 10 รายการล่าสุด
         },
 
-        //  การนับจำนวน 
         _count: {
           select: { 
             createdActivities: true,  // จำนวนกิจกรรมที่สร้าง
@@ -52,7 +51,6 @@ export const getUserById = async (userId) => {
       },
     });
 
-    //  ตรวจสอบว่าพบผู้ใช้หรือไม่
     if (!user) {
       return { 
         success: false, 
@@ -60,7 +58,6 @@ export const getUserById = async (userId) => {
       };
     }
 
-    // ส่งข้อมูลกลับ
     return { 
       success: true, 
       data: user 
@@ -73,4 +70,49 @@ export const getUserById = async (userId) => {
       message: "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์" 
     };
   }
+};
+
+
+
+
+export const updateUserProfile = async (userId, updateData) => {
+  try {
+    const id = parseInt(userId);
+    
+    return await prisma.user.update({
+      where: { id: id },
+      data: updateData, 
+      select: { 
+        id: true, 
+        username: true, 
+        email: true, 
+        profileImg: true, 
+        bio: true,
+        firstName: true,
+        lastName: true,
+        gender: true,
+        isVerified: true,
+        trustScore: true
+      }
+    });
+  } catch (error) {
+    console.error("Update User Error:", error);
+    throw error; 
+  }
+};
+
+
+export const deleteUserAccount = async (userId) => {
+  const id = parseInt(userId);
+
+  // ใช้ $transaction เพื่อให้มั่นใจว่าถ้าลบไม่สำเร็จ ข้อมูลจะไม่พัง
+  return await prisma.$transaction(async (tx) => {
+    
+    const deletedUser = await tx.user.delete({
+      where: { id: id },
+      select: { id: true, email: true }
+    });
+
+    return deletedUser;
+  });
 };
