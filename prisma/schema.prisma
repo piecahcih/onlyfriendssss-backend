@@ -5,7 +5,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -65,14 +64,14 @@ enum ActivityInterest {
 
 model User {
   id           Int          @id @default(autoincrement())
-  username     String?
-  firebase_uid String       @unique
+  username     String?      @unique
+  firebase_uid String?      @unique
   firstName    String?
   lastName     String?
   email        String       @unique
   password     String
-  gender       genderStatus
-  role         Role
+  gender       genderStatus @default(OTHER)
+  role         Role         @default(USER)
   profileImg   String?
   bio          String?
 
@@ -99,10 +98,10 @@ model Activity {
   category        ActivityCategory
   title           String
   description     String           @db.Text
-  maxParticipants Int
+  maxParticipants Int?
   status          ActivityStatus   @default(OPEN)
-  eventStartDate  DateTime
-  eventEndDate    DateTime
+  eventStartTime  DateTime
+  eventEndTime    DateTime?
   isPublic        Boolean          @default(true)
   createdAt       DateTime         @default(now())
 
@@ -219,7 +218,7 @@ model Message {
 
 model Interest {
   id        Int               @id @default(autoincrement())
-  userId    Int // บันทึก ID ของ User ลงไปตรงๆ
-  category  ActivityInterest? // 
+  userId    Int 
+  category  ActivityInterest? 
   createdAt DateTime          @default(now())
 }

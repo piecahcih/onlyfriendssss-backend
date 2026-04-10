@@ -1,73 +1,61 @@
 import { prisma } from "../src/lib/prisma.js";
-import bcrypt from "bcrypt";
-
-const hashedPassword = () => bcrypt.hashSync("123456", 8);
-
-const userData = [
-  {
-    name: "ADMINPeach",
-    email: "ADMINpeach@mail.com",
-    password: hashedPassword(),
-    role: "ADMIN",
-    profileImg:
-      "https://i.pinimg.com/564x/2b/bc/af/2bbcaf8b5d4409e227782d4fe4484b59.jpg",
-  },
-  {
-    name: "Hera",
-    email: "Hera@mail.com",
-    password: hashedPassword(),
-    role: "USER",
-    profileImg:
-      "https://i.pinimg.com/736x/82/b5/59/82b5591589b5b545726a31fd54728fd4.jpg",
-  },
-  {
-    name: "Artto",
-    email: "Arttoh@mail.com",
-    password: hashedPassword(),
-    role: "USER",
-    profileImg:
-      "https://res.cloudinary.com/piecahcih/image/upload/v1774238072/y9x0bjp2guf5q7ds8lmb.jpg",
-  },
-  {
-    name: "Ben",
-    email: "Ben@mail.com",
-    password: hashedPassword(),
-    role: "USER",
-    profileImg:
-      "https://res.cloudinary.com/piecahcih/image/upload/v1774238072/y9x0bjp2guf5q7ds8lmb.jpg",
-  },
-];
+import { userData } from "../data/user.js";
+import { activityData } from "../data/activities.js";
+import { placeData } from "../data/places.js";
+import { joinRequestData } from "../data/joinRequest.js";
 
 async function main() {
-  console.log("Clear Data...");
+  console.log("--- เริ่มกระบวนการตรวจสอบและ Seed ---");
 
-  const modelNames = Object.keys(prisma).filter(
-    (key) =>
-      !key.startsWith("$") && !key.startsWith("_") && key !== "constructor",
+  // 1. ตรวจสอบว่ามีข้อมูลในตารางแม่หรือยัง
+  const userCount = await prisma.user.count();
+  const placeCount = await prisma.place.count();
+
+  console.log(`พบ User ในระบบ: ${userCount} คน`);
+  console.log(`พบ Place ในระบบ: ${placeCount} แห่ง`);
+
+  if (userCount === 0 || placeCount === 0) {
+    console.log("❌ ข้อมูลต้นทางไม่พอ! กำลังสร้าง User และ Place ใหม่...");
+    for (const u of userData) await prisma.user.create({ data: u });
+    for (const p of placeData) await prisma.place.create({ data: p });
+  }
+
+  // 2. ดึงข้อมูลจริงจาก DB มาดูว่า ID เป็นเลขอะไรบ้าง
+  const allUsers = await prisma.user.findMany({ select: { id: true } });
+  const allPlaces = await prisma.place.findMany({ select: { id: true } });
+  
+  const userIds = allUsers.map(u => u.id);
+  const placeIds = allPlaces.map(p => p.id);
+
+  console.log("User IDs ที่มีจริง:", userIds);
+  console.log("Place IDs ที่มีจริง:", placeIds);
+
+  // 3. กรอง Activity ที่มี ID ไม่ตรงทิ้ง เพื่อป้องกัน Error
+  const validActivities = activityData.filter(act => 
+    userIds.includes(act.hostId) && placeIds.includes(act.placeId)
   );
-  await prisma.$transaction(async (tx) => {
-    await tx.$executeRawUnsafe("SET FOREIGN_KEY_CHECKS = 0;");
-    for (const name of modelNames) {
-      await tx.$executeRawUnsafe(`TRUNCATE TABLE \`${name}\`;`);
-    }
-    await tx.$executeRawUnsafe("SET FOREIGN_KEY_CHECKS = 1;");
-  });
 
-  console.log(`Start seeding...`);
-  const createdUsers = await prisma.user.createMany({
-    data: userData,
-    skipDuplicates: true,
-  });
+  console.log(`กำลังสร้าง Activity ที่ถูกต้อง: ${validActivities.length}/${activityData.length} รายการ`);
 
-  console.log(`Created : ${createdUsers.count} users`);
+  if (validActivities.length > 0) {
+    await prisma.activity.createMany({
+      data: validActivities,
+      skipDuplicates: true
+    });
+  }
+
+  // 4. สร้าง JoinRequest (เฉพาะที่ ActivityId มีอยู่จริง)
+  const allActs = await prisma.activity.findMany({ select: { id: true } });
+  const actIds = allActs.map(a => a.id);
+  
+  const validRequests = joinRequestData.filter(req =>
+    userIds.includes(req.userId) && actIds.includes(req.activityId)
+  );
+
+  console.log(`กำลังสร้าง JoinRequest ที่ถูกต้อง: ${validRequests.length} รายการ`);
+  await prisma.joinRequest.createMany({ data: validRequests });
+
+  console.log("--- SEEDING DONE! ✅ ---");
 }
 
-main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (err) => {
-    console.error(err);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+main().finally(() => prisma.$disconnect());
