@@ -12,3 +12,22 @@ export async function createActivities (userid,Adata) {
         data: Adata
     })
 }
+
+export async function getActivityById (activityId) {
+    return await prisma.activity.findUnique({
+        where : { id : activityId }
+    })
+}
+
+export async function editActivityById (activityId) {
+    return await prisma.activity.update({
+        where : { id : activityId }
+    })
+}
+
+export async function changeActivityStatus (activityId,status) {
+    return await prisma.activity.update({
+        where : { id : activityId },
+        data: { status: status }
+    })
+}
