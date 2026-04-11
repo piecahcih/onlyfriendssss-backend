@@ -1,12 +1,12 @@
 import express from 'express'
-import { login, register, registerOrLogin } from '../controllers/auth.controller.js'
+import { loginCtrl, registerCtrl, registerOrLoginCtrl } from '../controllers/auth.controller.js'
 
 const authRoute = express.Router();
 
-authRoute.post('/registerOrLogin', registerOrLogin)
+authRoute.post('/registerOrLogin', registerOrLoginCtrl)
 
-authRoute.post('/register', register)
-authRoute.post('/login', login)
+authRoute.post('/register', registerCtrl)
+authRoute.post('/login', loginCtrl)
 
 
 export default authRoute

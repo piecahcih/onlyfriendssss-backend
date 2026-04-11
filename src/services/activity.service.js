@@ -19,9 +19,10 @@ export async function getActivityById (activityId) {
     })
 }
 
-export async function editActivityById (activityId) {
+export async function editActivityById (userid,activityId,Editdata) {
     return await prisma.activity.update({
-        where : { id : activityId }
+        where : { hostId: userid, id : activityId },
+        data: Editdata
     })
 }
 
@@ -29,5 +30,11 @@ export async function changeActivityStatus (activityId,status) {
     return await prisma.activity.update({
         where : { id : activityId },
         data: { status: status }
+    })
+}
+
+export async function deleteActivityById (userid,activityId) {
+    return await prisma.activity.delete({
+        where : { hostId: userid, id : activityId }
     })
 }

@@ -122,9 +122,9 @@ model JoinRequest {
   createdAt DateTime      @default(now())
 
   userId     Int
-  user       User     @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   activityId Int
-  activity   Activity @relation(fields: [activityId], references: [id])
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 
   @@unique([userId, activityId])
 }
@@ -149,13 +149,13 @@ model Review {
   createdAt DateTime @default(now())
 
   reviewerId Int
-  reviewer   User @relation("Reviewer", fields: [reviewerId], references: id)
+  reviewer   User @relation("Reviewer", fields: [reviewerId], references: id, onDelete: Cascade)
 
   receiverId Int?
-  receiver   User? @relation("Receiver", fields: [receiverId], references: id)
+  receiver   User? @relation("Receiver", fields: [receiverId], references: id, onDelete: Cascade)
 
   activityId Int
-  activity   Activity @relation(fields: [activityId], references: [id])
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 }
 
 model Route {
@@ -163,7 +163,7 @@ model Route {
   name        String
   description String?
   creatorId   Int
-  creator     User        @relation(fields: [creatorId], references: id)
+  creator     User        @relation(fields: [creatorId], references: id, onDelete: Cascade)
   items       RouteItem[]
   createdAt   DateTime    @default(now())
 }
@@ -183,9 +183,9 @@ model FriendShip {
   createdAt DateTime         @default(now())
 
   senderId   Int
-  sender     User @relation("SentFriendRequests", fields: [senderId], references: id)
+  sender     User @relation("SentFriendRequests", fields: [senderId], references: id, onDelete: Cascade)
   receiverId Int
-  receiver   User @relation("ReceivedFriendRequests", fields: [receiverId], references: id)
+  receiver   User @relation("ReceivedFriendRequests", fields: [receiverId], references: id, onDelete: Cascade)
 
   @@unique([senderId, receiverId])
 }
@@ -194,7 +194,7 @@ model VisitedPlace {
   id      Int      @id @default(autoincrement())
   at      DateTime @default(now())
   userId  Int
-  user    User     @relation(fields: [userId], references: id)
+  user    User     @relation(fields: [userId], references: id, onDelete: Cascade)
   placeId Int
   place   Place    @relation(fields: [placeId], references: id)
 }
@@ -202,7 +202,7 @@ model VisitedPlace {
 model ChatGroup {
   id         Int       @id @default(autoincrement())
   activityId Int       @unique
-  activity   Activity  @relation(fields: [activityId], references: id)
+  activity   Activity  @relation(fields: [activityId], references: id, onDelete: Cascade)
   messages   Message[]
 }
 
@@ -211,9 +211,9 @@ model Message {
   content     String    @db.Text
   createdAt   DateTime  @default(now())
   senderId    Int
-  sender      User      @relation(fields: [senderId], references: id)
+  sender      User      @relation(fields: [senderId], references: id, onDelete: Cascade)
   chatGroupId Int
-  chatGroup   ChatGroup @relation(fields: [chatGroupId], references: id)
+  chatGroup   ChatGroup @relation(fields: [chatGroupId], references: id, onDelete: Cascade)
 }
 
 model Interest {
