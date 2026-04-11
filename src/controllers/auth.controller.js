@@ -7,7 +7,7 @@ import { signToken } from '../utils/jwt.js'
 
 
 
-export const registerOrLogin = async (req, res) => {
+export const registerOrLoginCtrl = async (req, res) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
   const idToken = authHeader.split(' ')[1]
 
@@ -39,7 +39,7 @@ export const registerOrLogin = async (req, res) => {
 }
 
 
-export async function register(req, res, next) {
+export async function registerCtrl(req, res, next) {
 
   const { email, password, confirmPassword } = req.body
 
@@ -66,7 +66,7 @@ export async function register(req, res, next) {
 }
 
 
-export async function login(req, res, next) {
+export async function loginCtrl(req, res, next) {
   const data = loginSchema.parse(req.body)
 
   const foundUser = await getUserBy('email', data.email)
