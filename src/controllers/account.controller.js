@@ -4,7 +4,7 @@ import path from 'path';
 
 export const getMe = async (req, res, next) => {
   try {
-    const user = await accountService.getUserById(req.user.id);
+    const user = await accountService.getUserById(req.result.id);
     res.status(200).json({ user });
   } catch (error) {
     next(error);
@@ -19,7 +19,7 @@ export const updateMe = async (req, res, next) => {
       updateData.profileImg = `/uploads/${req.file.filename}`;
     }
 
-    const { username, bio, firstName, lastName, gender } = req.body;
+    const { username, bio, firstName, lastName, gender } = req.body || {};
 
     if (username?.trim()) updateData.username = username.trim();
     if (firstName?.trim()) updateData.firstName = firstName.trim();
@@ -34,7 +34,7 @@ export const updateMe = async (req, res, next) => {
       return next(createError(400, "No data provided for update"));
     }
 
-    const updatedUser = await accountService.updateUserProfile(req.user.id, updateData);
+    const updatedUser = await accountService.updateUserProfile(req.result.id, updateData);
     
     res.status(200).json({ 
       message: "Profile updated successfully", 
@@ -52,7 +52,7 @@ export const updateMe = async (req, res, next) => {
 
 export const deleteMe = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.result.id;
     const user = await accountService.getUserById(userId); 
     if (!user.data) {
        throw createError(404, "User not found");
@@ -70,7 +70,6 @@ export const deleteMe = async (req, res, next) => {
         : user.data.profileImg;
 
       const filePath = path.join(process.cwd(), 'public', relativePath);
-
       try {
         await fs.unlink(filePath);
         console.log(`Deleted file: ${filePath}`);

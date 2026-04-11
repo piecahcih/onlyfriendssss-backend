@@ -1,6 +1,6 @@
 import multer from 'multer'; //เครื่องมือหลักที่ใช้จัดการข้อมูลแบบ multipart/form-data (ซึ่งใช้ส่งไฟล์จากหน้าบ้าน)
 import path from 'path'; // ใช้จัดการเกี่ยวกับเส้นทางไฟล์และนามสกุลไฟล์ (เช่น .jpg, .png)
-import fs from 'fs'; //(File System) ใช้สั่งงานตัวจัดการไฟล์ในเครื่อง เช่น การสร้างโฟลเดอร์
+// import fs from 'fs'; //(File System) ใช้สั่งงานตัวจัดการไฟล์ในเครื่อง เช่น การสร้างโฟลเดอร์
 
 //  กำหนดที่เก็บไฟล์ (Storage)
 const storage = multer.diskStorage({
