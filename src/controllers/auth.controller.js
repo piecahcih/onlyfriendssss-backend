@@ -2,29 +2,34 @@ import { createUser, getUserBy, syncUserToDb } from "../services/auth.service.js
 import admin from "../utils/firebase.js"
 import { loginSchema, registerSchema } from "../validations/schema.js"
 import createHttpError from "http-errors"
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt'
 import { signToken } from '../utils/jwt.js'
 
 
 
-// login google ยังไม่เสร็จค่อยกลับมาทำ
 export const registerOrLogin = async (req, res) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
-  const idToken = authHeader?.split(' ')[1]
+  const idToken = authHeader.split(' ')[1]
 
   if (!idToken) {
-    console.log("No Token found in headers:", req.headers)
     return res.status(401).json({ error: 'No token provided' })
   }
 
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken)
-    const { uid, email } = decodedToken
+    const { uid, email, name, picture } = decodedToken 
 
-    const user = await syncUserToDb(uid, email)
+    const nameParts = (name || "").split(" ")
+    const firstName = nameParts[0] || ""
+    const lastName = nameParts.slice(1).join(" ") || "" 
+
+    const user = await syncUserToDb(uid, email, firstName, lastName, picture)
+    
+    const token = signToken({ id: user.id })
 
     res.status(200).json({
       message: 'Success',
+      token: token,
       user: user
     })
   } catch (error) {
@@ -36,7 +41,7 @@ export const registerOrLogin = async (req, res) => {
 
 export async function register(req, res, next) {
 
-  const { firstName, lastName, email, password, confirmPassword } = req.body
+  const { email, password, confirmPassword } = req.body
 
   const data = await registerSchema.parseAsync(req.body)
 
@@ -48,10 +53,8 @@ export async function register(req, res, next) {
   const createdUser = await createUser(data)
 
   const userInfo = {
-    id: createUser.id,
+    id: createdUser.id,
     email: data.email,
-    firstName: data.firstName,
-    lastName: data.lastName,
   }
   if (createdUser.role !== 'USER') {
     userInfo.role = createdUser.role
@@ -80,9 +83,13 @@ export async function login(req, res, next) {
   const payload = { id: foundUser.id }
   const token = signToken(payload)
 
+  console.log(foundUser)
   const userInfo = {
     id: foundUser.id,
     email: foundUser.email,
+    role: foundUser.role,
+    firstName: foundUser.firstName,
+    lastName: foundUser.lastName
   }
 
   if (foundUser.profileImg !== null) {
