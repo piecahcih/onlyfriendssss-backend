@@ -98,9 +98,9 @@ export async function loginCtrl(req, res, next) {
   if (foundUser.name !== null) {
     userInfo.name = foundUser.name
   }
-  if (foundUser.role !== 'USER') {
-    userInfo.role = foundUser.role
-  }
+  // if (foundUser.role !== 'USER') {
+  //   userInfo.role = foundUser.role
+  // }
 
   res.json({
     message: 'Login Success',
