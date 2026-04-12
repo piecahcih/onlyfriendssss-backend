@@ -11,6 +11,9 @@ Content-Type: application/json
 
 
 
+### GET act
+GET {{baseURL}}/api/activity
+
 ### POST Activity
 POST {{baseURL}}/api/activity
 Authorization: Bearer {{token}}
@@ -43,9 +46,6 @@ Content-Type: application/json
 {
     "status": "FULL"
 }
-
-### GET act
-GET {{baseURL}}/api/activity
 
 
 
