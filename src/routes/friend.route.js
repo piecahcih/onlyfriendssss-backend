@@ -12,6 +12,6 @@ const friendRoute = express.Router();
 friendRoute.get("/list", authCheckUser, getFriendListCtrl);
 friendRoute.post("/request/:id", authCheckUser, sendRequestCtrl);
 friendRoute.patch("/accept/:id", authCheckUser, acceptRequestCtrl);
-friendRoute.delete("/accept/:id", authCheckUser, unfriendCtrl);
+friendRoute.delete("/unfriend/:id", authCheckUser, unfriendCtrl);
 
 export default friendRoute;

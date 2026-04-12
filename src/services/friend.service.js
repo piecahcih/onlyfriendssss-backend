@@ -15,7 +15,13 @@ export async function getFriendList(userId) {
       },
     },
   });
-  return friends.map((f) => (f.senderId === userId ? f.receiver : f.sender));
+  return friends.map((f) => {
+    const friendInfo = f.senderId === userId ? f.receiver : f.sender;
+    return {
+      ...friendInfo,
+      friendshipId: f.id,
+    };
+  });
 }
 
 export async function sendFriendRequest(senderId, receiverId) {
@@ -52,6 +58,24 @@ export async function sendFriendRequest(senderId, receiverId) {
   });
 }
 
+export async function getPendingRequests(userId) {
+  return await prisma.friendShip.findMany({
+    where: {
+      status: "PENDING",
+      receiverId: userId,
+    },
+    include: {
+      sender: {
+        select: {
+          id: true,
+          username: true,
+          profileImg: true,
+        },
+      },
+    },
+  });
+}
+
 export async function acceptFriendRequest(userId, friendshipId) {
   const fId = Number(friendshipId);
 
@@ -64,7 +88,7 @@ export async function acceptFriendRequest(userId, friendshipId) {
     error.statusCode = 404;
     throw error;
   }
-  // ป้องกัน: A ขอ B ... แต่ A ดันแอบยิง API มากดรับเอง (ต้องเป็น B เท่านั้นที่กดได้)
+  // กันมากดรับเอง
   if (request.receiverId !== userId) {
     const error = new Error("คุณไม่มีสิทธิ์ตอบรับคำขอนี้");
     error.statusCode = 403;
@@ -85,13 +109,13 @@ export async function unfriend(userId, friendshipId) {
     where: { id: fId },
   });
   if (!friendship) {
-    const error = new Error("ไม่พบข้อมูลเพื่อนคนนี้");
+    const error = new Error("ไม่พบข้อมูลความสัมพันะ์เพื่อนคนนี้");
     error.statusCode = 404;
     throw error;
   }
 
   if (friendship.senderId !== userId && friendship.receiverId !== userId) {
-    const error = new Error("คุณไม่มีสิทธิ์ลบเพื่อนคนนี้");
+    const error = new Error("คุณไม่มีสิทธิ์ลบความสัมพันะ์เพื่อนคนนี้");
     error.statusCode = 403;
     throw error;
   }

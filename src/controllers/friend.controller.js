@@ -1,6 +1,7 @@
 import {
   acceptFriendRequest,
   getFriendList,
+  getPendingRequests,
   sendFriendRequest,
   unfriend,
 } from "../services/friend.service.js";
@@ -9,8 +10,11 @@ import {
 export async function getFriendListCtrl(req, res, next) {
   try {
     const { id } = req.result;
-    const friends = await getFriendList(id);
-    res.json({ friends });
+    const [friends, requests] = await Promise.all([
+      getFriendList(id),
+      getPendingRequests(id),
+    ]);
+    res.json({ friends: friends, requests: requests });
   } catch (error) {
     next(error);
   }
@@ -56,7 +60,7 @@ export async function unfriendCtrl(req, res, next) {
 
     await unfriend(userId, friendshipId);
 
-    res.json({ message: "ลบเพื่อนแล้ว" });
+    res.json({ message: "ลบความสัมพันธ์เพื่อนแล้ว" });
   } catch (error) {
     next(error);
   }
