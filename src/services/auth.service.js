@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 
-
+// login Google
 export async function syncUserToDb(uid, email, firstName, lastName) {
   return await prisma.user.upsert({
     where: { firebase_uid: uid },
@@ -28,12 +28,36 @@ export function getUserBy(field, value) {
   })
 }
 
-export function findUserByUsername(username) {
-  return prisma.user.findUnique({
-    where: { username : username }
-  })
-}
 
 export function createUser(data) {
   return prisma.user.create({ data })
+}
+
+
+// register add profile
+export function updateUserProfile(userId, data) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: {
+      username: data.username,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      gender: data.gender,
+      bio: data.bio,
+      profileImg: data.profileImg
+    }
+  })
+}
+
+
+// add interest
+export function createUserInterest(userId, interests) {
+  const data = interests.map((cate) => ({
+    userId: userId,
+    category: cate
+  }))
+
+  return prisma.interest.createMany({
+    data: data
+  })
 }
