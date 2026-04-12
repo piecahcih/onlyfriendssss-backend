@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoute from "./routes/auth.route.js";
 import activityRoute from "./routes/activity.route.js";
 import friendRoute from "./routes/friend.route.js";
+import accountRoute from "./routes/account.route.js";
 
 const app = express();
 app.use(express.json());
@@ -17,5 +18,6 @@ app.use(
 app.use("/api/auth", authRoute);
 app.use("/api/activity", activityRoute);
 app.use("/api/friend", friendRoute);
+app.use('/api/account', accountRoute)
 
 export default app;

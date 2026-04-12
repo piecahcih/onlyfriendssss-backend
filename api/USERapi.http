@@ -1,10 +1,18 @@
 @baseURL = http://localhost:3999
-@token = 
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc1OTQwNDE3LCJleHAiOjE3Nzg1MzI0MTd9.R8WplMS7bWFd7DzVNN1f1DsrgxZ8akDK3KplKbHSLww
 ### Login
 POST {{baseURL}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email":"peach@gmail.com",
+    "password": "123456" 
+}
 
 
+
+### GET act
+GET {{baseURL}}/api/activity
 
 ### POST Activity
 POST {{baseURL}}/api/activity
@@ -23,8 +31,25 @@ Authorization: Bearer {{token}}
 ### GET act id
 GET {{baseURL}}/api/activity/2
 
-### GET act
-GET {{baseURL}}/api/activity
+### GET act id
+GET {{baseURL}}/api/activity/5
+
+### DELETE act id
+DELETE {{baseURL}}/api/activity/1
+Authorization: Bearer {{token}}
+
+
+### status act
+PATCH {{baseURL}}/api/activity/5
+Content-Type: application/json
+
+{
+    "status": "FULL"
+}
+
+
+
+
 
 ### GET act
 GET {{baseURL}}/api/account/profile
