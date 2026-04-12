@@ -2,7 +2,7 @@ import * as accountService from '../services/account.service.js'
 import fs from 'fs/promises'; 
 import path from 'path';
 
-export const getMe = async (req, res, next) => {
+export const getMeCtrl = async (req, res, next) => {
   try {
     const user = await accountService.getUserById(req.result.id);
     res.status(200).json({ user });
@@ -11,7 +11,7 @@ export const getMe = async (req, res, next) => {
   }
 };
 
-export const updateMe = async (req, res, next) => {
+export const updateMeCtrl = async (req, res, next) => {
   try {
     const updateData = {};
 
@@ -50,7 +50,7 @@ export const updateMe = async (req, res, next) => {
 
 
 
-export const deleteMe = async (req, res, next) => {
+export const deleteMeCtrl = async (req, res, next) => {
   try {
     const userId = req.result.id;
     const user = await accountService.getUserById(userId); 
