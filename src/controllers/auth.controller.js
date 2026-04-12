@@ -120,6 +120,9 @@ export async function addProfileCtrl(req, res, next) {
     const { id } = req.params
     const data = req.body
 
+    if (req.file) {
+      data.profileImg = req.file.filename
+    }
     const updatedUser = await updateUserProfile(Number(id), data)
 
     res.json({
@@ -139,9 +142,9 @@ export async function addProfileCtrl(req, res, next) {
 export async function addInterestCtrl(req, res, next) {
   try {
     const { id } = req.params
-    const { category } = req.body
+    const { interests } = req.body
 
-    const updateInterest = await createUserInterest(Number(id), category)
+    const updateInterest = await createUserInterest(Number(id), interests)
     res.json({
       message: 'บันทึกสิ่งที่สนใจสำเร็จ',
       count: updateInterest

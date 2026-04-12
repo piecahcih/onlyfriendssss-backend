@@ -10,3 +10,5 @@ node_modules
 serviceAccountKey.json
 
 /prisma/nineseed.js
+
+/public/uploads
