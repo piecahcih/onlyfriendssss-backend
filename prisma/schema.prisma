@@ -98,7 +98,7 @@ model Activity {
   category        ActivityCategory
   title           String
   description     String           @db.Text
-  coverPhoto String
+  coverPhoto      String?
   maxParticipants Int?
   status          ActivityStatus   @default(OPEN)
   eventStartTime  DateTime

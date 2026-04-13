@@ -1,8 +1,41 @@
-import { changeActivityStatus, createActivities, deleteActivityById, editActivityById, getActivityById, getAllActivities } from "../services/activity.service.js";
+import { changeActivityStatus, createActivities, deleteActivityById, editActivityById, getActivitiesOnThisAccount, getActivityByCategory, getActivityById, getAllActivities } from "../services/activity.service.js";
 
 export async function getAllActivitiesCtrl (req,res,next) {
     const foundActivities = await getAllActivities()
-    res.json({ activities: foundActivities })
+    res.json({ 
+        message: "Get all activities successfully",        
+        activities: foundActivities 
+    })
+}
+
+export async function getAllActivitiesCreatedByThisAccountCtrl (req,res,next) {
+    const { id } = req.result
+
+    const foundMyActivities = await getActivitiesOnThisAccount(id)
+    res.json({ 
+        message: "Get all activities created by this profile",        
+        activities: foundMyActivities 
+    })
+}
+
+export async function getActivityByIdCtrl (req,res,next) {
+    const { activityid } = req.params
+
+    const foundActivity = await getActivityById(Number(activityid))
+    res.json({ 
+        message: "Get specific activity successfully",        
+        activities: foundActivity 
+    })
+}
+
+export async function getActivityByCategoryCtrl (req,res,next) {
+    const { category } = req.params
+
+    const foundActivityByCategory = await getActivityByCategory(category.toUpperCase())
+    res.json({ 
+        message: "Get specific activity successfully",        
+        activities: foundActivityByCategory 
+    })
 }
 
 export async function createActivitiesCtrl (req,res,next) {
@@ -11,14 +44,10 @@ export async function createActivitiesCtrl (req,res,next) {
     const Adata = { category,title,description,eventStartTime,hostId,placeId } 
     
     const createActivity = await createActivities(id,Adata)
-    res.json({ activities: createActivity })
-}
-
-export async function getActivityByIdCtrl (req,res,next) {
-    const { activityid } = req.params
-
-    const foundActivity = await getActivityById(Number(activityid))
-    res.json({ activities: foundActivity })
+    res.json({
+        message: "Activity created successfully",
+        activities: createActivity 
+    })
 }
 
 export async function editActivityByIdCtrl (req,res,next) {

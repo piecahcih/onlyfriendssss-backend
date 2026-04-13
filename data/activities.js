@@ -3,8 +3,8 @@ export const activityData = [
   {
     category: "HEALTH",
     title: "Morning Run at Benjakitti 🏃‍♂️",
-    description:
-      "มาร่วม Run Club วิ่งรับลมเช้าที่สวนเบญจกิตติด้วยกันครับ วิ่งเสร็จแล้วไปหาจิบกาแฟแถวสุขุมวิทกันต่อ สนุกแน่นอน!",
+    description:"มาร่วม Run Club วิ่งรับลมเช้าที่สวนเบญจกิตติด้วยกันครับ วิ่งเสร็จแล้วไปหาจิบกาแฟแถวสุขุมวิทกันต่อ สนุกแน่นอน!",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084369/Hbjkt_aijh80.jpg",
     eventStartTime: new Date("2026-04-17T06:30:00"),
     hostId: 1,
     placeId: 1,
@@ -12,10 +12,19 @@ export const activityData = [
   {
     category: "HEALTH",
     title: "Yoga in the Park (Lumpini) 🧘‍♀️",
-    description:
-      "ผ่อนคลายร่างกายกับโยคะยามเย็นท่ามกลางพื้นที่สีเขียวใจกลางลุมพินี Open for all levels! Let's stretch and find some inner peace together.",
+    description:"ผ่อนคลายร่างกายกับโยคะยามเย็นท่ามกลางพื้นที่สีเขียวใจกลางลุมพินี Open for all levels! Let's stretch and find some inner peace together.",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776106921/Hyglm_rnwydt.webp",
     eventStartTime: new Date("2026-04-18T17:00:00"),
     hostId: 2,
+    placeId: 2,
+  },
+  {
+    category: "HEALTH",
+    title: "Morning Run at Lumpini Park 🏃‍♂️",
+    description:"วิ่งยามเย็นหลังเลิกงาน สวนลุม พร้อมมาเติมแมวทุกช่วงวิ่ง",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084372/Hlm_rsitiz.jpg",
+    eventStartTime: new Date("2026-04-27T19:00:00"),
+    hostId: 3,
     placeId: 2,
   },
 
@@ -23,8 +32,8 @@ export const activityData = [
   {
     category: "ENTERTAINMENT",
     title: "Board Game Night @Siam 🎲",
-    description:
-      "คอเกมห้ามพลาด! เจอกันที่สยามสแควร์มาเล่น Board games สนุกๆ กัน มีทั้งแนว Strategy และแนวฮาๆ ใครมาคนเดียวไม่ต้องห่วง เดี๋ยวเราหาตี้ให้ครับ",
+    description:"คอเกมห้ามพลาด! เจอกันที่สยามสแควร์มาเล่น Board games สนุกๆ กัน มีทั้งแนว Strategy และแนวฮาๆ ใครมาคนเดียวไม่ต้องห่วง เดี๋ยวเราหาตี้ให้ครับ",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084371/Ebg_sqrrww.png",
     eventStartTime: new Date("2026-04-19T18:00:00"),
     hostId: 3,
     placeId: 3,
@@ -32,9 +41,11 @@ export const activityData = [
   {
     category: "ENTERTAINMENT",
     title: "ร้องเกะ @Thonglor",
-    description:
-      "Release your inner Rockstar ย่านทองหล่อ! ปล่อยจอยกับคาราโอเกะเพลงฮิตยุค 90s จนถึงปัจจุบัน Sing your heart out and make new friends.",
+    description:"Release your inner Rockstar ย่านทองหล่อ! ปล่อยจอยกับคาราโอเกะเพลงฮิตยุค 90s จนถึงปัจจุบัน Sing your heart out and make new friends.",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084372/Ekrk_xk9syv.webp",
     eventStartTime: new Date("2026-04-20T20:00:00"),
+    isPublic: false,
+    maxParticipants: 6,
     hostId: 4,
     placeId: 4,
   },
@@ -43,8 +54,8 @@ export const activityData = [
   {
     category: "ART",
     title: "Watercolor Workshop @Ari 🎨",
-    description:
-      "Workshops ระบายสีน้ำแถวอารีย์ ไม่ต้องมีพื้นฐานก็มาได้นะ มาลองสร้าง Masterpiece ของตัวเองในคาเฟ่บรรยากาศ Cozy สุดๆ",
+    description:"Workshops ระบายสีน้ำแถวอารีย์ ไม่ต้องมีพื้นฐานก็มาได้นะ มาลองสร้าง Masterpiece ของตัวเองในคาเฟ่บรรยากาศ Cozy สุดๆ",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084371/Awtcl_b0l2jo.png",
     eventStartTime: new Date("2026-04-21T13:00:00"),
     hostId: 5,
     placeId: 5,
@@ -52,8 +63,8 @@ export const activityData = [
   {
     category: "ART",
     title: "ตลาดน้อย Gallery Hopping",
-    description:
-      "ไปเดินชม Street Art และแกลเลอรี่แถวตลาดน้อยกัน! Explore the hidden art gems of Bangkok and get inspired. จบด้วยการหาขนมอร่อยๆ ทาน",
+    description:"ไปเดินชม Street Art และแกลเลอรี่แถวตลาดน้อยกัน! Explore the hidden art gems of Bangkok and get inspired. จบด้วยการหาขนมอร่อยๆ ทาน",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084374/Atln_bbgkgd.jpg",
     eventStartTime: new Date("2026-04-22T14:00:00"),
     hostId: 6,
     placeId: 6,
@@ -63,8 +74,8 @@ export const activityData = [
   {
     category: "FOOD",
     title: "Ban Tad Thong Foodie Tour 🍜",
-    description:
-      "ตะลุยกินของอร่อยย่านบรรทัดทอง! We’re going to the best hidden gems in town. เตรียมท้องมาให้พร้อม เพราะย่านนี้ของกินเด็ดมาก!",
+    description:"ตะลุยกินของอร่อยย่านบรรทัดทอง! We’re going to the best hidden gems in town. เตรียมท้องมาให้พร้อม เพราะย่านนี้ของกินเด็ดมาก!",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084375/Fywrt_d72fbe.jpg",
     eventStartTime: new Date("2026-04-23T18:30:00"),
     hostId: 7,
     placeId: 7,
@@ -72,19 +83,19 @@ export const activityData = [
   {
     category: "FOOD",
     title: "Yaowarat Night Market Feast",
-    description:
-      "สัมผัส Street Food ระดับตำนานที่เยาวราช Let's explore China Town's best dishes together at night. Tasty food and great vibes guaranteed!",
+    description:"สัมผัส Street Food ระดับตำนานที่เยาวราช Let's explore China Town's best dishes together at night. Tasty food and great vibes guaranteed!",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084377/Fbtt_oyxthk.jpg",
     eventStartTime: new Date("2026-04-24T19:00:00"),
     hostId: 8,
     placeId: 8,
   },
-
+  
   // --- TRAVEL ---
   {
     category: "TRAVEL",
     title: "Chao Phraya River Cruise 🚢",
-    description:
-      "นั่งเรือเที่ยวริมแม่น้ำเจ้าพระยา แวะวัดอรุณและวัดโพธิ์ A classic Bangkok experience! Let's take photos and enjoy the riverside breeze.",
+    description:"นั่งเรือเที่ยวริมแม่น้ำเจ้าพระยา แวะวัดอรุณและวัดโพธิ์ A classic Bangkok experience! Let's take photos and enjoy the riverside breeze.",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084373/Tcruise_bkovem.jpg",
     eventStartTime: new Date("2026-04-25T15:00:00"),
     hostId: 9,
     placeId: 9,
@@ -92,41 +103,85 @@ export const activityData = [
   {
     category: "TRAVEL",
     title: "Hidden Bangkok Bicycle Tour 🚲",
-    description:
-      "ปั่นจักรยานสำรวจมุมลับในกรุงเทพฯ ย่านบางกระเจ้า Explore the 'Green Lung' of Bangkok. Perfect escape from the city noise for nature lovers!",
+    description:"ปั่นจักรยานสำรวจมุมลับในกรุงเทพฯ ย่านบางกระเจ้า Explore the 'Green Lung' of Bangkok. Perfect escape from the city noise for nature lovers!",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776084341/Tbicycle_eg0gzr.jpg",
     eventStartTime: new Date("2026-04-26T08:30:00"),
     hostId: 10,
     placeId: 10,
   },
+  // --- NEW ACTIVITIES FOR HOST 1 ---
+  {
+    category: "ENTERTAINMENT",
+    title: "Stand-up Comedy Night @Ekkamai 🎤",
+    description: "มาขำให้ปอดโยกกับโชว์ Stand-up Comedy แถวเอกมัย จิบเครื่องดื่มเย็นๆ แล้วสนุกไปด้วยกัน",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085946/1Esu_rbyetk.png",
+    eventStartTime: new Date("2026-04-27T19:30:00"),
+    hostId: 1, 
+    placeId: 11,
+  },
+  {
+    category: "ART",
+    title: "MOCA Museum Hopping 🖼️",
+    description: "เดินเสพงานศิลป์ไทยร่วมสมัยที่ MOCA ถ่ายรูปสวยๆ ทุกมุม ใครชอบงานอาร์ตต้องมาเลย!",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085949/1Amoca_lkq7kj.jpg",
+    eventStartTime: new Date("2026-04-28T10:00:00"),
+    hostId: 1,
+    placeId: 12,
+  },
+  {
+    category: "FOOD",
+    title: "Talat Phlu Street Food Crawl 🍢",
+    description: "ตระเวนกินกุยช่ายและขนมหวานในตำนานย่านตลาดพลู ทริปนี้เน้นอิ่มอร่อยระดับโลคอล",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085947/1Ftllp_d4d9bs.jpg",
+    eventStartTime: new Date("2026-04-29T17:00:00"),
+    hostId: 1,
+    placeId: 13,
+  },
+  {
+    category: "TRAVEL",
+    title: "Mahanakhon Skywalk Sunset 🌇",
+    description: "ขึ้นไปชมวิวมหานครกรุงเทพฯ แบบ 360 องศา ดูพระอาทิตย์ตกดินด้วยกันบนตึกที่สูงที่สุด!",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085947/1Tss_xdsser.jpg",
+    eventStartTime: new Date("2026-04-30T17:30:00"),
+    hostId: 1,
+    placeId: 14,
+  },
+  // --- NEW ACTIVITIES FOR HOST 2 ---
+  {
+    category: "ENTERTAINMENT",
+    title: "Indy Live Music @Ratchada 🎸",
+    description: "ฟังดนตรีสดวงอินดี้แถวรัชดา บรรยากาศชิลๆ ร้องเพลงตามได้ตลอดคืน",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085950/2Ems_wfhae1.png",
+    eventStartTime: new Date("2026-05-01T20:00:00"),
+    hostId: 2,
+    placeId: 15,
+  },
+  {
+    category: "ART",
+    title: "Film Photography Walk @Hua Lamphong 📸",
+    description: "สะพายกล้องฟิล์มมาเดินถ่ายรูปสถาปัตยกรรมคลาสสิกที่สถานีรถไฟหัวลำโพง ได้รูปเท่ๆ กลับไปแน่นอน",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085953/2Ahlp_e9rcqa.png",
+    eventStartTime: new Date("2026-05-02T09:30:00"),
+    hostId: 2,
+    placeId: 16,
+  },
+  {
+    category: "FOOD",
+    title: "Jodd Fairs Night Market Eats 🦐",
+    description: "กินกุ้งเต้น เล้งแซ่บ และของกินยอดฮิตที่ตลาดจ๊อดแฟร์ พระราม 9 เดินเล่นช้อปปิ้งกันต่อได้เลย",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085952/2Fjf_pyubts.jpg",
+    eventStartTime: new Date("2026-05-03T18:30:00"),
+    hostId: 2,
+    placeId: 17,
+  },
+  {
+    category: "TRAVEL",
+    title: "Rattanakosin Tuk-Tuk Tour 🛺",
+    description: "นั่งตุ๊กตุ๊กรับลมชมเกาะรัตนโกสินทร์ยามค่ำคืน แวะถ่ายรูปที่เสาชิงช้าและถนนราชดำเนิน",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776085953/2Ttk_kdlz3k.jpg",
+    eventStartTime: new Date("2026-05-04T19:00:00"),
+    hostId: 2,
+    placeId: 18,
+  }
 ];
 
-// model Activity {
-//   id              Int              @id @default(autoincrement())
-//   category        ActivityCategory
-//   title           String
-//   description     String           @db.Text
-//   maxParticipants Int?
-//   status          ActivityStatus   @default(OPEN)
-//   eventStartTime  DateTime
-//   eventEndTime    DateTime?
-//   isPublic        Boolean          @default(true)
-//   createdAt       DateTime         @default(now())
-
-//   hostId Int
-//   host   User @relation("UserCreatedActivities", fields: [hostId], references: [id])
-
-//   placeId Int?
-//   place   Place? @relation(fields: [placeId], references: [id])
-
-//   joinRequests JoinRequest[]
-//   reviews      Review[]
-//   chatGroup    ChatGroup?
-// }
-
-// enum ActivityCategory {
-//   HEALTH
-//   ENTERTAINMENT
-//   ART
-//   FOOD
-//   TRAVEL
-// }

@@ -68,5 +68,62 @@ export const placeData = [
         latitude: 13.6845,
         longitude: 100.5615,
         address: "Phra Pradaeng District, Samut Prakan"
+    },
+// --- NEW PLACES FOR HOST 1 & 2 ---
+    {
+        id: 11,
+        placeName: "Ekkamai Comedy Club",
+        latitude: 13.7268,
+        longitude: 100.5861,
+        address: "Sukhumvit 63, Watthana, Bangkok"
+    },
+    {
+        id: 12,
+        placeName: "MOCA Bangkok",
+        latitude: 13.8526,
+        longitude: 100.5615,
+        address: "Kamphaeng Phet 6 Rd, Chatuchak, Bangkok"
+    },
+    {
+        id: 13,
+        placeName: "Talat Phlu",
+        latitude: 13.7196,
+        longitude: 100.4784,
+        address: "Thoet Thai Rd, Thon Buri, Bangkok"
+    },
+    {
+        id: 14,
+        placeName: "King Power Mahanakhon",
+        latitude: 13.7236,
+        longitude: 100.5282,
+        address: "Naradhiwas Rajanagarindra Rd, Bang Rak, Bangkok"
+    },
+    {
+        id: 15,
+        placeName: "Ratchada Live House",
+        latitude: 13.7661,
+        longitude: 100.5684,
+        address: "Ratchadaphisek Rd, Din Daeng, Bangkok"
+    },
+    {
+        id: 16,
+        placeName: "Hua Lamphong Station",
+        latitude: 13.7383,
+        longitude: 100.5173,
+        address: "Rama IV Rd, Pathum Wan, Bangkok"
+    },
+    {
+        id: 17,
+        placeName: "Jodd Fairs Rama 9",
+        latitude: 13.7567,
+        longitude: 100.5658,
+        address: "Rama IX Rd, Huai Khwang, Bangkok"
+    },
+    {
+        id: 18,
+        placeName: "Giant Swing (Sao Chingcha)",
+        latitude: 13.7516,
+        longitude: 100.5011,
+        address: "Bamrung Mueang Rd, Phra Nakhon, Bangkok"
     }
 ];
