@@ -6,6 +6,11 @@ import path from 'path'; // ใช้จัดการเกี่ยวกั�
 const storage = multer.diskStorage({
   destination: (req, file, cb) => { //destination: กำหนดให้เก็บไฟล์ไว้ที่ public/uploads
     const uploadDir = 'public/uploads';
+
+    // ตรวจสอบว่ามีโฟลเดอร์หรือยัง ถ้าไม่มีให้สร้างใหม่
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true }); //fs.mkdirSync: หากยังไม่มีโฟลเดอร์นี้ ระบบจะสร้างให้โดยอัตโนมัติ (คล้ายการสร้างกระเป๋าไว้รอรับของ)
+    }
     
     cb(null, uploadDir); // ส่งค่าโฟลเดอร์กลับไปให้ Multer
   },
