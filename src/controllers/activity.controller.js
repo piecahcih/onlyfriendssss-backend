@@ -1,25 +1,12 @@
 import { changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesJoinedByThisAccount, getActivitiesOnThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities } from "../services/activity.service.js";
 import createHttpError from 'http-errors'
 
-//function for updating activity status to FINISHED jaa
-const applyFinishedStatus = (activities) => {
-    return activities.map(activity => {
-        if (activity.eventEndTime && new Date(activity.eventEndTime) < new Date()) {
-            return { ...activity, status: 'FINISHED' }
-        }
-        return activity;
-    })
-}
-
-
-
-
 export async function getAllActivitiesCtrl (req,res,next) {
     const foundActivities = await getAllActivities()
 
     res.json({ 
         message: "Get all activities successfully",        
-        activities: applyFinishedStatus(foundActivities)
+        activities: foundActivities
     })
 }
 
@@ -37,7 +24,7 @@ export async function getAllActivitiesCreatedByThisAccountCtrl (req,res,next) {
     const foundMyActivities = await getActivitiesOnThisAccount(id)
     res.json({ 
         message: "Successfully get all activities created by this profile",        
-        activities: applyFinishedStatus(foundMyActivities) 
+        activities: foundMyActivities
     })
 }
 
@@ -47,7 +34,7 @@ export async function getAllActivitiesJoinedByThisAccountCtrl (req,res,next) {
     const foundMyActivities = await getActivitiesJoinedByThisAccount(id)
     res.json({ 
         message: "Successfully get all activities joined by this profile",        
-        activities: applyFinishedStatus(foundMyActivities) 
+        activities: foundMyActivities
     })
 }
 
