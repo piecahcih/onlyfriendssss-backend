@@ -50,7 +50,7 @@ Authorization: Bearer {{token}}
 
 
 ### status act
-PATCH {{baseURL}}/api/activity/5
+PATCH {{baseURL}}/api/activity/status/5
 Content-Type: application/json
 
 {

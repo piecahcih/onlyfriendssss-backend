@@ -1,16 +1,18 @@
 import express from 'express'
-import { changeActivityStatusCtrl, createActivitiesCtrl, deleteActivityByIdCtrl, editActivityByIdCtrl, getActivityByCategoryCtrl, getActivityByIdCtrl, getAllActivitiesCreatedByThisAccountCtrl, getAllActivitiesCtrl } from '../controllers/activity.controller.js'
+import { changeActivityStatusCtrl, createActivityCtrl, deleteActivityByIdCtrl, editActivityByIdCtrl, getActivityByCategoryCtrl, getActivityByIdCtrl, getAllActivitiesCreatedByThisAccountCtrl, getAllActivitiesCtrl, getAllActivitiesJoinedByThisAccountCtrl, getAllCurrentActivitiesCtrl } from '../controllers/activity.controller.js'
 import { authCheckUser } from '../middlewares/authenticate.js'
 
 const activityRoute = express.Router()
 
-activityRoute.get('/',getAllActivitiesCtrl)
+activityRoute.get('/',getAllCurrentActivitiesCtrl)
+activityRoute.get('/all',getAllActivitiesCtrl)
 activityRoute.get('/my-activities',authCheckUser ,getAllActivitiesCreatedByThisAccountCtrl)
-activityRoute.get('/:activityid',getActivityByIdCtrl)
+activityRoute.get('/my-joined-activities',authCheckUser ,getAllActivitiesJoinedByThisAccountCtrl)
+activityRoute.patch('/status/:activityid',authCheckUser ,changeActivityStatusCtrl)
 activityRoute.get('/category/:category',getActivityByCategoryCtrl)
-activityRoute.post('/',authCheckUser ,createActivitiesCtrl)
-activityRoute.put('/:activityid',authCheckUser ,editActivityByIdCtrl)
-activityRoute.patch('/:activityid',changeActivityStatusCtrl)
+activityRoute.get('/:activityid',getActivityByIdCtrl)
+activityRoute.post('/',authCheckUser ,createActivityCtrl)
+activityRoute.patch('/:activityid',authCheckUser ,editActivityByIdCtrl)
 activityRoute.delete('/:activityid',authCheckUser ,deleteActivityByIdCtrl)
 
 
