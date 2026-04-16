@@ -17,30 +17,27 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // สร้างชื่อไฟล์แบบไม่ซ้ำ: Timestamp + เลขสุ่ม + นามสกุลเดิม
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9); //uniqueSuffix: ป้องกันปัญหา "ชื่อไฟล์ซ้ำ" (เช่น ผู้ใช้สองคนอัปโหลดรูปชื่อ cat.jpg พร้อมกัน) โดยการเอาเวลาปัจจุบัน (Timestamp) มาต่อด้วยเลขสุ่ม
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); //uniqueSuffix: ป้องกันปัญหา "ชื่อไฟล์ซ้ำ" (เช่น ผู้ใช้สองคนอัปโหลดรูปชื่อ cat.jpg พร้อมกัน) โดยการเอาเวลาปัจจุบัน (Timestamp) มาต่อด้วยเลขสุ่ม
     cb(null, uniqueSuffix + path.extname(file.originalname)); //path.extname: ดึงนามสกุลไฟล์เดิมมาใช้ เพื่อให้ไฟล์ที่เซฟลงเครื่องยังคงเป็นรูปภาพที่เปิดดูได้
-  }
+  },
 });
-
-
 
 // 2. ตัวกรองไฟล์ (File Filter) - รับเฉพาะรูปภาพเท่านั้น
 const fileFilter = (req, file, cb) => {
   //รับเฉพาะไฟล์ที่มีประเภทขึ้นต้นด้วย 'image/'
-  if (file.mimetype.startsWith('image/')) { //mimetype.startsWith('image/'): ป้องกันไม่ให้ผู้ใช้แอบอัปโหลดไฟล์อันตราย (เช่น .exe หรือ .js) เข้ามาใน Server โดยจะรับเฉพาะไฟล์รูปภาพเท่านั้น
+  if (file.mimetype.startsWith("image/")) {
+    //mimetype.startsWith('image/'): ป้องกันไม่ให้ผู้ใช้แอบอัปโหลดไฟล์อันตราย (เช่น .exe หรือ .js) เข้ามาใน Server โดยจะรับเฉพาะไฟล์รูปภาพเท่านั้น
     cb(null, true); // อนุญาตให้ผ่าน
   } else {
-    cb(new Error('Only images are allowed!'), false);// ปฏิเสธและส่ง Error
+    cb(new Error("Only images are allowed!"), false); // ปฏิเสธและส่ง Error
   }
 };
 
-
-
 // 3. สร้าง Middleware
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 } // จำกัดขนาดไฟล์ไม่เกิน 5MB limits: กำหนดขนาดไฟล์สูงสุดที่รับได้ ในที่นี้คือ 5MB เพื่อประหยัดพื้นที่ Server และป้องกันการโดนยิงไฟล์ขนาดใหญ่ใส่ระบบ
+  limits: { fileSize: 5 * 1024 * 1024 }, // จำกัดขนาดไฟล์ไม่เกิน 5MB limits: กำหนดขนาดไฟล์สูงสุดที่รับได้ ในที่นี้คือ 5MB เพื่อประหยัดพื้นที่ Server และป้องกันการโดนยิงไฟล์ขนาดใหญ่ใส่ระบบ
 }); //5 * 1024 * 1024: คือการคำนวณจาก Byte เป็น Megabyte ($5 \times 1024 \times 1024$ bytes)
 
 export default upload;
