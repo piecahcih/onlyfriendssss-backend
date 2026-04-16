@@ -59,7 +59,7 @@ enum ActivityInterest {
   entertainment
   sport
   volunteer
-  workation
+  workstation
 }
 
 model User {

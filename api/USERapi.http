@@ -1,5 +1,7 @@
 @baseURL = http://localhost:3999
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc1OTQwNDE3LCJleHAiOjE3Nzg1MzI0MTd9.R8WplMS7bWFd7DzVNN1f1DsrgxZ8akDK3KplKbHSLww
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc2MDgwODAyLCJleHAiOjE3Nzg2NzI4MDJ9.IsAXM53COB-wkIPfDZkfxuswwlG-3m954sbXczj_dg4
+
+
 ### Login
 POST {{baseURL}}/api/auth/login
 Content-Type: application/json
@@ -11,8 +13,16 @@ Content-Type: application/json
 
 
 
+##################ACTIVITY
 ### GET act
 GET {{baseURL}}/api/activity
+
+### GET act on this acc
+GET {{baseURL}}/api/activity/my-activities
+Authorization: Bearer {{token}}
+
+### GET act by cat
+GET {{baseURL}}/api/activity/category/art
 
 ### POST Activity
 POST {{baseURL}}/api/activity
@@ -40,7 +50,7 @@ Authorization: Bearer {{token}}
 
 
 ### status act
-PATCH {{baseURL}}/api/activity/5
+PATCH {{baseURL}}/api/activity/status/5
 Content-Type: application/json
 
 {
@@ -50,6 +60,7 @@ Content-Type: application/json
 
 
 
-
-### GET act
+##################PROFILE
+### GET profile
 GET {{baseURL}}/api/account/profile
+Authorization: Bearer {{token}}

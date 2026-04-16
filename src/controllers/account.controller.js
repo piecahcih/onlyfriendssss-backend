@@ -1,6 +1,7 @@
 import * as accountService from '../services/account.service.js'
 import fs from 'fs/promises'; 
 import path from 'path';
+import createError from 'http-errors';
 
 export const getMeCtrl = async (req, res, next) => {
   try {
@@ -33,6 +34,9 @@ export const updateMeCtrl = async (req, res, next) => {
     if (Object.keys(updateData).length === 0) {
       return next(createError(400, "No data provided for update"));
     }
+      if (!req.result?.id) {
+            return next(createError(401, "ไม่พบข้อมูลผู้ใช้ กรุณาเข้าสู่ระบบใหม่"));
+       }
 
     const updatedUser = await accountService.updateUserProfile(req.result.id, updateData);
     
