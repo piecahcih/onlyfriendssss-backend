@@ -1,4 +1,4 @@
-import { changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesJoinedByThisAccount, getActivitiesOnThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities } from "../services/activity.service.js";
+import { changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount } from "../services/activity.service.js";
 import createHttpError from 'http-errors'
 
 export async function getAllActivitiesCtrl (req,res,next) {
@@ -18,23 +18,33 @@ export async function getAllCurrentActivitiesCtrl (req,res,next) {
     })
 }
 
+export async function getAllFinishedActivitiesOnThisAccountCtrl (req,res,next) {
+    const { id } = req.result
+
+    const foundMyPastActivities = await getFinishedActivitiesOnThisAccount(id)
+    res.json({ 
+        message: "Successfully get all finished activities on this profile",        
+        activities: foundMyPastActivities
+    })
+}
+
 export async function getAllActivitiesCreatedByThisAccountCtrl (req,res,next) {
     const { id } = req.result
 
-    const foundMyActivities = await getActivitiesOnThisAccount(id)
+    const foundMyCreatedActivities = await getActivitiesCreatedByThisAccount(id)
     res.json({ 
         message: "Successfully get all activities created by this profile",        
-        activities: foundMyActivities
+        activities: foundMyCreatedActivities
     })
 }
 
 export async function getAllActivitiesJoinedByThisAccountCtrl (req,res,next) {
     const { id } = req.result
 
-    const foundMyActivities = await getActivitiesJoinedByThisAccount(id)
+    const foundMyJoinedActivities = await getActivitiesJoinedByThisAccount(id)
     res.json({ 
         message: "Successfully get all activities joined by this profile",        
-        activities: foundMyActivities
+        activities: foundMyJoinedActivities
     })
 }
 

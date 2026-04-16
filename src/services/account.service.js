@@ -19,6 +19,7 @@ export const getUserById = async (userId) => {
         lastName: true,
         profileImg: true,
         bio: true,
+        gender: true,
         isVerified: true,
         trustScore: true,
         createdAt: true,
