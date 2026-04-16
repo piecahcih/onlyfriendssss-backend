@@ -3,6 +3,7 @@ import { joinRequestData } from '../data/joinRequest.js';
 import { placeData } from '../data/places.js';
 import { userData } from '../data/user.js';
 import { prisma } from '../src/lib/prisma.js'
+import { oldActivityData } from '../data/oldActivities.js'
 
 async function main() {
     console.log('Clear Data...')
@@ -27,8 +28,11 @@ async function main() {
         data: placeData,
         skipDuplicates: true
     })
+
+    const allActivities = [...oldActivityData, ...activityData]
+
     const createdActivities = await prisma.activity.createMany({
-        data: activityData,
+        data: allActivities,
         skipDuplicates: true
     })
     const createdJoinRequest = await prisma.joinRequest.createMany({
