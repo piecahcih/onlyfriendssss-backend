@@ -25,7 +25,30 @@ export async function getAllCurrentActivities () {
     })
 }
 
-export async function getActivitiesOnThisAccount (userid) {
+export async function getFinishedActivitiesOnThisAccount (userid) {
+    return await prisma.activity.findMany({
+        orderBy : { id : 'desc' },
+        where: { status: 'FINISHED',
+            OR: [
+                { hostId : userid },
+                {            
+                  joinRequests: {
+                    some: {
+                        userId: userid,
+                        status: 'APPROVED'
+                    }                
+                }}
+            ]
+         },
+        include :{
+            place: true,
+            host: true,
+            joinRequests: true
+        }
+    })
+}
+
+export async function getActivitiesCreatedByThisAccount (userid) {
     return await prisma.activity.findMany({
         orderBy : { id : 'desc' },
         where: { hostId : userid },
