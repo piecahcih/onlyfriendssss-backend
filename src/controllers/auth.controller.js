@@ -52,6 +52,7 @@ export async function registerCtrl(req, res, next) {
     const userInfo = {
       id: createdUser.id,
       email: data.email,
+      username: createdUser.username
     }
     if (createdUser.role !== 'USER') {
       userInfo.role = createdUser.role
@@ -88,20 +89,21 @@ export async function loginCtrl(req, res, next) {
     const userInfo = {
       id: foundUser.id,
       email: foundUser.email,
+      username: foundUser.username,
       role: foundUser.role,
       firstName: foundUser.firstName,
       lastName: foundUser.lastName
     }
 
-  if (foundUser.profileImg !== null) {
-    userInfo.profileImg = foundUser.profileImg
-  }
-  if (foundUser.name !== null) {
-    userInfo.name = foundUser.name
-  }
-  // if (foundUser.role !== 'USER') {
-  //   userInfo.role = foundUser.role
-  // }
+    if (foundUser.profileImg !== null) {
+      userInfo.profileImg = foundUser.profileImg
+    }
+    if (foundUser.name !== null) {
+      userInfo.name = foundUser.name
+    }
+    // if (foundUser.role !== 'USER') {
+    //   userInfo.role = foundUser.role
+    // }
 
     res.json({
       message: 'Login Success',
