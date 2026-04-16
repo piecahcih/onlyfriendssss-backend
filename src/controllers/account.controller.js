@@ -22,20 +22,20 @@ export const updateMeCtrl = async (req, res, next) => {
 
     const { username, bio, firstName, lastName, gender } = req.body || {};
 
-    if (username?.trim()) updateData.username = username.trim();
-    if (firstName?.trim()) updateData.firstName = firstName.trim();
-    if (lastName?.trim()) updateData.lastName = lastName.trim();
-    if (typeof bio !== 'undefined') {
-      updateData.bio = bio.trim();
-    }
-    if (gender) {
-      updateData.gender = gender;
-    }
-    if (Object.keys(updateData).length === 0) {
-      return next(createError(400, "No data provided for update"));
-    }
-      if (!req.result?.id) {
-            return next(createError(401, "ไม่พบข้อมูลผู้ใช้ กรุณาเข้าสู่ระบบใหม่"));
+     if (typeof username === 'string' && username.trim()) updateData.username = username.trim();
+     if (typeof firstName === 'string' && firstName.trim()) updateData.firstName = firstName.trim();
+       if (typeof lastName === 'string' && lastName.trim()) updateData.lastName = lastName.trim();
+  
+       // สำหรับ bio และ gender
+       if (typeof bio === 'string') updateData.bio = bio.trim();
+       if (typeof gender === 'string') updateData.gender = gender;
+  
+       if (Object.keys(updateData).length === 0) {
+         return next(createError(400, "กรุณาส่งข้อมูลที่ต้องการแก้ไข"));
+       }
+  
+       if (!req.result?.id) {
+         return next(createError(401, "กรุณาเข้าสู่ระบบใหม่"));
        }
 
     const updatedUser = await accountService.updateUserProfile(req.result.id, updateData);
@@ -45,6 +45,7 @@ export const updateMeCtrl = async (req, res, next) => {
       user: updatedUser 
     });
   } catch (error) {
+    console.error("PATCH Profile Error:", error);
     if (error.code === 'P2002') {
       return next(createError(409, "Username already exists"));
     }
