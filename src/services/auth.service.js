@@ -1,20 +1,23 @@
 import { prisma } from "../lib/prisma.js";
 
 // login Google
-export async function syncUserToDb(uid, email, firstName, lastName) {
+export async function syncUserToDb(uid, email, firstName, lastName, picture) {
   return await prisma.user.upsert({
     where: { firebase_uid: uid },
     update: {
       email: email,
+      username: email.split('@')[0],
       firstName: firstName,
-      lastName: lastName
+      lastName: lastName,
+      profileImg: picture
     },
     create: {
       firebase_uid: uid,
       email: email,
-
+      username: email.split('@')[0],
       firstName: firstName,
       lastName: lastName,
+      profileImg: picture,
       password: '',
       gender: 'OTHER',
       role: 'USER'
