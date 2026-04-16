@@ -78,6 +78,7 @@ export async function getPendingRequests(userId) {
 
 export async function acceptFriendRequest(userId, friendshipId) {
   const fId = Number(friendshipId);
+  const uId = Number(userId);
 
   const request = await prisma.friendShip.findUnique({
     where: { id: fId },
@@ -89,7 +90,7 @@ export async function acceptFriendRequest(userId, friendshipId) {
     throw error;
   }
   // กันมากดรับเอง
-  if (request.receiverId !== userId) {
+  if (request.receiverId !== uId) {
     const error = new Error("คุณไม่มีสิทธิ์ตอบรับคำขอนี้");
     error.statusCode = 403;
     throw error;
@@ -104,6 +105,7 @@ export async function acceptFriendRequest(userId, friendshipId) {
 //ลบเพื่อน
 export async function unfriend(userId, friendshipId) {
   const fId = Number(friendshipId);
+  const uId = Number(userId);
 
   const friendship = await prisma.friendShip.findUnique({
     where: { id: fId },
@@ -114,7 +116,7 @@ export async function unfriend(userId, friendshipId) {
     throw error;
   }
 
-  if (friendship.senderId !== userId && friendship.receiverId !== userId) {
+  if (friendship.senderId !== uId && friendship.receiverId !== uId) {
     const error = new Error("คุณไม่มีสิทธิ์ลบความสัมพันะ์เพื่อนคนนี้");
     error.statusCode = 403;
     throw error;
