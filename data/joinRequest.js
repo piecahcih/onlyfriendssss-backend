@@ -1,4 +1,17 @@
 export const joinRequestData = [
+
+  // --- JOIN REQUESTS FOR OLD ACTIVITIES (ID 1-20) ---
+  // สมมติว่าให้ user คนอื่นๆ มาจอยกันอย่างน้อยกิจกรรมละ 1-2 คน
+  ...Array.from({ length: 20 }, (_, i) => ({
+    userId: (i % 10) + 1, // สลับ user 1-10
+    activityId: i + 1,     // ID 1-20
+    status: "APPROVED",
+  })),
+
+  // --- JOIN REQUESTS FOR CURRENT ACTIVITIES (จากข้อมูลเดิมของคุณ) ---
+  // ตัวอย่างข้อมูลเดิม
+  { userId: 1, activityId: 21, status: "PENDING" },
+
   // --- HEALTH ---
   // กิจกรรม 1 (Morning Run): 2 คนจอยแล้ว, 2 คนรอ
   { userId: 2, activityId: 1, status: "APPROVED" },
