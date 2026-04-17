@@ -78,7 +78,7 @@ export async function getActivityByCategoryCtrl (req,res,next) {
 
 export async function createActivityCtrl (req,res,next) {
     const { id } = req.result
-    const { isPublic,coverPhoto,category,title,description,eventStartTime,eventEndTime,placeId } = req.body
+    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeId } = req.body
     const eventStTime = new Date(eventStartTime)
 
     if(eventStTime < new Date()){
@@ -97,16 +97,22 @@ export async function createActivityCtrl (req,res,next) {
         }
     }
     
-    const Adata = { isPublic,coverPhoto,category,title,description,placeId,
+    const localFilePath = req.file ? req.file.path : null;
+    
+    const Adata = { isPublic,category,title,description,placeId,
         hostId: id ,
         eventStartTime: new Date(eventStartTime),
     } 
+
+    if (localFilePath) {
+      Adata.coverPhoto = `/uploads/${localFilePath}`;
+    }
 
     if(eventEndTime){
         Adata.eventEndTime = new Date(eventEndTime)
     }
     
-    const createdActivity = await createActivity(Adata)
+    const createdActivity = await createActivity(Adata,localFilePath)
     res.json({
         message: "Activity created successfully",
         activities: createdActivity 
@@ -116,7 +122,7 @@ export async function createActivityCtrl (req,res,next) {
 export async function editActivityByIdCtrl (req,res,next) {
     const { id } = req.result
     const { activityid } = req.params
-    const { isPublic,coverPhoto,category,title,description,eventStartTime,eventEndTime,placeId } = req.body
+    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeId } = req.body
     const eventStTime = new Date(eventStartTime)
 
     if(eventStTime < new Date()){
@@ -134,14 +140,16 @@ export async function editActivityByIdCtrl (req,res,next) {
             return next(createHttpError[400]('Event start time must be before event end time.'))
         }
     }
+
+    const localFilePath = req.file ? req.file.path : null;
     
     const Editdata = { hostId: id } 
 
     if(isPublic !== undefined ){
         Editdata.isPublic = isPublic
     }
-    if(coverPhoto){
-        Editdata.coverPhoto = coverPhoto
+    if (localFilePath) {
+      Editdata.coverPhoto = `/uploads/${localFilePath}`;
     }
     if(placeId){
         Editdata.placeId = placeId
@@ -162,7 +170,7 @@ export async function editActivityByIdCtrl (req,res,next) {
         Editdata.eventEndTime = new Date(eventEndTime)
     }
     
-    const editActivity = await editActivityById(id, Number(activityid), Editdata)
+    const editActivity = await editActivityById(id, Number(activityid), Editdata, localFilePath)
     res.json({ 
         message: "Activity has been edited",
         activities: editActivity

@@ -117,17 +117,96 @@ export async function getActivityByCategory (category) {
     })
 }
 
-export async function createActivity (Adata) {
+export async function createActivity (Adata,localFilePath) {
+    if (localFilePath) {
+      const absolutePath = path.isAbsolute(localFilePath)
+        ? localFilePath
+        : path.join(process.cwd(), localFilePath)
+
+      try {
+        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
+          folder: "activity_coverPhoto",
+        })
+
+        Adata.coverPhoto = uploadResult.secure_url
+
+        await fs.unlink(absolutePath);
+        console.log(`✅ Deleted temporary file: ${absolutePath}`)
+      } catch (uploadErr) {
+        console.error("Cloudinary Upload Error:", uploadErr)
+
+        await fs.unlink(absolutePath).catch(() => { })
+        throw new Error("ไม่สามารถอัปโหลดรูปภาพได้")
+      }
+    }
+
     return await prisma.activity.create({
         data: Adata
     })
 }
 
-export async function editActivityById (userid,activityId,Editdata) {
-    return await prisma.activity.update({
+export async function editActivityById (userid,activityId,Editdata,localFilePath) {
+    let oldCoverPhoto = null;
+
+    const existingActivity = await prisma.activity.findUnique({
+        where : { hostId: userid, id : activityId },
+    })
+    oldCoverPhoto = existingActivity?.coverPhoto
+
+    if (localFilePath) {
+      const absolutePath = path.isAbsolute(localFilePath)
+        ? localFilePath
+        : path.join(
+            process.cwd(),
+            "src",
+            "uploads",
+            path.basename(localFilePath),
+          );
+
+      try {
+        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
+          folder: "activity_coverPhoto",
+        });
+
+        Editdata.coverPhoto = uploadResult.secure_url;
+
+        await fs.unlink(absolutePath);
+        console.log(`✅ Temporary file deleted: ${absolutePath}`);
+      } catch (uploadErr) {
+        console.error("Cloudinary Upload Error:", uploadErr);
+
+        await fs.unlink(absolutePath).catch(() => {});
+        throw new Error("Failed to upload image to Cloudinary");
+      }
+    }
+
+    await prisma.activity.update({
         where : { hostId: userid, id : activityId },
         data: Editdata
     })
+
+    if (
+      oldCoverPhoto &&
+      Editdata.coverPhoto &&
+      oldCoverPhoto !== Editdata.coverPhoto
+    ) {
+      if (!oldCoverPhoto.startsWith("http")) {
+        const cleanPath = oldCoverPhoto.startsWith("/")
+          ? oldCoverPhoto.substring(1)
+          : oldCoverPhoto;
+
+        const oldFilePath = path.join(process.cwd(), "src", cleanPath);
+
+        try {
+          await fs.unlink(oldFilePath);
+          console.log(`🗑️ Deleted old local file: ${oldFilePath}`);
+        } catch (fsErr) {
+          console.warn("⚠️ No old files found to delete:", fsErr.message);
+        }
+      }
+    }    
+
+    return Editdata
 }
 
 export async function changeActivityStatus (activityId,status) {
