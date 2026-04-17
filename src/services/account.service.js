@@ -19,6 +19,7 @@ export const getUserById = async (userId) => {
         lastName: true,
         profileImg: true,
         bio: true,
+        gender: true,
         isVerified: true,
         trustScore: true,
         createdAt: true,
@@ -83,18 +84,28 @@ export const updateUserProfile = async (userId, updateData, localFilePath) => {
     oldProfileImg = existingUser?.profileImg;
 
     if (localFilePath) {
+      const absolutePath = path.isAbsolute(localFilePath)
+        ? localFilePath
+        : path.join(
+            process.cwd(),
+            "src",
+            "uploads",
+            path.basename(localFilePath),
+          );
+
       try {
-        const uploadResult = await cloudinary.uploader.upload(localFilePath, {
+        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
           folder: "profile_images",
         });
 
         updateData.profileImg = uploadResult.secure_url;
 
-        await fs.unlink(localFilePath);
+        await fs.unlink(absolutePath);
+        console.log(`✅ Temporary file deleted: ${absolutePath}`);
       } catch (uploadErr) {
         console.error("Cloudinary Upload Error:", uploadErr);
 
-        if (localFilePath) await fs.unlink(localFilePath).catch(() => {});
+        await fs.unlink(absolutePath).catch(() => {});
         throw new Error("Failed to upload image to Cloudinary");
       }
     }
@@ -132,7 +143,7 @@ export const updateUserProfile = async (userId, updateData, localFilePath) => {
           await fs.unlink(oldFilePath);
           console.log(`🗑️ Deleted old local file: ${oldFilePath}`);
         } catch (fsErr) {
-          console.warn("No old files found to delete", fsErr.message);
+          console.warn("⚠️ No old files found to delete:", fsErr.message);
         }
       }
     }

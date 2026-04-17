@@ -1,9 +1,10 @@
-import { activityData } from "../data/activities.js";
-import { friendshipData } from "../data/friendship.js";
-import { joinRequestData } from "../data/joinRequest.js";
-import { placeData } from "../data/places.js";
-import { userData } from "../data/user.js";
-import { prisma } from "../src/lib/prisma.js";
+import { activityData } from '../data/activities.js';
+import { joinRequestData } from '../data/joinRequest.js';
+import { placeData } from '../data/places.js';
+import { userData } from '../data/user.js';
+import { prisma } from '../src/lib/prisma.js'
+import { oldActivityData } from '../data/oldActivities.js'
+import { friendshipData } from '../data/friendship.js';
 
 async function main() {
   console.log("Clear Data...");
@@ -20,23 +21,26 @@ async function main() {
     await tx.$executeRawUnsafe("SET FOREIGN_KEY_CHECKS = 1;");
   });
 
-  console.log(`Start seeding...`);
-  const createdUsers = await prisma.user.createMany({
-    data: userData,
-    skipDuplicates: true,
-  });
-  const createdPlaces = await prisma.place.createMany({
-    data: placeData,
-    skipDuplicates: true,
-  });
-  const createdActivities = await prisma.activity.createMany({
-    data: activityData,
-    skipDuplicates: true,
-  });
-  const createdJoinRequest = await prisma.joinRequest.createMany({
-    data: joinRequestData,
-    skipDuplicates: true,
-  });
+    console.log(`Start seeding...`)
+    const createdUsers = await prisma.user.createMany({
+        data: userData,
+        skipDuplicates: true
+    })
+    const createdPlaces = await prisma.place.createMany({
+        data: placeData,
+        skipDuplicates: true
+    })
+
+    const allActivities = [...oldActivityData, ...activityData]
+
+    const createdActivities = await prisma.activity.createMany({
+        data: allActivities,
+        skipDuplicates: true
+    })
+    const createdJoinRequest = await prisma.joinRequest.createMany({
+        data: joinRequestData,
+        skipDuplicates: true
+    })
 
   const ceratedFriendships = await prisma.friendShip.createMany({
     data: friendshipData,

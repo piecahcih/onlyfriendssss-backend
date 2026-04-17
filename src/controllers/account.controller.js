@@ -60,7 +60,6 @@ export const updateMeCtrl = async (req, res, next) => {
     });
   } catch (error) {
     console.error("PATCH Profile Error:", error);
-
     if (error.code === "P2002") {
       return next(createError(409, "Username already exists"));
     }
