@@ -72,6 +72,7 @@ export const getUserById = async (userId) => {
   }
 };
 
+//Update Profile
 export const updateUserProfile = async (userId, updateData, localFilePath) => {
   try {
     const id = parseInt(userId);
