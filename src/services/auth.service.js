@@ -5,16 +5,23 @@ import cloudinary from "../../config/cloudinary.js"
 
 // login Google
 export async function syncUserToDb(uid, email, firstName, lastName, picture) {
-  return await prisma.user.upsert({
-    where: { firebase_uid: uid },
-    update: {
-      email: email,
-      username: email.split('@')[0],
-      firstName: firstName,
-      lastName: lastName,
-      profileImg: picture
-    },
-    create: {
+  const existingUser = await prisma.user.findUnique({
+    where: { firebase_uid: uid }
+  })
+
+  if (existingUser) { // เช็ค user เก่า
+    return await prisma.user.update({
+      where: { firebase_uid: uid },
+      data: {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+      }
+    })
+  }
+
+  return await prisma.user.create({ // ถ้าเป็น user ใหม่
+    data: {
       firebase_uid: uid,
       email: email,
       username: email.split('@')[0],
@@ -59,7 +66,7 @@ export const updateUserProfile = async (userId, updateData, localFilePath) => {
         console.log(`✅ Deleted temporary file: ${absolutePath}`)
       } catch (uploadErr) {
         console.error("Cloudinary Upload Error:", uploadErr)
-        
+
         await fs.unlink(absolutePath).catch(() => { })
         throw new Error("ไม่สามารถอัปโหลดรูปภาพได้")
       }
