@@ -1,4 +1,7 @@
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../lib/prisma.js"
+import path from "path"
+import fs from "fs/promises"
+import cloudinary from "../../config/cloudinary.js"
 
 // login Google
 export async function syncUserToDb(uid, email, firstName, lastName, picture) {
@@ -31,25 +34,46 @@ export function getUserBy(field, value) {
   })
 }
 
-
 export function createUser(data) {
   return prisma.user.create({ data })
 }
 
-
 // register add profile
-export function updateUserProfile(userId, data) {
-  return prisma.user.update({
-    where: { id: userId },
-    data: {
-      username: data.username,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      gender: data.gender,
-      bio: data.bio,
-      profileImg: data.profileImg
+export const updateUserProfile = async (userId, updateData, localFilePath) => {
+  try {
+    const id = parseInt(userId)
+
+    if (localFilePath) {
+      const absolutePath = path.isAbsolute(localFilePath)
+        ? localFilePath
+        : path.join(process.cwd(), localFilePath)
+
+      try {
+        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
+          folder: "profile_images",
+        })
+
+        updateData.profileImg = uploadResult.secure_url
+
+        await fs.unlink(absolutePath);
+        console.log(`✅ Deleted temporary file: ${absolutePath}`)
+      } catch (uploadErr) {
+        console.error("Cloudinary Upload Error:", uploadErr)
+        
+        await fs.unlink(absolutePath).catch(() => { })
+        throw new Error("ไม่สามารถอัปโหลดรูปภาพได้")
+      }
     }
-  })
+
+    const updatedUser = await prisma.user.update({
+      where: { id: id },
+      data: updateData,
+    })
+
+    return updatedUser;
+  } catch (error) {
+    throw error
+  }
 }
 
 
