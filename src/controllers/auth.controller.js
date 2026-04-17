@@ -119,22 +119,32 @@ export async function loginCtrl(req, res, next) {
 // register add profile
 export async function addProfileCtrl(req, res, next) {
   try {
-    const { id } = req.params
-    const data = req.body
+    const { id } = req.params;
+    const updateData = req.body || {}
+    const localFilePath = req.file ? req.file.path : null
 
-    if (req.file) {
-      data.profileImg = req.file.filename
+    if (!localFilePath && Object.keys(updateData).length === 0) {
+      return res.status(400).json({
+        message: "กรุณาระบุข้อมูลหรือรูปภาพที่ต้องการอัปเดต"
+      })
     }
-    const updatedUser = await updateUserProfile(Number(id), data)
 
-    res.json({
-      message: 'อัปเดตโปรไฟล์สำเร็จ',
+    const updatedUser = await updateUserProfile(
+      id,
+      updateData,
+      localFilePath
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'อัปเดตโปรไฟล์และรูปภาพสำเร็จ',
       data: updatedUser
-    })
+    });
+
   } catch (error) {
-    console.error(error)
+    console.error("addProfileCtrl Error:", error);
     if (error.code === 'P2002') {
-      return res.status(400).json({ message: 'Username นี้ถูกใช้ไปแล้ว' })
+      return res.status(400).json({ message: 'Username นี้ถูกใช้ไปแล้ว' });
     }
     next(error)
   }
