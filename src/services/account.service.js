@@ -1,8 +1,10 @@
 import { prisma } from "../lib/prisma.js";
+import fs from "fs/promises";
+import path from "path";
+import cloudinary from "../../config/cloudinary.js";
 
 export const getUserById = async (userId) => {
   try {
-    // ตรวจสอบและแปลงรูปแบบ ID (ID ใน Schema เป็น Int)
     const id = parseInt(userId);
     if (isNaN(id)) {
       throw new Error("Invalid User ID format");
@@ -10,7 +12,6 @@ export const getUserById = async (userId) => {
     const user = await prisma.user.findUnique({
       where: { id: id },
       select: {
-        //  ข้อมูลพื้นฐานของผู้ใช้ 
         id: true,
         username: true,
         email: true,
@@ -23,95 +24,144 @@ export const getUserById = async (userId) => {
         trustScore: true,
         createdAt: true,
 
-        // ข้อมูลรีวิวที่ได้รับ 
         reviewsReceived: {
           select: {
             rating: true,
             comment: true,
-            createdAt: true, // เพิ่มวันที่รีวิวเผื่อใช้เรียงลำดับ
-            reviewer: {      // ดึงชื่อคนที่มารีวิว 
-               select: {
-                 firstName: true,
-                 profileImg: true
-               }
-            }
+            createdAt: true,
+            reviewer: {
+              select: {
+                firstName: true,
+                profileImg: true,
+              },
+            },
           },
           orderBy: {
-            createdAt: 'desc' // รีวิวล่าสุดอยู่บน
+            createdAt: "desc",
           },
-          take: 10 // ดึงมาแค่ 10 รายการล่าสุด
+          take: 10,
         },
 
         _count: {
-          select: { 
-            createdActivities: true,  // จำนวนกิจกรรมที่สร้าง
-            visitedPlaces: true,      // จำนวนสถานที่ที่เคยไป
-            receivedFriendRequests: true // จำนวนเพื่อน 
-          }
-        }
+          select: {
+            createdActivities: true, // จำนวนกิจกรรมที่สร้าง
+            visitedPlaces: true, // จำนวนสถานที่ที่เคยไป
+            receivedFriendRequests: true, // จำนวนเพื่อน
+          },
+        },
       },
     });
 
     if (!user) {
-      return { 
-        success: false, 
-        message: "ไม่พบข้อมูลผู้ใช้ในระบบ" 
+      return {
+        success: false,
+        message: "No user data found in the system.",
       };
     }
 
-    return { 
-      success: true, 
-      data: user 
+    return {
+      success: true,
+      data: user,
     };
-
   } catch (error) {
     console.error("Error in getUserById implementation:", error);
-    return { 
-      success: false, 
-      message: "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์" 
+    return {
+      success: false,
+      message: "Internal Server Error.",
     };
   }
 };
 
-
-
-
-export const updateUserProfile = async (userId, updateData) => {
+export const updateUserProfile = async (userId, updateData, localFilePath) => {
   try {
     const id = parseInt(userId);
-    
-    return await prisma.user.update({
+    let oldProfileImg = null;
+
+    const existingUser = await prisma.user.findUnique({
       where: { id: id },
-      data: updateData, 
-      select: { 
-        id: true, 
-        username: true, 
-        email: true, 
-        profileImg: true, 
+      select: { profileImg: true },
+    });
+    oldProfileImg = existingUser?.profileImg;
+
+    if (localFilePath) {
+      const absolutePath = path.isAbsolute(localFilePath)
+        ? localFilePath
+        : path.join(
+            process.cwd(),
+            "src",
+            "uploads",
+            path.basename(localFilePath),
+          );
+
+      try {
+        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
+          folder: "profile_images",
+        });
+
+        updateData.profileImg = uploadResult.secure_url;
+
+        await fs.unlink(absolutePath);
+        console.log(`✅ Temporary file deleted: ${absolutePath}`);
+      } catch (uploadErr) {
+        console.error("Cloudinary Upload Error:", uploadErr);
+
+        await fs.unlink(absolutePath).catch(() => {});
+        throw new Error("Failed to upload image to Cloudinary");
+      }
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: id },
+      data: updateData,
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        profileImg: true,
         bio: true,
         firstName: true,
         lastName: true,
         gender: true,
         isVerified: true,
-        trustScore: true
-      }
+        trustScore: true,
+      },
     });
+
+    if (
+      oldProfileImg &&
+      updateData.profileImg &&
+      oldProfileImg !== updateData.profileImg
+    ) {
+      if (!oldProfileImg.startsWith("http")) {
+        const cleanPath = oldProfileImg.startsWith("/")
+          ? oldProfileImg.substring(1)
+          : oldProfileImg;
+
+        const oldFilePath = path.join(process.cwd(), "src", cleanPath);
+
+        try {
+          await fs.unlink(oldFilePath);
+          console.log(`🗑️ Deleted old local file: ${oldFilePath}`);
+        } catch (fsErr) {
+          console.warn("⚠️ No old files found to delete:", fsErr.message);
+        }
+      }
+    }
+
+    return updatedUser;
   } catch (error) {
     console.error("Update User Error:", error);
-    throw error; 
+    throw error;
   }
 };
 
-
-export const deleteUserAccount = async (userId) => {
+export const deleteUserAccountb = async (userId) => {
   const id = parseInt(userId);
 
-  // ใช้ $transaction เพื่อให้มั่นใจว่าถ้าลบไม่สำเร็จ ข้อมูลจะไม่พัง
   return await prisma.$transaction(async (tx) => {
-    
     const deletedUser = await tx.user.delete({
       where: { id: id },
-      select: { id: true, email: true }
+      select: { id: true, email: true },
     });
 
     return deletedUser;

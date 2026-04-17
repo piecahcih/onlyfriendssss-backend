@@ -182,7 +182,7 @@ model FriendShip {
   id        Int              @id @default(autoincrement())
   status    FriendshipStatus @default(PENDING)
   createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  updatedAt DateTime         @default(now()) @updatedAt
 
   senderId   Int
   sender     User @relation("SentFriendRequests", fields: [senderId], references: id, onDelete: Cascade)

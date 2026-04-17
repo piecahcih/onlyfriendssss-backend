@@ -1,7 +1,7 @@
-import * as accountService from '../services/account.service.js'
-import fs from 'fs/promises'; 
-import path from 'path';
-import createError from 'http-errors';
+import * as accountService from "../services/account.service.js";
+import fs from "fs/promises";
+import path from "path";
+import createError from "http-errors";
 
 export const getMeCtrl = async (req, res, next) => {
   try {
@@ -14,67 +14,75 @@ export const getMeCtrl = async (req, res, next) => {
 
 export const updateMeCtrl = async (req, res, next) => {
   try {
-    const updateData = {};
+    const { username, bio, firstName, lastName, gender } = req.body || {};
+    const userId = req.result?.id;
 
-    if (req.file) {
-      updateData.profileImg = `/uploads/${req.file.filename}`;
+    if (!userId) {
+      return next(createError(401, "Please log in again."));
     }
 
-    const { username, bio, firstName, lastName, gender } = req.body || {};
+    const localFilePath = req.file ? req.file.path : null;
 
-     if (typeof username === 'string' && username.trim()) updateData.username = username.trim();
-     if (typeof firstName === 'string' && firstName.trim()) updateData.firstName = firstName.trim();
-       if (typeof lastName === 'string' && lastName.trim()) updateData.lastName = lastName.trim();
-  
-       // สำหรับ bio และ gender
-       if (typeof bio === 'string') updateData.bio = bio.trim();
-       if (typeof gender === 'string') updateData.gender = gender;
-  
-       if (Object.keys(updateData).length === 0) {
-         return next(createError(400, "กรุณาส่งข้อมูลที่ต้องการแก้ไข"));
-       }
-  
-       if (!req.result?.id) {
-         return next(createError(401, "กรุณาเข้าสู่ระบบใหม่"));
-       }
+    const updateData = {};
 
-    const updatedUser = await accountService.updateUserProfile(req.result.id, updateData);
-    
-    res.status(200).json({ 
-      message: "Profile updated successfully", 
-      user: updatedUser 
+    if (localFilePath) {
+      updateData.profileImg = `/uploads/${localFilePath}`;
+    }
+
+    if (typeof username === "string" && username.trim())
+      updateData.username = username.trim();
+    if (typeof firstName === "string" && firstName.trim())
+      updateData.firstName = firstName.trim();
+    if (typeof lastName === "string" && lastName.trim())
+      updateData.lastName = lastName.trim();
+    if (typeof bio === "string") updateData.bio = bio.trim();
+    if (typeof gender === "string") updateData.gender = gender;
+
+    if (Object.keys(updateData).length === 0) {
+      return next(
+        createError(
+          400,
+          "Please provide the details you would like to modify.",
+        ),
+      );
+    }
+
+    const updatedUser = await accountService.updateUserProfile(
+      userId,
+      updateData,
+      localFilePath,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully ✨",
+      data: updatedUser,
     });
   } catch (error) {
     console.error("PATCH Profile Error:", error);
-    if (error.code === 'P2002') {
+    if (error.code === "P2002") {
       return next(createError(409, "Username already exists"));
     }
     next(error);
   }
 };
 
-
-
 export const deleteMeCtrl = async (req, res, next) => {
   try {
     const userId = req.result.id;
-    const user = await accountService.getUserById(userId); 
+    const user = await accountService.getUserById(userId);
     if (!user.data) {
-       throw createError(404, "User not found");
+      throw createError(404, "User not found");
     }
 
-    // สั่งลบใน Database ก่อน (ถ้า DB พัง ไฟล์รูปจะได้ยังอยู่เพื่อตรวจสอบ)
-    await accountService.deleteUserAccount(userId);
+    await accountService.deleteUserAccountb(userId);
 
-    // จัดการลบไฟล์รูปภาพจริง
     if (user.data.profileImg) {
-      
-      // ลบเครื่องหมาย / ตัวหน้าออกถ้ามี เพื่อให้ path.join ทำงานถูกต้อง
-      const relativePath = user.data.profileImg.startsWith('/') 
-        ? user.data.profileImg.substring(1) 
+      const relativePath = user.data.profileImg.startsWith("/")
+        ? user.data.profileImg.substring(1)
         : user.data.profileImg;
 
-      const filePath = path.join(process.cwd(), 'public', relativePath);
+      const filePath = path.join(process.cwd(), "public", relativePath);
       try {
         await fs.unlink(filePath);
         console.log(`Deleted file: ${filePath}`);
@@ -83,11 +91,12 @@ export const deleteMeCtrl = async (req, res, next) => {
       }
     }
 
-    res.status(200).json({ 
-      message: "บัญชีของคุณถูกลบออกจากระบบเรียบร้อยแล้ว" 
+    res.status(200).json({
+      message: "Your account has been successfully deleted.",
     });
   } catch (error) {
-    if (error.code === 'P2025') return next(createError(404, "ไม่พบข้อมูลบัญชีผู้ใช้"));
+    if (error.code === "P2025")
+      return next(createError(404, "User account not found"));
     next(error);
   }
 };
