@@ -84,7 +84,7 @@ export const oldActivityData = [
     eventStartTime: new Date("2026-04-12T14:00:00"),
     hostId: 8,
     placeId: 8,
-    coverPhoto: "https://images.unsplash.com/photo-1567120400829-7e870699d807?q=80&w=1000",
+    coverPhoto: "https://res.cloudinary.com/piecahcih/image/upload/q_auto/f_auto/v1776395389/thaids_eydezw.jpg",
     status: "FINISHED"
   },
 

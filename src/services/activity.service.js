@@ -6,7 +6,9 @@ export async function getAllActivities () {
         include :{
             place: true,
             host: true,
-            joinRequests: true
+            joinRequests: {
+                include: { user: true }
+            }
         }
     })
 }
@@ -20,7 +22,9 @@ export async function getAllCurrentActivities () {
         include :{
             place: true,
             host: true,
-            joinRequests: true
+            joinRequests: {
+                include: { user: true }
+            }
         }
     })
 }
@@ -43,7 +47,9 @@ export async function getFinishedActivitiesOnThisAccount (userid) {
         include :{
             place: true,
             host: true,
-            joinRequests: true
+            joinRequests: {
+                include: { user: true }
+            }
         }
     })
 }
@@ -55,7 +61,9 @@ export async function getActivitiesCreatedByThisAccount (userid) {
         include :{
             place: true,
             host: true,
-            joinRequests: true
+            joinRequests: {
+                include: { user: true }
+            }
         }
     })
 }
@@ -75,7 +83,9 @@ export async function getActivitiesJoinedByThisAccount (userid) {
         include :{
             place: true,
             host: true,
-            joinRequests: true
+            joinRequests: {
+                include: { user: true }
+            }
         }
     })
 }
@@ -86,7 +96,9 @@ export async function getActivityById (activityId) {
         include :{
             place: true,
             host: true,
-            joinRequests: true
+            joinRequests: {
+                include: { user: true }
+            }
         }
     })
 }
@@ -98,7 +110,9 @@ export async function getActivityByCategory (category) {
         include :{
             place: true,
             host: true,
-            joinRequests: true
+            joinRequests: {
+                include: { user: true }
+            }
         }
     })
 }

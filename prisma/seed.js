@@ -4,6 +4,7 @@ import { placeData } from '../data/places.js';
 import { userData } from '../data/user.js';
 import { prisma } from '../src/lib/prisma.js'
 import { oldActivityData } from '../data/oldActivities.js'
+import { friendshipData } from '../data/friendship.js';
 
 async function main() {
   console.log("Clear Data...");
