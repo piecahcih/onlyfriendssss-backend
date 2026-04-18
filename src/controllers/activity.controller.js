@@ -99,7 +99,9 @@ export async function createActivityCtrl (req,res,next) {
     
     const localFilePath = req.file ? req.file.path : null;
     
-    const Adata = { isPublic,category,title,description,placeId,
+    const Adata = { category,title,description,
+        isPublic: JSON.parse(isPublic),
+        placeId: parseInt(placeId),
         hostId: id ,
         eventStartTime: new Date(eventStartTime),
     } 
@@ -146,13 +148,13 @@ export async function editActivityByIdCtrl (req,res,next) {
     const Editdata = { hostId: id } 
 
     if(isPublic !== undefined ){
-        Editdata.isPublic = isPublic
+        Editdata.isPublic = JSON.parse(isPublic)
     }
     if (localFilePath) {
       Editdata.coverPhoto = `/uploads/${localFilePath}`;
     }
     if(placeId){
-        Editdata.placeId = placeId
+        Editdata.placeId = parseInt(placeId)
     }
     if(category){
         Editdata.category = category
