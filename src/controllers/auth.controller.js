@@ -44,7 +44,7 @@ export async function registerCtrl(req, res, next) {
 
     const foundUser = await getUserBy('email', data.email)
     if (foundUser) {
-      return next(createHttpError[409]('This User has been registed'))
+      throw createHttpError(409, 'อีเมล์นี้ถูกใช้งานไปแล้ว')
     }
 
     const createdUser = await createUser(data)
@@ -156,10 +156,30 @@ export async function addInterestCtrl(req, res, next) {
     const { id } = req.params
     const { interests } = req.body
 
-    const updateInterest = await createUserInterest(Number(id), interests)
+    await createUserInterest(Number(id), interests)
+
+    const foundUser = await getUserBy('id', Number(id))
+
+    if (!foundUser) {
+      return next(createHttpError[404]('User not found'))
+    }
+
+    const payload = { id: foundUser.id }
+    const token = signToken(payload)
+
+    const userInfo = {
+      id: foundUser.id,
+      email: foundUser.email,
+      username: foundUser.username,
+      role: foundUser.role,
+      firstName: foundUser.firstName,
+      lastName: foundUser.lastName,
+      profileImg: foundUser.profileImg
+    }
     res.json({
-      message: 'บันทึกสิ่งที่สนใจสำเร็จ',
-      count: updateInterest
+      message: 'บันทึกสิ่งที่สนใจและเข้าสู่ระบบสำเร็จ',
+      token: token,
+      user: userInfo
     })
   } catch (error) {
     next(error)
