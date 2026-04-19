@@ -51,8 +51,8 @@ async function main() {
   console.log(`Created : ${createdPlaces.count} places`);
   console.log(`Created : ${createdActivities.count} activities`);
   console.log(`Created : ${createdJoinRequest.count} join requests`);
-  console.log(`Created : ${createdJoinRequest.count} join requests`);
-  console.log(`Created : ${ceratedFriendships.count} join requests`);
+  // console.log(`Created : ${createdJoinRequest.count} join requests`);
+  console.log(`Created : ${ceratedFriendships.count} friendships`);
 }
 
 main()

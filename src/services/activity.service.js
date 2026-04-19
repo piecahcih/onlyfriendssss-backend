@@ -1,4 +1,7 @@
 import { prisma } from "../lib/prisma.js";
+import fs from "fs/promises";
+import path from "path";
+import cloudinary from "../../config/cloudinary.js";
 
 export async function getAllActivities () {
     return await prisma.activity.findMany({
@@ -143,6 +146,36 @@ export async function createActivity (Adata,localFilePath) {
     return await prisma.activity.create({
         data: Adata
     })
+}
+
+export async function getOrAddPlaceId (placeName,address,latitude,longitude) {
+    // const existingPlace = await prisma.place.findUnique({
+    //     where: { latitude: latitude , longtitude: longtitude }
+    // })
+
+    const tolerance = 0.001 //0.001degrees ~ 111 meters
+
+    const existingPlace = await prisma.place.findFirst({
+        where: {
+            placeName: placeName,
+            latitude: {
+                gte: latitude - tolerance,
+                lte: latitude + tolerance,
+            },
+            longitude: {
+                gte: longitude - tolerance,
+                lte: longitude + tolerance,
+            }
+        }
+    })
+    if (existingPlace) {
+        return existingPlace.id
+    } 
+
+    const newPlace = await prisma.place.create({
+        data: { placeName,address,latitude,longitude }
+    })
+    return newPlace.id 
 }
 
 export async function editActivityById (userid,activityId,Editdata,localFilePath) {
