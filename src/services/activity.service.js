@@ -148,6 +148,36 @@ export async function createActivity (Adata,localFilePath) {
     })
 }
 
+export async function getOrAddPlaceId (placeName,address,latitude,longitude) {
+    // const existingPlace = await prisma.place.findUnique({
+    //     where: { latitude: latitude , longtitude: longtitude }
+    // })
+
+    const tolerance = 0.001 //0.001degrees ~ 111 meters
+
+    const existingPlace = await prisma.place.findFirst({
+        where: {
+            placeName: placeName,
+            latitude: {
+                gte: latitude - tolerance,
+                lte: latitude + tolerance,
+            },
+            longitude: {
+                gte: longitude - tolerance,
+                lte: longitude + tolerance,
+            }
+        }
+    })
+    if (existingPlace) {
+        return existingPlace.id
+    } 
+
+    const newPlace = await prisma.place.create({
+        data: { placeName,address,latitude,longitude }
+    })
+    return newPlace.id 
+}
+
 export async function editActivityById (userid,activityId,Editdata,localFilePath) {
     let oldCoverPhoto = null;
 

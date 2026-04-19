@@ -1,4 +1,4 @@
-import { changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount } from "../services/activity.service.js";
+import { changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId } from "../services/activity.service.js";
 import createHttpError from 'http-errors'
 
 export async function getAllActivitiesCtrl (req,res,next) {
@@ -78,7 +78,7 @@ export async function getActivityByCategoryCtrl (req,res,next) {
 
 export async function createActivityCtrl (req,res,next) {
     const { id } = req.result
-    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeId } = req.body
+    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
     const eventStTime = new Date(eventStartTime)
 
     if(eventStTime < new Date()){
@@ -96,6 +96,10 @@ export async function createActivityCtrl (req,res,next) {
             return next(createHttpError[400]('Event start time must be before event end time.'))
         }
     }
+
+    const placeId = await getOrAddPlaceId(placeName,address,parseInt(latitude),parseInt(longitude))
+    // console.log('placeId', placeId)
+    // console.log(typeof placeId)
     
     const localFilePath = req.file ? req.file.path : null;
     
@@ -124,7 +128,7 @@ export async function createActivityCtrl (req,res,next) {
 export async function editActivityByIdCtrl (req,res,next) {
     const { id } = req.result
     const { activityid } = req.params
-    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeId } = req.body
+    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
     const eventStTime = new Date(eventStartTime)
 
     if(eventStTime < new Date()){
@@ -153,7 +157,8 @@ export async function editActivityByIdCtrl (req,res,next) {
     if (localFilePath) {
       Editdata.coverPhoto = `/uploads/${localFilePath}`;
     }
-    if(placeId){
+    if(placeName && address && latitude && longitude){
+        const placeId = await getOrAddPlaceId(placeName,address,parseInt(latitude),parseInt(longitude))
         Editdata.placeId = parseInt(placeId)
     }
     if(category){
