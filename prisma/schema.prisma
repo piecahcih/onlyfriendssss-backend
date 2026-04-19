@@ -88,6 +88,7 @@ model User {
   visitedPlaces     VisitedPlace[]
   messages          Message[]
   createdRoutes     Route[]
+  wishlist          Wishlist[]
 
   sentFriendRequests     FriendShip[] @relation("SentFriendRequests")
   receivedFriendRequests FriendShip[] @relation("ReceivedFriendRequests")
@@ -114,7 +115,9 @@ model Activity {
 
   joinRequests JoinRequest[]
   reviews      Review[]
-  chatGroup    ChatGroup?
+  wishlist     Wishlist[]
+
+  chatGroup ChatGroup?
 }
 
 model JoinRequest {
@@ -223,4 +226,15 @@ model Interest {
   userId    Int
   category  ActivityInterest?
   createdAt DateTime          @default(now())
+}
+
+model Wishlist {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, activityId])
 }

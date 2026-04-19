@@ -44,7 +44,7 @@ export async function registerCtrl(req, res, next) {
 
     const foundUser = await getUserBy('email', data.email)
     if (foundUser) {
-      throw createHttpError(409, 'อีเมล์นี้ถูกใช้งานไปแล้ว')
+      throw createHttpError(409, 'Email already registered')
     }
 
     const createdUser = await createUser(data)
@@ -144,7 +144,7 @@ export async function addProfileCtrl(req, res, next) {
   } catch (error) {
     console.error("addProfileCtrl Error:", error);
     if (error.code === 'P2002') {
-      return res.status(400).json({ message: 'Username นี้ถูกใช้ไปแล้ว' });
+      return res.status(400).json({ message: 'Username already taken' });
     }
     next(error)
   }
