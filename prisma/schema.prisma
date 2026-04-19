@@ -110,7 +110,7 @@ model Activity {
   hostId Int
   host   User @relation("UserCreatedActivities", fields: [hostId], references: [id])
 
-  placeId Int?
+  placeId Int
   place   Place? @relation(fields: [placeId], references: [id])
 
   joinRequests JoinRequest[]
