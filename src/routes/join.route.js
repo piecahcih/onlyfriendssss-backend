@@ -5,7 +5,7 @@ import { authCheckUser } from '../middlewares/authenticate.js'
 
 const joinRouter = express.Router()
 
-joinRouter.post('/join', authCheckUser, joinActivityCtrl)
+joinRouter.post('/', authCheckUser, joinActivityCtrl)
 joinRouter.patch('/manage-request', authCheckUser, manageJoinRequestCtrl)
 joinRouter.delete('/leave/:activityId', authCheckUser, leaveActivityCtrl)
 
