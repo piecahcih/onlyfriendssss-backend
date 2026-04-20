@@ -78,7 +78,7 @@ export async function getActivityByCategoryCtrl (req,res,next) {
 
 export async function createActivityCtrl (req,res,next) {
     const { id } = req.result
-    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
+    const { maxParticipants,isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
     const eventStTime = new Date(eventStartTime)
 
     if(eventStTime < new Date()){
@@ -117,6 +117,9 @@ export async function createActivityCtrl (req,res,next) {
     if(eventEndTime){
         Adata.eventEndTime = new Date(eventEndTime)
     }
+    if(maxParticipants){
+        Adata.maxParticipants = parseInt(maxParticipants)
+    }
     
     const createdActivity = await createActivity(Adata,localFilePath)
     res.json({
@@ -128,7 +131,7 @@ export async function createActivityCtrl (req,res,next) {
 export async function editActivityByIdCtrl (req,res,next) {
     const { id } = req.result
     const { activityid } = req.params
-    const { isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
+    const { maxParticipants,isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
     const eventStTime = new Date(eventStartTime)
 
     if(eventStTime < new Date()){
@@ -175,6 +178,9 @@ export async function editActivityByIdCtrl (req,res,next) {
     }
     if(eventEndTime){
         Editdata.eventEndTime = new Date(eventEndTime)
+    }
+    if(maxParticipants){
+        Adata.maxParticipants = parseInt(maxParticipants)
     }
     
     const editActivity = await editActivityById(id, Number(activityid), Editdata, localFilePath)
