@@ -25,7 +25,7 @@ app.use("/api/activity", activityRoute);
 app.use("/api/friend", friendRoute);
 app.use('/api/account', accountRoute)
 app.use('/api/wishlist', wishlistRouter)
-app.use('/api', joinRouter)
+app.use('/api/join', joinRouter)
 
 activityStatusUpdater()
 
