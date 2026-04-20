@@ -97,7 +97,6 @@ export async function createActivityCtrl (req,res,next) {
         }
     }
 
-    console.log('latitude', latitude)
     const placeId = await getOrAddPlaceId(placeName,address,Number(latitude),Number(longitude))
     // console.log('placeId', placeId)
     // console.log(typeof placeId)
