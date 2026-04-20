@@ -97,7 +97,7 @@ export async function createActivityCtrl (req,res,next) {
         }
     }
 
-    const placeId = await getOrAddPlaceId(placeName,address,parseInt(latitude),parseInt(longitude))
+    const placeId = await getOrAddPlaceId(placeName,address,Number(latitude),Number(longitude))
     // console.log('placeId', placeId)
     // console.log(typeof placeId)
     
@@ -105,7 +105,7 @@ export async function createActivityCtrl (req,res,next) {
     
     const Adata = { category,title,description,
         isPublic: JSON.parse(isPublic),
-        placeId: parseInt(placeId),
+        placeId: Number(placeId),
         hostId: id ,
         eventStartTime: new Date(eventStartTime),
     } 
@@ -118,7 +118,7 @@ export async function createActivityCtrl (req,res,next) {
         Adata.eventEndTime = new Date(eventEndTime)
     }
     if(maxParticipants){
-        Adata.maxParticipants = parseInt(maxParticipants)
+        Adata.maxParticipants = Number(maxParticipants)
     }
     
     const createdActivity = await createActivity(Adata,localFilePath)
@@ -161,8 +161,8 @@ export async function editActivityByIdCtrl (req,res,next) {
       Editdata.coverPhoto = `/uploads/${localFilePath}`;
     }
     if(placeName && address && latitude && longitude){
-        const placeId = await getOrAddPlaceId(placeName,address,parseInt(latitude),parseInt(longitude))
-        Editdata.placeId = parseInt(placeId)
+        const placeId = await getOrAddPlaceId(placeName,address,Number(latitude),Number(longitude))
+        Editdata.placeId = Number(placeId)
     }
     if(category){
         Editdata.category = category
@@ -180,7 +180,7 @@ export async function editActivityByIdCtrl (req,res,next) {
         Editdata.eventEndTime = new Date(eventEndTime)
     }
     if(maxParticipants){
-        Adata.maxParticipants = parseInt(maxParticipants)
+        Adata.maxParticipants = Number(maxParticipants)
     }
     
     const editActivity = await editActivityById(id, Number(activityid), Editdata, localFilePath)
