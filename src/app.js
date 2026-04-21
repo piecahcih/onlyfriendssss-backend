@@ -8,6 +8,7 @@ import { activityStatusUpdater } from "./jobs/activityStatusUpdater.js";
 import errorMiddleware from './middlewares/error.middleware.js'
 import wishlistRouter from "./routes/wishlist.route.js";
 import joinRouter from "./routes/join.route.js";
+import reviewRouter from "./routes/review.route.js";
 
 const app = express();
 app.use(express.json());
@@ -26,6 +27,7 @@ app.use("/api/friend", friendRoute);
 app.use('/api/account', accountRoute)
 app.use('/api/wishlist', wishlistRouter)
 app.use('/api/join', joinRouter)
+app.use('/api/review', reviewRouter)
 
 activityStatusUpdater()
 
