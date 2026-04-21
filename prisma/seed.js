@@ -5,6 +5,8 @@ import { userData } from '../data/user.js';
 import { prisma } from '../src/lib/prisma.js'
 import { oldActivityData } from '../data/oldActivities.js'
 import { friendshipData } from '../data/friendship.js';
+import { activityReviewData } from '../data/activitiesReview.js';
+import { userReviewData } from '../data/userReview.js';
 
 async function main() {
   console.log("Clear Data...");
@@ -42,6 +44,12 @@ async function main() {
         skipDuplicates: true
     })
 
+    const allReviews = [...activityReviewData, ...userReviewData];
+    const createdReviews = await prisma.review.createMany({
+        data: allReviews,
+        skipDuplicates: true
+    });
+
   const ceratedFriendships = await prisma.friendShip.createMany({
     data: friendshipData,
     skipDuplicates: true,
@@ -51,6 +59,7 @@ async function main() {
   console.log(`Created : ${createdPlaces.count} places`);
   console.log(`Created : ${createdActivities.count} activities`);
   console.log(`Created : ${createdJoinRequest.count} join requests`);
+  console.log(`Created : ${createdReviews.count} reviews`);
   // console.log(`Created : ${createdJoinRequest.count} join requests`);
   console.log(`Created : ${ceratedFriendships.count} friendships`);
 }
