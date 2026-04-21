@@ -1,43 +1,40 @@
 import { prisma } from "../lib/prisma.js";
 
 
-export async function createActivityReview(reviewerId, activityId, { rating, comment, imageUrl }) {
+export const createActivityReview = async (reviewerId, activityId, data) => {
   return await prisma.review.create({
     data: {
-      rating: Number(rating),
-      comment: comment,
-      imageUrl: imageUrl,
+      rating: Number(data.rating),
+      comment: data.comment,
+      imageUrl: data.imageUrl,
+      reviewType: 'ACTIVITY',
       reviewerId: Number(reviewerId),
-      activityId: Number(activityId)
+      activityId: Number(activityId),
     }
   })
 }
 
-export async function getActivityReviews(activityId) {
+export const getActivityReviews = async (activityId) => {
   return await prisma.review.findMany({
     where: {
       activityId: Number(activityId),
-      receiverId: null
+      reviewType: 'ACTIVITY'
     },
     include: {
       reviewer: {
-        select: {
-          firstName: true,
-          lastName: true,
-          profileImg: true
-        }
+        select: { id: true, username: true, profileImg: true }
       }
     },
     orderBy: { createdAt: 'desc' }
   })
 }
-
-export async function createUserReview(reviewerId, activityId, receiverId, { rating, comment, imageUrl }) {
+export const createUserReview = async (reviewerId, activityId, receiverId, data) => {
   return await prisma.review.create({
     data: {
-      rating: Number(rating),
-      comment: comment,
-      imageUrl: imageUrl,
+      rating: Number(data.rating),
+      comment: data.comment,
+      imageUrl: data.imageUrl,
+      reviewType: 'PERSON',
       reviewerId: Number(reviewerId),
       activityId: Number(activityId),
       receiverId: Number(receiverId)

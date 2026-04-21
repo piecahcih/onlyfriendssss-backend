@@ -1,11 +1,13 @@
-import { createActivityReview, createUserReview } from "../services/review.service.js"
+import { prisma } from "../lib/prisma.js"
+import { createActivityReview, createUserReview, getActivityReviews } from "../services/review.service.js"
+
 
 export async function reviewActivityCtrl(req, res, next) {
   try {
     const user = req.result
 
     if (!user || !user.id) {
-      return res.status(401).json({ message: "Unauthorized: Missing user data" })
+      return res.json({ message: "Unauthorized: Missing user data" })
     }
 
     const { activityId } = req.params
@@ -31,7 +33,7 @@ export async function reviewUserCtrl(req, res, next) {
   try {
     const user = req.result;
     if (!user || !user.id) {
-      return res.status(401).json({ message: "Unauthorized: Missing user data" });
+      return res.json({ message: "Unauthorized: Missing user data" });
     }
 
     const { activityId, receiverId } = req.params
@@ -39,7 +41,7 @@ export async function reviewUserCtrl(req, res, next) {
     const reviewerId = user.id
 
     if (Number(reviewerId) === Number(receiverId)) {
-      return res.status(400).json({ message: "You cannot review yourself" })
+      return res.json({ message: "You cannot review yourself" })
     }
 
     const result = await createUserReview(reviewerId, activityId, receiverId, {
@@ -57,31 +59,42 @@ export async function reviewUserCtrl(req, res, next) {
   }
 }
 
-export async function getActivityCtrl(activityId) {
-  const aggregate = await prisma.review.aggregate({
-    where: {
-      activityId: Number(activityId),
-      receiverId: null
-    },
-    _avg: { rating: true },
-    _count: { rating: true }
-  })
-  return {
-    average: aggregate._avg.rating || 0,
-    totalReviews: aggregate._count.rating
+export async function getAllActivitiesWithRating(req, res, next) {
+  try {
+    const activities = await prisma.activity.findMany({
+      include: {
+        host: { select: { username: true } },
+        place: true,
+        reviews: {
+          where: { reviewType: 'ACTIVITY' },
+          select: { rating: true }
+        }
+      }
+    })
+
+    // คำนวณ rating เฉลี่ยในแต่ละ activity
+    const data = activities.map(act => {
+      const total = act.reviews.reduce((acc, curr) => acc + curr.rating, 0)
+      const avg = act.reviews.length > 0 ? total / act.reviews.length : 0
+      return {
+        ...act,
+        averageRating: avg.toFixed(1),
+        reviewCount: act.reviews.length
+      }
+    })
+
+    res.json(data)
+  } catch (error) {
+    next(error)
   }
 }
 
-export async function getUserCtrl(userId) {
-  const aggregate = await prisma.review.aggregate({
-    where: {
-      receiverId: Number(userId)
-    },
-    _avg: { rating: true },
-    _count: { rating: true }
-  })
-  return {
-    average: aggregate._avg.rating || 0,
-    totalReviews: aggregate._count.rating
+export async function getActivityReviewDetails(req, res, next) {
+  try {
+    const { activityId } = req.params
+    const reviews = await getActivityReviews(activityId)
+    res.json(reviews)
+  } catch (error) {
+    next(error)
   }
 }
