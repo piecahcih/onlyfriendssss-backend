@@ -100,7 +100,7 @@ export async function createActivityCtrl (req,res,next) {
     const placeId = await getOrAddPlaceId(placeName,address,Number(latitude),Number(longitude))
     // console.log('placeId', placeId)
     // console.log(typeof placeId)
-    
+
     const localFilePath = req.file ? req.file.path : null;
     
     const Adata = { category,title,description,
