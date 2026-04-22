@@ -1,6 +1,6 @@
 import { prisma } from "../lib/prisma.js"
-import { createActivityReview, createUserReview, getActivityReviews, getUserById } from "../services/review.service.js"
-
+import { createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllReviewsMe, getAllUsersReviews, getSpecificReview, getUserById } from "../services/review.service.js"
+import createHttpError from 'http-errors'
 
 export async function reviewActivityCtrl(req, res, next) {
   try {
@@ -59,7 +59,10 @@ export async function reviewUserCtrl(req, res, next) {
   }
 }
 
-export async function getAllActivitiesWithRating(req, res, next) {
+
+
+
+export async function getActivityRatingScoreCtrl(req, res, next) {
   try {
     const activities = await prisma.activity.findMany({
       include: {
@@ -89,17 +92,95 @@ export async function getAllActivitiesWithRating(req, res, next) {
   }
 }
 
-export async function getActivityReviewDetails(req, res, next) {
-  try {
-    const { activityId } = req.params
-    const reviews = await getActivityReviews(activityId)
-    res.json(reviews)
-  } catch (error) {
-    next(error)
-  }
+
+
+
+export async function getAllUsersReviewsCtrl(req, res, next) {
+
+  const reviews = await getAllUsersReviews()
+  res.json({
+    message: "Get all USER reviews successfully",
+    reviews: reviews
+  })
+
 }
 
-export async function getUser(req, res, next) {
+export async function getAllReviewsMeCtrl(req, res, next) {
+  const {id} = req.result
+
+  const reviews = await getAllReviewsMe(id)
+  
+  if(!reviews) {
+    return next(createHttpError[404]('There\'s no one review this account yet'))
+  }
+
+  res.json({
+    message: "Get all reviews ME successfully",
+    reviews: reviews
+  })
+
+}
+
+export async function getAllActivitiessReviewsCtrl(req, res, next) {
+
+  const reviews = await getAllActivitiesReviews()
+  res.json({
+    message: "Get all ACTIVITY reviews successfully",
+    reviews: reviews
+  })
+
+}
+
+export async function getActivityReviewsCtrl(req, res, next) {
+  const { activityId } = req.params
+  const reviews = await getActivityReviews(Number(activityId))
+  
+  if(!reviews) {
+    return next(createHttpError[404]('There\'s no review on this activity yet'))
+  }
+
+  res.json({
+    message: "Get all reviews in this activity successfully",
+    reviews: reviews
+  })
+
+}
+
+export async function getSpecificReviewCtrl(req, res, next) {
+  const { reviewid } = req.params
+  const review = await getSpecificReview(Number(reviewid))
+
+  if(!review) {
+    return next(createHttpError[404]('This Review Not Found'))
+  }
+
+  res.json({
+    message: "Get specific review successfully",
+    reviews: review
+  })
+
+}
+
+export async function getActivityReviewsByLocationCtrl(req, res, next) {
+  const { placeid } = req.params
+  const reviews = await getActivityReviewsByLocation(Number(placeid))
+  
+  if(!reviews) {
+    return next(createHttpError[404]('There\'s no review on this location yet'))
+  }
+
+  res.json({
+    message: "Get activities by location successfully",
+    reviews: reviews
+  })
+
+}
+
+
+
+
+
+export async function getUserCtrl(req, res, next) {
   try {
     const { userId } = req.params;
     const user = await getUserById(userId);
