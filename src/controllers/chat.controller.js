@@ -15,7 +15,7 @@ export async function getMessagesCtrl(req, res, next) {
     try {
         const { roomId } = req.params;
         const userId = req.result.id;
-        const messages = await chatService.getMessages(roomId, userId);
+        const messages = await chatService.getMessages(roomId, userId)
         res.json(messages);
     } catch (error) {
         next(error);
