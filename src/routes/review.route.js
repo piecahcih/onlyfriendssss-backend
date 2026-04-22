@@ -12,7 +12,7 @@ reviewRouter.get('/activities', getAllActivitiessReviewsCtrl)
 reviewRouter.get('/activity/:activityId', getActivityReviewsCtrl)
 reviewRouter.get('/:reviewid', getSpecificReviewCtrl)
 reviewRouter.get('/place/:placeid', getActivityReviewsByLocationCtrl)
-reviewRouter.get('/:userId', authCheckUser, getUserCtrl)
+reviewRouter.get('/user/:userId', authCheckUser, getUserCtrl)
 
 reviewRouter.post('/activity/:activityId', authCheckUser, reviewActivityCtrl)
 reviewRouter.post('/user/:activityId/:receiverId', authCheckUser, reviewUserCtrl)
