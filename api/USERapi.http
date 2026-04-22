@@ -82,4 +82,9 @@ Content-Type: application/json
 ##################PROFILE
 ### GET profile
 GET {{baseURL}}/api/account/profile
-Authorization: Bearer {{token}}
+
+
+
+##################REVIEWS
+### GET reviews
+GET {{baseURL}}/api/account/profile

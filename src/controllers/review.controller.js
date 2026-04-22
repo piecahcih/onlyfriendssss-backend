@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.js"
-import { createActivityReview, createUserReview, getActivityReviews } from "../services/review.service.js"
+import { createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllUsersReviews, getSpecificReview } from "../services/review.service.js"
 
 
 export async function reviewActivityCtrl(req, res, next) {
@@ -59,7 +59,10 @@ export async function reviewUserCtrl(req, res, next) {
   }
 }
 
-export async function getAllActivitiesWithRating(req, res, next) {
+
+
+
+export async function getActivityRatingScoreCtrl(req, res, next) {
   try {
     const activities = await prisma.activity.findMany({
       include: {
@@ -89,7 +92,30 @@ export async function getAllActivitiesWithRating(req, res, next) {
   }
 }
 
-export async function getActivityReviewDetails(req, res, next) {
+
+
+
+export async function getAllUsersReviewsCtrl(req, res, next) {
+
+  const reviews = await getAllUsersReviews()
+  res.json({
+    message: "Get all USER reviews successfully",
+    reviews: reviews
+  })
+
+}
+
+export async function getAllActivitiessReviewsCtrl(req, res, next) {
+
+  const reviews = await getAllActivitiesReviews()
+  res.json({
+    message: "Get all ACTIVITY reviews successfully",
+    reviews: reviews
+  })
+
+}
+
+export async function getActivityReviewsCtrl(req, res, next) {
   try {
     const { activityId } = req.params
     const reviews = await getActivityReviews(activityId)
@@ -97,4 +123,26 @@ export async function getActivityReviewDetails(req, res, next) {
   } catch (error) {
     next(error)
   }
+}
+
+export async function getSpecificReviewCtrl(req, res, next) {
+  const { reviewid } = req.params
+  const review = await getSpecificReview(reviewid)
+
+  res.json({
+    message: "Get specific review successfully",
+    reviews: review
+  })
+
+}
+
+export async function getActivityReviewsByLocationCtrl(req, res, next) {
+  const { placeid } = req.params
+  const reviews = await getActivityReviewsByLocation(placeid)
+
+  res.json({
+    message: "Get activities by location successfully",
+    reviews: reviews
+  })
+
 }

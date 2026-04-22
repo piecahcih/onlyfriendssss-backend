@@ -1,11 +1,17 @@
 import express from 'express'
-import { getActivityReviewDetails, getAllActivitiesWithRating, reviewActivityCtrl, reviewUserCtrl } from '../controllers/review.controller.js'
+import { getActivityReviewsCtrl, getActivityReviewsByLocationCtrl, getActivityRatingScoreCtrl, getSpecificReviewCtrl, reviewActivityCtrl, reviewUserCtrl, getAllActivitiessReviewsCtrl, getAllUsersReviewsCtrl } from '../controllers/review.controller.js'
 import { authCheckUser } from '../middlewares/authenticate.js'
 
 const reviewRouter = express.Router()
 
-reviewRouter.get('/activity', authCheckUser, getAllActivitiesWithRating)
-reviewRouter.get('/activities/:activityId/reviews', authCheckUser, getActivityReviewDetails)
+reviewRouter.get('/activity-score', authCheckUser, getActivityRatingScoreCtrl)
+// reviewRouter.get('/user-score', authCheckUser, getActivityRatingScoreCtrl)
+// reviewRouter.get('/location-score', authCheckUser, getActivityRatingScoreCtrl)
+reviewRouter.get('/users', getAllUsersReviewsCtrl)
+reviewRouter.get('/activities', getAllActivitiessReviewsCtrl)
+reviewRouter.get('/activity/:activityId', getActivityReviewsCtrl)
+reviewRouter.get('/:reviewid', getSpecificReviewCtrl)
+reviewRouter.get('/place/:placeid', getActivityReviewsByLocationCtrl)
 
 reviewRouter.post('/activity/:activityId', authCheckUser, reviewActivityCtrl)
 reviewRouter.post('/user/:activityId/:receiverId', authCheckUser, reviewUserCtrl)
