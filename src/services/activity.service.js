@@ -3,10 +3,10 @@ import fs from "fs/promises";
 import path from "path";
 import cloudinary from "../../config/cloudinary.js";
 
-export async function getAllActivities () {
+export async function getAllActivities() {
     return await prisma.activity.findMany({
-        orderBy : { id : 'desc' },
-        include :{
+        orderBy: { id: 'desc' },
+        include: {
             place: true,
             host: true,
             joinRequests: {
@@ -16,13 +16,13 @@ export async function getAllActivities () {
     })
 }
 
-export async function getAllCurrentActivities () {
+export async function getAllCurrentActivities() {
     return await prisma.activity.findMany({
-        where:{
+        where: {
             eventStartTime: { gte: new Date() }
         },
-        orderBy : { id : 'desc' },
-        include :{
+        orderBy: { id: 'desc' },
+        include: {
             place: true,
             host: true,
             joinRequests: {
@@ -32,22 +32,24 @@ export async function getAllCurrentActivities () {
     })
 }
 
-export async function getFinishedActivitiesOnThisAccount (userid) {
+export async function getFinishedActivitiesOnThisAccount(userid) {
     return await prisma.activity.findMany({
-        orderBy : { id : 'desc' },
-        where: { status: 'FINISHED',
+        orderBy: { id: 'desc' },
+        where: {
+            status: 'FINISHED',
             OR: [
-                { hostId : userid },
-                {            
-                  joinRequests: {
-                    some: {
-                        userId: userid,
-                        status: 'APPROVED'
-                    }                
-                }}
+                { hostId: userid },
+                {
+                    joinRequests: {
+                        some: {
+                            userId: userid,
+                            status: 'APPROVED'
+                        }
+                    }
+                }
             ]
-         },
-        include :{
+        },
+        include: {
             place: true,
             host: true,
             joinRequests: {
@@ -57,11 +59,11 @@ export async function getFinishedActivitiesOnThisAccount (userid) {
     })
 }
 
-export async function getActivitiesCreatedByThisAccount (userid) {
+export async function getActivitiesCreatedByThisAccount(userid) {
     return await prisma.activity.findMany({
-        orderBy : { id : 'desc' },
-        where: { hostId : userid },
-        include :{
+        orderBy: { id: 'desc' },
+        where: { hostId: userid },
+        include: {
             place: true,
             host: true,
             joinRequests: {
@@ -71,19 +73,19 @@ export async function getActivitiesCreatedByThisAccount (userid) {
     })
 }
 
-export async function getActivitiesJoinedByThisAccount (userid) {
+export async function getActivitiesJoinedByThisAccount(userid) {
     return await prisma.activity.findMany({
-        orderBy : { eventStartTime: 'asc' },
-        where: { 
+        orderBy: { eventStartTime: 'asc' },
+        where: {
             //some เพราะมีคนjoinหลายคน ถ้าสักคนที่จอยในแอคทิวิตี้นั้นเป็นuserเราก็จะใช่ (มีnone/everyด้วย)
             joinRequests: {
                 some: {
-                        userId: userid,
-                        status: 'APPROVED'
-                    }                
+                    userId: userid,
+                    status: 'APPROVED'
+                }
             }
         },
-        include :{
+        include: {
             place: true,
             host: true,
             joinRequests: {
@@ -93,10 +95,10 @@ export async function getActivitiesJoinedByThisAccount (userid) {
     })
 }
 
-export async function getActivityById (activityId) {
+export async function getActivityById(activityId) {
     return await prisma.activity.findUnique({
-        where : { id : activityId },
-        include :{
+        where: { id: activityId },
+        include: {
             place: true,
             host: true,
             joinRequests: {
@@ -106,11 +108,11 @@ export async function getActivityById (activityId) {
     })
 }
 
-export async function getActivityByCategory (category) {
+export async function getActivityByCategory(category) {
     return await prisma.activity.findMany({
-        where: { category : category },
-        orderBy : { id : 'desc' },
-        include :{
+        where: { category: category },
+        orderBy: { id: 'desc' },
+        include: {
             place: true,
             host: true,
             joinRequests: {
@@ -120,35 +122,57 @@ export async function getActivityByCategory (category) {
     })
 }
 
-export async function createActivity (Adata,localFilePath) {
+export async function createActivity(Adata, localFilePath) {
+    console.log('first')
+    console.log('Adata', Adata)
+    console.log('local', localFilePath)
     if (localFilePath) {
-      const absolutePath = path.isAbsolute(localFilePath)
-        ? localFilePath
-        : path.join(process.cwd(), localFilePath)
+        const absolutePath = path.isAbsolute(localFilePath)
+            ? localFilePath
+            : path.join(process.cwd(), localFilePath)
 
-      try {
-        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
-          folder: "activity_coverPhoto",
-        })
 
-        Adata.coverPhoto = uploadResult.secure_url
+        try {
+            const uploadResult = await cloudinary.uploader.upload(absolutePath, {
+                folder: "activity_coverPhoto",
+            })
+            Adata.coverPhoto = uploadResult.secure_url
 
-        await fs.unlink(absolutePath);
-        console.log(`✅ Deleted temporary file: ${absolutePath}`)
-      } catch (uploadErr) {
-        console.error("Cloudinary Upload Error:", uploadErr)
+            await fs.unlink(absolutePath);
+            console.log(`✅ Deleted temporary file: ${absolutePath}`)
+        } catch (uploadErr) {
+            console.error("Cloudinary Upload Error:", uploadErr)
 
-        await fs.unlink(absolutePath).catch(() => { })
-        throw new Error("ไม่สามารถอัปโหลดรูปภาพได้")
-      }
+            await fs.unlink(absolutePath).catch(() => { })
+            throw new Error("ไม่สามารถอัปโหลดรูปภาพได้")
+        }
     }
 
-    return await prisma.activity.create({
+    //เพิ่มของ Chat : สร้างกิจกรรมปกติ
+    const activity = await prisma.activity.create({
         data: Adata
     })
+    //สร้างห้องแชทสำหรับกิจกรรมนี้ และดึง Host เข้าห้อง
+    await prisma.chatRoom.create({
+        data: {
+            type: 'ACTIVITY',
+            activityId: activity.id,
+            members: {
+                create: {
+                    userId: activity.hostId
+                }
+
+            }
+        }
+    })
+
+    return activity
+    // return await prisma.activity.create({
+    //     data: Adata
+    // })
 }
 
-export async function getOrAddPlaceId (placeName,address,latitude,longitude) {
+export async function getOrAddPlaceId(placeName, address, latitude, longitude) {
     // const existingPlace = await prisma.place.findUnique({
     //     where: { latitude: latitude , longtitude: longtitude }
     // })
@@ -170,87 +194,87 @@ export async function getOrAddPlaceId (placeName,address,latitude,longitude) {
     })
     if (existingPlace) {
         return existingPlace.id
-    } 
+    }
 
     const newPlace = await prisma.place.create({
-        data: { placeName,address,latitude,longitude }
+        data: { placeName, address, latitude, longitude }
     })
-    return newPlace.id 
+    return newPlace.id
 }
 
-export async function editActivityById (userid,activityId,Editdata,localFilePath) {
+export async function editActivityById(userid, activityId, Editdata, localFilePath) {
     let oldCoverPhoto = null;
 
     const existingActivity = await prisma.activity.findUnique({
-        where : { hostId: userid, id : activityId },
+        where: { hostId: userid, id: activityId },
     })
     oldCoverPhoto = existingActivity?.coverPhoto
 
     if (localFilePath) {
-      const absolutePath = path.isAbsolute(localFilePath)
-        ? localFilePath
-        : path.join(
-            process.cwd(),
-            "src",
-            "uploads",
-            path.basename(localFilePath),
-          );
+        const absolutePath = path.isAbsolute(localFilePath)
+            ? localFilePath
+            : path.join(
+                process.cwd(),
+                "src",
+                "uploads",
+                path.basename(localFilePath),
+            );
 
-      try {
-        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
-          folder: "activity_coverPhoto",
-        });
+        try {
+            const uploadResult = await cloudinary.uploader.upload(absolutePath, {
+                folder: "activity_coverPhoto",
+            });
 
-        Editdata.coverPhoto = uploadResult.secure_url;
+            Editdata.coverPhoto = uploadResult.secure_url;
 
-        await fs.unlink(absolutePath);
-        console.log(`✅ Temporary file deleted: ${absolutePath}`);
-      } catch (uploadErr) {
-        console.error("Cloudinary Upload Error:", uploadErr);
+            await fs.unlink(absolutePath);
+            console.log(`✅ Temporary file deleted: ${absolutePath}`);
+        } catch (uploadErr) {
+            console.error("Cloudinary Upload Error:", uploadErr);
 
-        await fs.unlink(absolutePath).catch(() => {});
-        throw new Error("Failed to upload image to Cloudinary");
-      }
+            await fs.unlink(absolutePath).catch(() => { });
+            throw new Error("Failed to upload image to Cloudinary");
+        }
     }
 
     await prisma.activity.update({
-        where : { hostId: userid, id : activityId },
+        where: { hostId: userid, id: activityId },
         data: Editdata
     })
 
     if (
-      oldCoverPhoto &&
-      Editdata.coverPhoto &&
-      oldCoverPhoto !== Editdata.coverPhoto
+        oldCoverPhoto &&
+        Editdata.coverPhoto &&
+        oldCoverPhoto !== Editdata.coverPhoto
     ) {
-      if (!oldCoverPhoto.startsWith("http")) {
-        const cleanPath = oldCoverPhoto.startsWith("/")
-          ? oldCoverPhoto.substring(1)
-          : oldCoverPhoto;
+        if (!oldCoverPhoto.startsWith("http")) {
+            const cleanPath = oldCoverPhoto.startsWith("/")
+                ? oldCoverPhoto.substring(1)
+                : oldCoverPhoto;
 
-        const oldFilePath = path.join(process.cwd(), "src", cleanPath);
+            const oldFilePath = path.join(process.cwd(), "src", cleanPath);
 
-        try {
-          await fs.unlink(oldFilePath);
-          console.log(`🗑️ Deleted old local file: ${oldFilePath}`);
-        } catch (fsErr) {
-          console.warn("⚠️ No old files found to delete:", fsErr.message);
+            try {
+                await fs.unlink(oldFilePath);
+                console.log(`🗑️ Deleted old local file: ${oldFilePath}`);
+            } catch (fsErr) {
+                console.warn("⚠️ No old files found to delete:", fsErr.message);
+            }
         }
-      }
-    }    
+    }
 
     return Editdata
 }
 
-export async function changeActivityStatus (activityId,status) {
+export async function changeActivityStatus(activityId, status) {
     return await prisma.activity.update({
-        where : { id : activityId },
+        where: { id: activityId },
         data: { status: status }
     })
 }
 
-export async function deleteActivityById (userid,activityId) {
+export async function deleteActivityById(userid, activityId) {
     return await prisma.activity.delete({
-        where : { hostId: userid, id : activityId }
+        where: { hostId: userid, id: activityId }
     })
 }

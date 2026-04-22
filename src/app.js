@@ -8,8 +8,13 @@ import { activityStatusUpdater } from "./jobs/activityStatusUpdater.js";
 import errorMiddleware from './middlewares/error.middleware.js'
 import wishlistRouter from "./routes/wishlist.route.js";
 import joinRouter from "./routes/join.route.js";
+import { createServer } from 'node:http'
+
+import chatRoute from "./routes/chat.route.js";
+import { initSocket } from "./socket/index.js";
 
 const app = express();
+const server = createServer(app)
 app.use(express.json());
 app.use(
   cors({
@@ -26,9 +31,12 @@ app.use("/api/friend", friendRoute);
 app.use('/api/account', accountRoute)
 app.use('/api/wishlist', wishlistRouter)
 app.use('/api/join', joinRouter)
+app.use("/api/chat", chatRoute);
+
+initSocket(server) //Path แยก
 
 activityStatusUpdater()
 
 app.use(errorMiddleware)
 
-export default app;
+export default server;
