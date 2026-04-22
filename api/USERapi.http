@@ -86,5 +86,22 @@ GET {{baseURL}}/api/account/profile
 
 
 ##################REVIEWS
-### GET reviews
-GET {{baseURL}}/api/account/profile
+### GET all user reviews
+GET {{baseURL}}/api/review/users
+
+### GET all WHO reviews me
+GET {{baseURL}}/api/review/who-reviews-me
+Authorization: Bearer {{token}}
+
+### GET all act reviews
+GET {{baseURL}}/api/review/activities
+
+### GET specific review
+GET {{baseURL}}/api/review/1
+
+### GET act reviews
+GET {{baseURL}}/api/review/activity/1
+
+### GET location reviews
+GET {{baseURL}}/api/review/place/1
+

@@ -15,10 +15,24 @@ export const createActivityReview = async (reviewerId, activityId, data) => {
 }
 
 
+export const getAllReviewsMe = async (id) => {
+  return await prisma.review.findMany({
+    where: {
+      receiverId: id,
+      reviewType: 'PERSON'
+    },
+    include: {
+      reviewer: {
+        select: { id: true, username: true, profileImg: true }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  })
+}
 export const getAllUsersReviews = async () => {
   return await prisma.review.findMany({
     where: {
-      reviewType: 'USER'
+      reviewType: 'PERSON'
     },
     include: {
       reviewer: {
