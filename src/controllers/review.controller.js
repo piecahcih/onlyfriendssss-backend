@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.js"
-import { createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllUsersReviews, getSpecificReview } from "../services/review.service.js"
+import { createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllUsersReviews, getSpecificReview, getUserById } from "../services/review.service.js"
 
 
 export async function reviewActivityCtrl(req, res, next) {
@@ -146,3 +146,23 @@ export async function getActivityReviewsByLocationCtrl(req, res, next) {
   })
 
 }
+
+
+
+
+
+export async function getUserCtrl(req, res, next) {
+  try {
+    const { userId } = req.params;
+    const user = await getUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.log(error);
+    next(error); 
+  }
+};

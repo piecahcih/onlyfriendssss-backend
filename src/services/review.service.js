@@ -121,3 +121,16 @@ export async function getUserReviews(userId) {
     orderBy: { createdAt: 'desc' }
   })
 }
+
+export async function getUserById (userId) {
+  return await prisma.user.findUnique({
+    where: {
+      id: Number(userId),
+    },
+    select: {
+      id: true,
+      username: true,
+      profileImg: true,
+    },
+  });
+};
