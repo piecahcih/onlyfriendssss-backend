@@ -73,6 +73,11 @@ enum MessageType {
   SYSTEM
 }
 
+enum ReviewType {
+  PERSON
+  ACTIVITY
+}
+
 model User {
   id           Int          @id @default(autoincrement())
   username     String?      @unique
@@ -158,11 +163,12 @@ model Place {
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  rating    Int
-  comment   String?  @db.Text
-  imageUrl  String?
-  createdAt DateTime @default(now())
+  id         Int        @id @default(autoincrement())
+  rating     Int
+  comment    String?    @db.Text
+  imageUrl   String?
+  reviewType ReviewType
+  createdAt  DateTime   @default(now())
 
   reviewerId Int
   reviewer   User @relation("Reviewer", fields: [reviewerId], references: id, onDelete: Cascade)

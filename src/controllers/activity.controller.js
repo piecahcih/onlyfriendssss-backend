@@ -1,4 +1,4 @@
-import { changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId } from "../services/activity.service.js";
+import { cancelActivityStatus, changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId } from "../services/activity.service.js";
 import createHttpError from 'http-errors'
 
 export async function getAllActivitiesCtrl(req, res, next) {
@@ -137,9 +137,8 @@ export async function editActivityByIdCtrl(req, res, next) {
     const { id } = req.result
     const { activityid } = req.params
     const { maxParticipants, isPublic, category, title, description, eventStartTime, eventEndTime, placeName, address, latitude, longitude } = req.body
-    const eventStTime = new Date(eventStartTime)
 
-    if (eventStTime < new Date()) {
+    if (new Date(eventStartTime) < new Date()) {
         return next(createHttpError[400]('Event start time cannot be in the past.'))
     }
 
@@ -150,7 +149,7 @@ export async function editActivityByIdCtrl(req, res, next) {
             return next(createHttpError[400]('Event end time cannot be in the past.'))
         }
 
-        if (eventStTime >= eventETime) {
+        if (new Date(eventStartTime) >= eventETime) {
             return next(createHttpError[400]('Event start time must be before event end time.'))
         }
     }
@@ -185,7 +184,7 @@ export async function editActivityByIdCtrl(req, res, next) {
         Editdata.eventEndTime = new Date(eventEndTime)
     }
     if (maxParticipants) {
-        Adata.maxParticipants = Number(maxParticipants)
+        Editdata.maxParticipants = Number(maxParticipants)
     }
 
     const editActivity = await editActivityById(id, Number(activityid), Editdata, localFilePath)
@@ -210,6 +209,23 @@ export async function changeActivityStatusCtrl(req, res, next) {
     res.json({
         message: "Activity Status changed successfully",
         activities: statusActivity
+    })
+}
+
+export async function cancelActivityStatusCtrl(req, res, next) {
+    const { id } = req.result
+    const { activityid } = req.params
+
+    const activity = await getActivityById(Number(activityid))
+    if (!activity) return next(createHttpError[404]('Activity not found'))
+    if (activity.hostId !== id) {
+        return next(createHttpError[403]('Only the host can cancel this activity!'))
+    }
+
+    const cancelActivity = await cancelActivityStatus(Number(activityid))
+    res.json({
+        message: "Cancelled activity successfully",
+        activities: cancelActivity
     })
 }
 

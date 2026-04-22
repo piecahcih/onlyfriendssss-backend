@@ -1,5 +1,5 @@
 @baseURL = http://localhost:3999
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc2MDgwODAyLCJleHAiOjE3Nzg2NzI4MDJ9.IsAXM53COB-wkIPfDZkfxuswwlG-3m954sbXczj_dg4
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc2ODI4OTk2LCJleHAiOjE3Nzk0MjA5OTZ9.vW5ecNhg7QtpT_jMOeMeFEEd4kkxkuKJsoFmK-YpplQ
 
 
 ### Login
@@ -57,10 +57,51 @@ Content-Type: application/json
     "status": "FULL"
 }
 
+### activity edit
+PATCH {{baseURL}}/api/activity/31
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "maxParticipants": 15,
+  "isPublic": true,
+  "category": "HEALTH",
+  "title": "Morning Run & Stretching",
+  "description": "Join us for a casual 5k run around the park followed by a 30-minute stretching session. All fitness levels welcome! We'll meet by the main gates.",
+  "eventStartTime": "2026-04-25T07:00:00.000Z",
+  "eventEndTime": "2026-04-25T08:30:00.000Z",
+  "placeName": "Lumphini Park",
+  "address": "Rama IV Rd, Lumphini, Pathum Wan, Bangkok 10330, Thailand",
+  "latitude": 13.730833,
+  "longitude": 100.541667
+}
+
 
 
 
 ##################PROFILE
 ### GET profile
 GET {{baseURL}}/api/account/profile
+
+
+
+##################REVIEWS
+### GET all user reviews
+GET {{baseURL}}/api/review/users
+
+### GET all WHO reviews me
+GET {{baseURL}}/api/review/who-reviews-me
 Authorization: Bearer {{token}}
+
+### GET all act reviews
+GET {{baseURL}}/api/review/activities
+
+### GET specific review
+GET {{baseURL}}/api/review/1
+
+### GET act reviews
+GET {{baseURL}}/api/review/activity/1
+
+### GET location reviews
+GET {{baseURL}}/api/review/place/1
+

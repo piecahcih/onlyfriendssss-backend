@@ -19,6 +19,7 @@ export async function getAllActivities() {
 export async function getAllCurrentActivities() {
     return await prisma.activity.findMany({
         where: {
+            status: { not: 'CANCELLED' },
             eventStartTime: { gte: new Date() }
         },
         orderBy: { id: 'desc' },
@@ -110,7 +111,11 @@ export async function getActivityById(activityId) {
 
 export async function getActivityByCategory(category) {
     return await prisma.activity.findMany({
-        where: { category: category },
+        where: {
+            status: { not: 'CANCELLED' },
+            eventStartTime: { gte: new Date() },
+            category: category
+        },
         orderBy: { id: 'desc' },
         include: {
             place: true,
@@ -173,9 +178,6 @@ export async function createActivity(Adata, localFilePath) {
 }
 
 export async function getOrAddPlaceId(placeName, address, latitude, longitude) {
-    // const existingPlace = await prisma.place.findUnique({
-    //     where: { latitude: latitude , longtitude: longtitude }
-    // })
 
     const tolerance = 0.001 //0.001degrees ~ 111 meters
 
@@ -205,7 +207,7 @@ export async function getOrAddPlaceId(placeName, address, latitude, longitude) {
 export async function editActivityById(userid, activityId, Editdata, localFilePath) {
     let oldCoverPhoto = null;
 
-    const existingActivity = await prisma.activity.findUnique({
+    const existingActivity = await prisma.activity.findFirst({
         where: { hostId: userid, id: activityId },
     })
     oldCoverPhoto = existingActivity?.coverPhoto
@@ -238,7 +240,7 @@ export async function editActivityById(userid, activityId, Editdata, localFilePa
     }
 
     await prisma.activity.update({
-        where: { hostId: userid, id: activityId },
+        where: { id: activityId },
         data: Editdata
     })
 
@@ -270,6 +272,13 @@ export async function changeActivityStatus(activityId, status) {
     return await prisma.activity.update({
         where: { id: activityId },
         data: { status: status }
+    })
+}
+
+export async function cancelActivityStatus(activityId) {
+    return await prisma.activity.update({
+        where: { id: activityId },
+        data: { status: 'CANCELLED' }
     })
 }
 
