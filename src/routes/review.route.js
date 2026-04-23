@@ -6,6 +6,8 @@ import uploads from '../middlewares/upload.middleware.js'
 const reviewRouter = express.Router()
 
 reviewRouter.get('/activity-score', authCheckUser, getActivityRatingScoreCtrl)
+// reviewRouter.get('/user-score', authCheckUser, getActivityRatingScoreCtrl)
+// reviewRouter.get('/location-score', authCheckUser, getActivityRatingScoreCtrl)
 reviewRouter.get('/users', getAllUsersReviewsCtrl)
 reviewRouter.get('/who-reviews-me', authCheckUser, getAllReviewsMeCtrl)
 reviewRouter.get('/activities', getAllActivitiessReviewsCtrl)
