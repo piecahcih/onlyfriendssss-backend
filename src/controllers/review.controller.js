@@ -11,14 +11,14 @@ export async function reviewActivityCtrl(req, res, next) {
     }
 
     const { activityId } = req.params
-    const { rating, comment, imageUrl } = req.body
+    const { rating, comment } = req.body
     const reviewerId = user.id
+    const localFilePaths = req.files ? req.files.map(file => file.path) : []
 
     const result = await createActivityReview(reviewerId, activityId, {
       rating,
       comment,
-      imageUrl
-    })
+    }, localFilePaths)
 
     res.json({
       message: 'Review Submitted',

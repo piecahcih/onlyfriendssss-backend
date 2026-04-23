@@ -166,7 +166,7 @@ model Review {
   id         Int        @id @default(autoincrement())
   rating     Int
   comment    String?    @db.Text
-  imageUrl   String?
+  imageUrl   String?      @db.LongText
   reviewType ReviewType
   createdAt  DateTime   @default(now())
 
