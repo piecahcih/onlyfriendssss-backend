@@ -145,6 +145,26 @@ export const getActivityReviewsByLocation = async (placeid) => {
   })
 }
 
+export const checkExistingReview =  async (reviewerId, activityId) => {
+  return await prisma.review.findFirst({
+    where: { 
+      reviewType: 'ACTIVITY',
+      reviewerId: Number(reviewid), 
+      activityId: Number(activityId) },
+  })
+}
+
+export const checkExistingPeerReview =  async (reviewerId, activityId, receiverId) => {
+  return await prisma.review.findFirst({
+    where: { 
+      reviewType: 'PERSON',
+      reviewerId: Number(reviewid), 
+      activityId: Number(activityId), 
+      receiverId: Number(receiverId) },
+  })
+}
+
+
 export const createUserReview = async (reviewerId, activityId, receiverId, data) => {
   // ตรวจสอบว่าเคยรีวิวคนนี้ในกิจกรรมนี้ไปแล้วหรือยัง
   const existingReview = await prisma.review.findFirst({
