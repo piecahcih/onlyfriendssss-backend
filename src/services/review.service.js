@@ -60,6 +60,9 @@ export const getAllReviewsMe = async (id) => {
       reviewType: 'PERSON'
     },
     include: {
+      activity: {
+        select: { id: true,coverPhoto:true }
+      },
       reviewer: {
         select: { id: true, username: true, profileImg: true }
       }
@@ -225,3 +228,96 @@ export async function getUserById (userId) {
     },
   });
 };
+
+
+export const getActivityRatings = async () => {
+       const activities = await prisma.activity.findMany({
+         include: {
+           host: { select: { username: true, profileImg: true } },
+           place: true,
+           reviews: {
+            where: { reviewType: "ACTIVITY" },
+            select: { rating: true },
+         },
+          _count: {
+            select: { reviews: { where: { reviewType: "ACTIVITY" } } },
+          },
+        },
+      });
+   
+      return activities.map((act) => {
+        const total = act.reviews.reduce((acc, curr) => acc + curr.rating, 0);
+        const avg = act.reviews.length > 0 ? total / act.reviews.length : 0;
+        const { reviews, ...rest } = act;
+        return {
+          ...rest,
+          averageRating: Number(avg.toFixed(1)),
+          reviewCount: act._count.reviews,
+        };
+      });
+    };
+   
+
+
+
+    export const getUserRatings = async () => {
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          username: true,
+          firstName: true,
+          lastName: true,
+          profileImg: true,
+          reviewsReceived: {
+            where: { reviewType: "PERSON" },
+            select: { rating: true },
+          },
+          _count: {
+            select: { reviewsReceived: { where: { reviewType: "PERSON" } } },
+          },
+        },
+      });
+   
+      return users.map((user) => {
+        const total = user.reviewsReceived.reduce((acc, curr) => acc + curr.rating, 0);
+        const avg = user.reviewsReceived.length > 0 ? total / user.reviewsReceived.length : 0;
+        const { reviewsReceived, ...rest } = user;
+        return {
+          ...rest,
+          averageRating: Number(avg.toFixed(1)),
+          reviewCount: user._count.reviewsReceived,
+        };
+      });
+    };
+   
+
+
+    
+    export const getPlaceRatings = async () => {
+      const places = await prisma.place.findMany({
+        include: {
+          activities: {
+            include: {
+              reviews: {
+                where: { reviewType: "ACTIVITY" },
+                select: { rating: true },
+              },
+            },
+          },
+        },
+      });
+   
+      return places.map((place) => {
+        // รวมรีวิวจากทุก Activity ที่เคยจัดในสถานที่นี้
+        const allReviews = place.activities.flatMap((act) => act.reviews);
+        const total = allReviews.reduce((acc, curr) => acc + curr.rating, 0);
+        const avg = allReviews.length > 0 ? total / allReviews.length : 0;
+   
+        const { activities, ...rest } = place;
+        return {
+          ...rest,
+          averageRating: Number(avg.toFixed(1)),
+          reviewCount: allReviews.length,
+        };
+      });
+    };

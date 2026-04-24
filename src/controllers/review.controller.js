@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.js"
-import { checkExistingPeerReview, checkExistingReview, createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllReviewsMe, getAllUsersReviews, getSpecificReview, getUserById } from "../services/review.service.js"
+import { checkExistingPeerReview, checkExistingReview, createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllReviewsMe, getAllUsersReviews, getSpecificReview, getUserById ,getActivityRatings,getUserRatings,getPlaceRatings } from "../services/review.service.js"
 import createHttpError from 'http-errors'
 
 export async function reviewActivityCtrl(req, res, next) {
@@ -70,40 +70,6 @@ export async function reviewUserCtrl(req, res, next) {
     next(error)
   }
 }
-
-
-
-
-export async function getActivityRatingScoreCtrl(req, res, next) {
-  try {
-    const activities = await prisma.activity.findMany({
-      include: {
-        host: { select: { username: true } },
-        place: true,
-        reviews: {
-          where: { reviewType: 'ACTIVITY' },
-          select: { rating: true }
-        }
-      }
-    })
-
-    // คำนวณ rating เฉลี่ยในแต่ละ activity
-    const data = activities.map(act => {
-      const total = act.reviews.reduce((acc, curr) => acc + curr.rating, 0)
-      const avg = act.reviews.length > 0 ? total / act.reviews.length : 0
-      return {
-        ...act,
-        averageRating: avg.toFixed(1),
-        reviewCount: act.reviews.length
-      }
-    })
-
-    res.json(data)
-  } catch (error) {
-    next(error)
-  }
-}
-
 
 
 
@@ -207,3 +173,32 @@ export async function getUserCtrl(req, res, next) {
     next(error); 
   }
 };
+
+
+
+export async function getActivityRatingsCtrl (req, res, next)  {
+       try {
+         const data = await getActivityRatings();
+         res.json(data);
+       } catch (error) {
+         next(error);
+       }
+    };
+   
+  export async function getUserRatingsCtrl (req, res, next)  {
+      try {
+        const data = await getUserRatings();
+        res.json(data);
+      } catch (error) {
+        next(error);
+      }
+    };
+   
+  export async function getPlaceRatingsCtrl (req, res, next)  {
+      try {
+        const data = await getPlaceRatings();
+        res.json(data);
+      } catch (error) {
+        next(error);
+      }
+    };
