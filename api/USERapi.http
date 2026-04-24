@@ -13,6 +13,13 @@ Content-Type: application/json
 
 
 
+##################INTEREST
+### GET interests on this acc
+GET {{baseURL}}/api/interest
+Authorization: Bearer {{token}}
+
+
+
 ##################ACTIVITY
 ### GET act
 GET {{baseURL}}/api/activity
