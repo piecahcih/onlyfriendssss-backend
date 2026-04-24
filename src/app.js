@@ -13,6 +13,7 @@ import { createServer } from 'node:http'
 import chatRoute from "./routes/chat.route.js";
 import { initSocket } from "./socket/index.js";
 import reviewRouter from "./routes/review.route.js";
+import interestRoute from "./routes/interest.route.js";
 
 const app = express();
 const server = createServer(app)
@@ -36,6 +37,7 @@ app.use('/api/account', accountRoute)
 app.use('/api/wishlist', wishlistRouter)
 app.use('/api/join', joinRouter)
 app.use("/api/chat", chatRoute);
+app.use("/api/interest", interestRoute);
 
 initSocket(server) //Path แยก
 app.use('/api/review', reviewRouter)
