@@ -1,12 +1,50 @@
 import { prisma } from "../lib/prisma.js";
+import cloudinary from "../../config/cloudinary.js";
+import fs from "fs/promises";
+import path from "path";
 
+export const createActivityReview = async (reviewerId, activityId, data, localFilePaths) => {
+  // ตรวจสอบว่าเคยรีวิวกิจกรรมนี้ไปแล้วหรือยัง
+  const existingReview = await prisma.review.findFirst({
+    where: {
+      reviewerId: Number(reviewerId),
+      activityId: Number(activityId),
+      reviewType: 'ACTIVITY'
+    }
+  });
 
-export const createActivityReview = async (reviewerId, activityId, data) => {
+  if (existingReview) {
+    throw new Error("You have already reviewed this activity");
+  }
+
+  let imageUrls = [];
+
+  if (localFilePaths && localFilePaths.length > 0) {
+    console.log(`Uploading ${localFilePaths.length} images to Cloudinary...`);
+    for (const localFilePath of localFilePaths) {
+      const absolutePath = path.isAbsolute(localFilePath)
+        ? localFilePath
+        : path.join(process.cwd(), localFilePath);
+
+      try {
+        const uploadResult = await cloudinary.uploader.upload(absolutePath, {
+          folder: "review_images",
+        });
+        imageUrls.push(uploadResult.secure_url);
+        console.log(`Uploaded: ${uploadResult.secure_url}`);
+        await fs.unlink(absolutePath).catch(() => {});
+      } catch (uploadErr) {
+        console.error("Cloudinary Upload Error for file:", localFilePath, uploadErr);
+        await fs.unlink(absolutePath).catch(() => { });
+      }
+    }
+  }
+
   return await prisma.review.create({
     data: {
       rating: Number(data.rating),
       comment: data.comment,
-      imageUrl: data.imageUrl,
+      imageUrl: imageUrls.length > 0 ? JSON.stringify(imageUrls) : null,
       reviewType: 'ACTIVITY',
       reviewerId: Number(reviewerId),
       activityId: Number(activityId),
@@ -51,7 +89,9 @@ export const getAllActivitiesReviews = async () => {
       reviewType: 'ACTIVITY'
     },
     include: {
-      activity: true,
+      activity: {
+        include: { place: true }
+      },
       reviewer: {
         select: { id: true, username: true, profileImg: true }
       }
@@ -91,8 +131,10 @@ export const getSpecificReview = async (reviewid) => {
 export const getActivityReviewsByLocation = async (placeid) => {
   return await prisma.review.findMany({
     where: {
-      activityId: { placeId: placeid },
-      reviewType: 'ACTIVITY'
+      reviewType: 'ACTIVITY',
+      activity: {
+        placeId: Number(placeid)
+      }
     },
     include: {
       activity: {
@@ -101,11 +143,46 @@ export const getActivityReviewsByLocation = async (placeid) => {
       reviewer: {
         select: { id: true, username: true, profileImg: true }
       }
-    }
+    },
+    orderBy: { createdAt: 'desc' }
   })
 }
 
+export const checkExistingReview =  async (reviewerId, activityId) => {
+  return await prisma.review.findFirst({
+    where: { 
+      reviewType: 'ACTIVITY',
+      reviewerId: Number(reviewid), 
+      activityId: Number(activityId) },
+  })
+}
+
+export const checkExistingPeerReview =  async (reviewerId, activityId, receiverId) => {
+  return await prisma.review.findFirst({
+    where: { 
+      reviewType: 'PERSON',
+      reviewerId: Number(reviewid), 
+      activityId: Number(activityId), 
+      receiverId: Number(receiverId) },
+  })
+}
+
+
 export const createUserReview = async (reviewerId, activityId, receiverId, data) => {
+  // ตรวจสอบว่าเคยรีวิวคนนี้ในกิจกรรมนี้ไปแล้วหรือยัง
+  const existingReview = await prisma.review.findFirst({
+    where: {
+      reviewerId: Number(reviewerId),
+      activityId: Number(activityId),
+      receiverId: Number(receiverId),
+      reviewType: 'PERSON'
+    }
+  });
+
+  if (existingReview) {
+    throw new Error("You have already reviewed this user for this activity");
+  }
+
   return await prisma.review.create({
     data: {
       rating: Number(data.rating),
