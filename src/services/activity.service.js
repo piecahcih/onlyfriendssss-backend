@@ -25,15 +25,22 @@ export async function getUpcomingActivities(userid) {
     return await prisma.activity.findMany({
         orderBy: { eventStartTime: 'asc' },
         where: { 
-            joinRequests: {
-                some: {
-                    userId: userid
-                }
-            },
             eventStartTime: {
-                    gte: now,
-                    lte: nextWeek
-            }},
+                gte: now,
+                lte: nextWeek
+            },
+            OR: [
+                { hostId: userid }, 
+                { 
+                    joinRequests: { 
+                        some: { 
+                            userId: userid,
+                            status: 'APPROVED'
+                        } 
+                    } 
+                } 
+            ]
+        },
         include: {
             place: true,
             host: true,
