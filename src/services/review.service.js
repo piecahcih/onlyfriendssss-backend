@@ -152,7 +152,7 @@ export const checkExistingReview =  async (reviewerId, activityId) => {
   return await prisma.review.findFirst({
     where: { 
       reviewType: 'ACTIVITY',
-      reviewerId: Number(reviewid), 
+      reviewerId: Number(reviewerId), 
       activityId: Number(activityId) },
   })
 }
@@ -161,7 +161,7 @@ export const checkExistingPeerReview =  async (reviewerId, activityId, receiverI
   return await prisma.review.findFirst({
     where: { 
       reviewType: 'PERSON',
-      reviewerId: Number(reviewid), 
+      reviewerId: Number(reviewerId), 
       activityId: Number(activityId), 
       receiverId: Number(receiverId) },
   })
