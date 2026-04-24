@@ -18,9 +18,69 @@ export async function requestToJoin(io, userId, activityId) {
 
   if (!activity) throw new Error("Activity not found");
 
+  // 1. ห้ามเจ้าของกิจกรรมกดเข้าร่วมกิจกรรมตัวเอง
+  if (activity.hostId === userId) {
+    throw new Error("You are the host of this activity");
+  }
 
+  // 2. ตรวจสอบสถานะกิจกรรม
+  if (activity.status === 'CANCELLED' || activity.status === 'FINISHED') {
+    throw new Error("This activity is no longer available");
+  }
+
+  // 3. ตรวจสอบว่ากิจกรรมเริ่มไปแล้วหรือยัง
+  if (new Date(activity.eventStartTime) < new Date()) {
+    throw new Error("This activity has already started or passed");
+  }
+
+  // 4. ตรวจสอบจำนวนคนเต็ม
   if (activity.maxParticipants && activity._count.joinRequests >= activity.maxParticipants) {
     throw new Error("This activity is already full");
+  }
+
+  // 5. ตรวจสอบว่าเคยขอเข้าร่วมไปแล้วหรือยัง
+  const existingRequest = await prisma.joinRequest.findUnique({
+    where: { userId_activityId: { userId, activityId: Number(activityId) } }
+  });
+
+  if (existingRequest) {
+    if (existingRequest.status === 'APPROVED') throw new Error("You are already a participant");
+    if (existingRequest.status === 'PENDING') throw new Error("Your request is still pending");
+    // หากเคยโดนปฏิเสธหรือยกเลิกไปแล้ว ให้ลบของเก่าออกเพื่อสร้างใหม่
+    await prisma.joinRequest.delete({ where: { id: existingRequest.id } });
+  }
+
+  // 6. ตรวจสอบเวลาทับซ้อน (Time Overlap) + Buffer 30 นาที
+  const BUFFER_MS = 30 * 60 * 1000; // 30 mins
+  const DEFAULT_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
+
+  const newStart = new Date(activity.eventStartTime).getTime();
+  const newEnd = activity.eventEndTime 
+    ? new Date(activity.eventEndTime).getTime() 
+    : newStart + DEFAULT_DURATION_MS;
+
+  // ดึงกิจกรรมที่ User เป็น Host หรือ เข้าร่วมอยู่ (เฉพาะที่ยังไม่จบ/ไม่ยกเลิก)
+  const userActivities = await prisma.activity.findMany({
+    where: {
+      OR: [
+        { hostId: userId },
+        { joinRequests: { some: { userId: userId, status: 'APPROVED' } } }
+      ],
+      status: { notIn: ['CANCELLED', 'FINISHED'] },
+      eventStartTime: { gte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000) } // เช็คย้อนหลัง 1 วันถึงอนาคต
+    }
+  });
+
+  for (const act of userActivities) {
+    const actStart = new Date(act.eventStartTime).getTime();
+    const actEnd = act.eventEndTime 
+      ? new Date(act.eventEndTime).getTime() 
+      : actStart + DEFAULT_DURATION_MS;
+
+    // สูตรเช็ค Overlap: (StartA < EndB + Buffer) && (EndA + Buffer > StartB)
+    if (newStart < (actEnd + BUFFER_MS) && (newEnd + BUFFER_MS) > actStart) {
+      throw new Error(`Time conflict: You have another activity "${act.title}" around this time (including 30-min travel/rest buffer).`);
+    }
   }
 
   const targetStatus = activity.isPublic ? 'APPROVED' : 'PENDING';
