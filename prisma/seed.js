@@ -7,6 +7,7 @@ import { oldActivityData } from '../data/oldActivities.js'
 import { friendshipData } from '../data/friendship.js';
 import { activityReviewData } from '../data/activitiesReview.js';
 import { userReviewData } from '../data/userReview.js';
+import { interestData } from '../data/interest.js';
 
 async function main() {
   console.log("Clear Data...");
@@ -26,6 +27,10 @@ async function main() {
     console.log(`Start seeding...`)
     const createdUsers = await prisma.user.createMany({
         data: userData,
+        skipDuplicates: true
+    })
+    const createdInterests = await prisma.interest.createMany({
+        data: interestData,
         skipDuplicates: true
     })
     const createdPlaces = await prisma.place.createMany({
@@ -56,11 +61,11 @@ async function main() {
   });
 
   console.log(`Created : ${createdUsers.count} users`);
+  console.log(`Created : ${createdInterests.count} interests`);
   console.log(`Created : ${createdPlaces.count} places`);
   console.log(`Created : ${createdActivities.count} activities`);
   console.log(`Created : ${createdJoinRequest.count} join requests`);
   console.log(`Created : ${createdReviews.count} reviews`);
-  // console.log(`Created : ${createdJoinRequest.count} join requests`);
   console.log(`Created : ${ceratedFriendships.count} friendships`);
 }
 
