@@ -27,7 +27,7 @@ export async function sendRequestCtrl(req, res, next) {
     const receiverId = req.params.id;
     const result = await sendFriendRequest(senderId, receiverId);
     res.status(201).json({
-      message: "ส่งคำขอเป็นเพื่อนแล้ว",
+      message: "Friend request sent.",
       data: result,
     });
   } catch (error) {
@@ -44,7 +44,7 @@ export async function acceptRequestCtrl(req, res, next) {
     const result = await acceptFriendRequest(userId, friendshipId);
 
     res.json({
-      message: "รับเป็นเพื่อนเรียบร้อยแล้ว",
+      message: "Friend request accepted.",
       data: result,
     });
   } catch (error) {
@@ -60,7 +60,7 @@ export async function unfriendCtrl(req, res, next) {
 
     await unfriend(userId, friendshipId);
 
-    res.json({ message: "ลบความสัมพันธ์เพื่อนแล้ว" });
+    res.json({ message: "Friendship removed" });
   } catch (error) {
     next(error);
   }

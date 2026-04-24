@@ -62,6 +62,17 @@ enum ActivityInterest {
   workstation
 }
 
+enum ChatRoomType {
+  ACTIVITY
+  PRIVATE
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  SYSTEM
+}
+
 enum ReviewType {
   PERSON
   ACTIVITY
@@ -97,6 +108,7 @@ model User {
 
   sentFriendRequests     FriendShip[] @relation("SentFriendRequests")
   receivedFriendRequests FriendShip[] @relation("ReceivedFriendRequests")
+  chatMembers            ChatMember[]
 }
 
 model Activity {
@@ -122,7 +134,7 @@ model Activity {
   reviews      Review[]
   wishlist     Wishlist[]
 
-  chatGroup ChatGroup?
+  chatRoom ChatRoom?
 }
 
 model JoinRequest {
@@ -154,7 +166,7 @@ model Review {
   id         Int        @id @default(autoincrement())
   rating     Int
   comment    String?    @db.Text
-  imageUrl   String?
+  imageUrl   String?      @db.LongText
   reviewType ReviewType
   createdAt  DateTime   @default(now())
 
@@ -210,21 +222,47 @@ model VisitedPlace {
   place   Place    @relation(fields: [placeId], references: id)
 }
 
-model ChatGroup {
-  id         Int       @id @default(autoincrement())
-  activityId Int       @unique
-  activity   Activity  @relation(fields: [activityId], references: id, onDelete: Cascade)
+model ChatRoom {
+  id         Int          @id @default(autoincrement())
+  type       ChatRoomType
+  createdAt  DateTime     @default(now())
+  activityId Int?         @unique
+  activity   Activity?    @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  pairKey    String?      @unique
+  members    ChatMember[]
   messages   Message[]
 }
 
+model ChatMember {
+  id                Int       @id @default(autoincrement())
+  roomId            Int
+  userId            Int
+  joinedAt          DateTime  @default(now())
+  lastReadMessageId Int?
+  lastReadAt        DateTime?
+  room              ChatRoom  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+  @@index([userId])
+}
+
 model Message {
-  id          Int       @id @default(autoincrement())
-  content     String    @db.Text
-  createdAt   DateTime  @default(now())
-  senderId    Int
-  sender      User      @relation(fields: [senderId], references: id, onDelete: Cascade)
-  chatGroupId Int
-  chatGroup   ChatGroup @relation(fields: [chatGroupId], references: id, onDelete: Cascade)
+  id              Int         @id @default(autoincrement())
+  roomId          Int
+  senderId        Int
+  content         String      @db.Text
+  type            MessageType @default(TEXT)
+  createdAt       DateTime    @default(now())
+  editedAt        DateTime?
+  deletedAt       DateTime?
+  clientMessageId String?
+
+  room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, createdAt])
+  @@index([senderId])
 }
 
 model Interest {

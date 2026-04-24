@@ -28,7 +28,7 @@ export async function sendFriendRequest(senderId, receiverId) {
   const targetId = Number(receiverId);
   //ห้ามแอดตัวเอง
   if (senderId === targetId) {
-    const error = new Error("คุณไม่สามารถเพิ่มตัวเองเป็นเพื่อนได้");
+    const error = new Error("You cannot add yourself as a friend");
     error.statusCode = 400;
     throw error;
   }
@@ -43,7 +43,7 @@ export async function sendFriendRequest(senderId, receiverId) {
   });
   if (existingRelationship) {
     const error = new Error(
-      "คุณและผู้ใช้นี้เป็นเพื่อนกันอยู่แล้วหรือมีคำขอที่ค้างอยู่",
+      "You are already friends with this user or have a pending request",
     );
     error.statusCode = 400;
     throw error;
@@ -84,22 +84,36 @@ export async function acceptFriendRequest(userId, friendshipId) {
     where: { id: fId },
   });
 
-  if (!request) {
-    const error = new Error("ไม่พบคำขอเป็นเพื่อนนี้");
-    error.statusCode = 404;
-    throw error;
-  }
-  // กันมากดรับเอง
-  if (request.receiverId !== uId) {
-    const error = new Error("คุณไม่มีสิทธิ์ตอบรับคำขอนี้");
-    error.statusCode = 403;
-    throw error;
-  }
-  // 2. อัปเดตสถานะเป็น ACCEPTED
-  return await prisma.friendShip.update({
+  if (!request) throw new Error("Friend request not found");
+  if (request.receiverId !== uId) throw new Error("You are not authorized to accept this request.");
+
+  // อัปเดตสถานะเป็น ACCEPTED
+  const friendship = await prisma.friendShip.update({
     where: { id: fId },
     data: { status: "ACCEPTED" },
   });
+
+  //เพิ่มของChat : สร้างห้องแชทส่วนตัว (Private Chat)
+  //สร้าง pairKey โดยเรียง ID น้อยไปมาก 
+  const userIds = [friendship.senderId, friendship.receiverId].sort((a, b) => a - b);
+  const pairKey = `${userIds[0]}_${userIds[1]}`;
+
+  await prisma.chatRoom.upsert({
+    where: { pairKey: pairKey },
+    update: {}, // ถ้ามีห้องอยู่แล้วไม่ต้องทำอะไร
+    create: {
+      type: 'PRIVATE',
+      pairKey: pairKey,
+      members: {
+        create: [
+          { userId: friendship.senderId },
+          { userId: friendship.receiverId }
+        ]
+      }
+    }
+  });
+
+  return friendship;
 }
 
 //ลบเพื่อน
@@ -111,13 +125,13 @@ export async function unfriend(userId, friendshipId) {
     where: { id: fId },
   });
   if (!friendship) {
-    const error = new Error("ไม่พบข้อมูลความสัมพันะ์เพื่อนคนนี้");
+    const error = new Error("Friendship not found");
     error.statusCode = 404;
     throw error;
   }
 
   if (friendship.senderId !== uId && friendship.receiverId !== uId) {
-    const error = new Error("คุณไม่มีสิทธิ์ลบความสัมพันะ์เพื่อนคนนี้");
+    const error = new Error("You are not authorized to remove this friendship.");
     error.statusCode = 403;
     throw error;
   }
