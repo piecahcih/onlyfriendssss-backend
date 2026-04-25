@@ -154,7 +154,7 @@ export const checkExistingReview = async (reviewerId, activityId) => {
   return await prisma.review.findFirst({
     where: {
       reviewType: 'ACTIVITY',
-      reviewerId: Number(reviewid),
+      reviewerId: Number(reviewerId),
       activityId: Number(activityId)
     },
   })
@@ -164,7 +164,7 @@ export const checkExistingPeerReview = async (reviewerId, activityId, receiverId
   return await prisma.review.findFirst({
     where: {
       reviewType: 'PERSON',
-      reviewerId: Number(reviewid),
+      reviewerId: Number(reviewerId),
       activityId: Number(activityId),
       receiverId: Number(receiverId)
     },
@@ -187,23 +187,7 @@ export const createUserReview = async (io, reviewerId, activityId, receiverId, d
     throw new Error("You have already reviewed this user for this activity");
   }
 
-  await createNoti({
-    userId: Number(receiverId),
-    senderId: Number(reviewerId),
-    type: "NEW_REVIEW",
-    message: "gave you a review",
-    refId: review.id,
-  });
-
-  sendNotification(io, {
-    userId: Number(receiverId),
-    senderId: Number(reviewerId),
-    type: "NEW_REVIEW",
-    message: "gave you a review",
-    refId: review.id,
-  });
-
-  return await prisma.review.create({
+  const review = await prisma.review.create({
     data: {
       rating: Number(data.rating),
       comment: data.comment,
@@ -214,6 +198,29 @@ export const createUserReview = async (io, reviewerId, activityId, receiverId, d
       receiverId: Number(receiverId)
     }
   })
+
+  const reviewer = await getUserById(reviewerId);
+  const notificationMessage = `${reviewer?.username || 'Someone'} gave you a review`;
+
+  await createNoti({
+    userId: Number(receiverId),
+    senderId: Number(reviewerId),
+    type: "NEW_REVIEW",
+    message: notificationMessage,
+    refId: review.id,
+  });
+
+  if (io) {
+    sendNotification(io, {
+      userId: Number(receiverId),
+      senderId: Number(reviewerId),
+      type: "NEW_REVIEW",
+      message: notificationMessage,
+      refId: review.id,
+    });
+  }
+
+  return review;
 }
 
 export async function getUserReviews(userId) {

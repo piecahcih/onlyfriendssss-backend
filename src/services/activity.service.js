@@ -102,6 +102,7 @@ export async function getActivityById(activityId) {
         include: {
             place: true,
             host: true,
+            chatRoom: true,
             joinRequests: {
                 include: { user: true }
             }

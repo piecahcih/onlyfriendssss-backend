@@ -57,7 +57,7 @@ export async function reviewUserCtrl(req, res, next) {
       return next(createHttpError[409]('You have already reviewed this user at this activity'))
     }
 
-    const result = await createUserReview(reviewerId, activityId, receiverId, {
+    const result = await createUserReview(io, reviewerId, activityId, receiverId, {
       rating,
       comment,
       imageUrl

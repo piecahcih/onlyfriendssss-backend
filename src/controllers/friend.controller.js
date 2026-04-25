@@ -46,6 +46,8 @@ export async function acceptRequestCtrl(req, res, next) {
 
     const result = await acceptFriendRequest(io, userId, friendshipId);
 
+    console.log('result', result)
+
     res.json({
       message: "Friend request accepted.",
       data: result,
