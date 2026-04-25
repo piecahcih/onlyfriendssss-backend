@@ -56,10 +56,55 @@ enum ActivityInterest {
   health
   art
   travel
-  entertainment
   sport
   volunteer
-  workstation
+  gaming
+
+  // Food & Drink
+  cafe_hopping
+  street_food
+  fine_dining
+  cooking_baking
+  drinks_nightout
+
+  // Health & Active
+  gym_workout
+  yoga_pilates
+  running_marathon
+  mental_wellness
+  team_sports
+
+  // Art & Culture
+  museum_gallery
+  photography
+  crafting_diy
+  live_music
+  book_club
+
+  // Entertainment & Fun
+  movies_cinema
+  board_games
+  video_games
+  karaoke
+  concerts_festivals
+
+  // Travel & Adventure
+  backpacking
+  road_trip
+  beach_vibes
+  hiking_trekking
+  sightseeing
+}
+
+enum ChatRoomType {
+  ACTIVITY
+  PRIVATE
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  SYSTEM
 }
 
 enum ChatRoomType {

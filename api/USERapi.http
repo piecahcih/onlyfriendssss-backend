@@ -13,6 +13,13 @@ Content-Type: application/json
 
 
 
+##################INTEREST
+### GET interests on this acc
+GET {{baseURL}}/api/interest
+Authorization: Bearer {{token}}
+
+
+
 ##################ACTIVITY
 ### GET act
 GET {{baseURL}}/api/activity
@@ -77,6 +84,9 @@ Content-Type: application/json
 }
 
 
+### GET all UPCOMING act me
+GET {{baseURL}}/api/activity/upcoming-activities
+Authorization: Bearer {{token}}
 
 
 ##################PROFILE
@@ -88,6 +98,7 @@ GET {{baseURL}}/api/account/profile
 ##################REVIEWS
 ### GET all user reviews
 GET {{baseURL}}/api/review/users
+
 
 ### GET all WHO reviews me
 GET {{baseURL}}/api/review/who-reviews-me
