@@ -67,6 +67,19 @@ export const updateMeCtrl = async (req, res, next) => {
   }
 };
 
+export const getUserProfileCtrl = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const user = await accountService.getUserById(userId);
+    if (!user.success) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ user: user.data });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const deleteMeCtrl = async (req, res, next) => {
   try {
     const userId = req.result.id;

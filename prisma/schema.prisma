@@ -107,17 +107,6 @@ enum MessageType {
   SYSTEM
 }
 
-enum ChatRoomType {
-  ACTIVITY
-  PRIVATE
-}
-
-enum MessageType {
-  TEXT
-  IMAGE
-  SYSTEM
-}
-
 enum ReviewType {
   PERSON
   ACTIVITY
