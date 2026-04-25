@@ -42,6 +42,22 @@ export const getUserById = async (userId) => {
           take: 10,
         },
 
+        joinRequests: {
+          where: {
+            status: "APPROVED"
+          },
+          select: {
+            activity: {
+              select: {
+                id: true,
+                title: true,
+                category: true,
+                coverPhoto: true,
+              }
+            }
+          }
+        },
+
         _count: {
           select: {
             createdActivities: true, // จำนวนกิจกรรมที่สร้าง
