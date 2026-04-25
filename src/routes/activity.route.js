@@ -1,5 +1,5 @@
 import express from 'express'
-import { cancelActivityStatusCtrl, changeActivityStatusCtrl, createActivityCtrl, deleteActivityByIdCtrl, editActivityByIdCtrl, getActivityByCategoryCtrl, getActivityByIdCtrl, getAllActivitiesCreatedByThisAccountCtrl, getAllActivitiesCtrl, getAllActivitiesJoinedByThisAccountCtrl, getAllCurrentActivitiesCtrl, getAllFinishedActivitiesOnThisAccountCtrl } from '../controllers/activity.controller.js'
+import { cancelActivityStatusCtrl, changeActivityStatusCtrl, createActivityCtrl, deleteActivityByIdCtrl, editActivityByIdCtrl, getActivityByCategoryCtrl, getActivityByIdCtrl, getAllActivitiesCreatedByThisAccountCtrl, getAllActivitiesCtrl, getAllActivitiesJoinedByThisAccountCtrl, getAllCurrentActivitiesCtrl, getAllFinishedActivitiesOnThisAccountCtrl, getUpcomingActivitiesCtrl } from '../controllers/activity.controller.js'
 import { authCheckUser } from '../middlewares/authenticate.js'
 import uploads from '../middlewares/upload.middleware.js'
 
@@ -7,6 +7,7 @@ const activityRoute = express.Router()
 
 activityRoute.get('/',getAllCurrentActivitiesCtrl)
 activityRoute.get('/all',getAllActivitiesCtrl)
+activityRoute.get('/upcoming-activities',authCheckUser ,getUpcomingActivitiesCtrl)
 activityRoute.get('/my-memories',authCheckUser ,getAllFinishedActivitiesOnThisAccountCtrl)
 activityRoute.get('/my-created-activities',authCheckUser ,getAllActivitiesCreatedByThisAccountCtrl)
 activityRoute.get('/my-joined-activities',authCheckUser ,getAllActivitiesJoinedByThisAccountCtrl)

@@ -1,8 +1,12 @@
-import { cancelActivityStatus, changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId } from "../services/activity.service.js";
+import { cancelActivityStatus, changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId, getUpcomingActivities } from "../services/activity.service.js";
 import createHttpError from 'http-errors'
 
 export async function getAllActivitiesCtrl(req, res, next) {
     const foundActivities = await getAllActivities()
+
+    if (!foundActivities) {
+        return next(createHttpError[404]('There\'s no activities'))
+    }
 
     res.json({
         message: "Get all activities successfully",
@@ -10,8 +14,30 @@ export async function getAllActivitiesCtrl(req, res, next) {
     })
 }
 
+export async function getUpcomingActivitiesCtrl(req, res, next) {
+    const { id } = req.result
+
+    console.log('id', id)
+    const foundUpcomingActivities = await getUpcomingActivities(id)
+    console.log('foundUpcomin', foundUpcomingActivities)
+
+    if (!foundUpcomingActivities) {
+        return next(createHttpError[404]('There\'s no upcoming activities'))
+    }
+
+    res.json({
+        message: "Get upcoming activities successfully",
+        activities: foundUpcomingActivities
+    })
+}
+
 export async function getAllCurrentActivitiesCtrl(req, res, next) {
     const foundActivities = await getAllCurrentActivities()
+
+    if (!foundActivities) {
+        return next(createHttpError[404]('There\'s no current activities'))
+    }
+
     res.json({
         message: "Get all current activities successfully",
         activities: foundActivities
@@ -22,6 +48,11 @@ export async function getAllFinishedActivitiesOnThisAccountCtrl(req, res, next) 
     const { id } = req.result
 
     const foundMyPastActivities = await getFinishedActivitiesOnThisAccount(id)
+
+    if (!foundMyPastActivities) {
+        return next(createHttpError[404]('There\'s no past activities'))
+    }
+
     res.json({
         message: "Successfully get all finished activities on this profile",
         activities: foundMyPastActivities
@@ -32,6 +63,11 @@ export async function getAllActivitiesCreatedByThisAccountCtrl(req, res, next) {
     const { id } = req.result
 
     const foundMyCreatedActivities = await getActivitiesCreatedByThisAccount(id)
+
+    if (!foundMyCreatedActivities) {
+        return next(createHttpError[404]('This account haven\'t create activity yet'))
+    }
+
     res.json({
         message: "Successfully get all activities created by this profile",
         activities: foundMyCreatedActivities
@@ -42,6 +78,11 @@ export async function getAllActivitiesJoinedByThisAccountCtrl(req, res, next) {
     const { id } = req.result
 
     const foundMyJoinedActivities = await getActivitiesJoinedByThisAccount(id)
+
+    if (!foundMyJoinedActivities) {
+        return next(createHttpError[404]('This account haven\'t joined any activity yet'))
+    }
+
     res.json({
         message: "Successfully get all activities joined by this profile",
         activities: foundMyJoinedActivities
@@ -67,6 +108,11 @@ export async function getActivityByCategoryCtrl(req, res, next) {
     const { category } = req.params
 
     const foundActivityByCategory = await getActivityByCategory(category.toUpperCase())
+
+    if (!foundActivityByCategory) {
+        return next(createHttpError[404]('There\'s no activity in this category'))
+    }
+
     res.json({
         message: "Get specific activity successfully",
         activities: foundActivityByCategory
