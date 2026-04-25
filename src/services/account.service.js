@@ -58,6 +58,20 @@ export const getUserById = async (userId) => {
           }
         },
 
+        createdActivities: {
+          select: {
+            id: true,
+            title: true,
+            category: true,
+            coverPhoto: true,
+            status: true,
+            eventStartTime: true,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+
         _count: {
           select: {
             createdActivities: true, // จำนวนกิจกรรมที่สร้าง
@@ -75,9 +89,20 @@ export const getUserById = async (userId) => {
       };
     }
 
+    // Fetch interests separately since it's not a defined relation in User model
+    const interests = await prisma.interest.findMany({
+      where: { userId: id },
+      select: {
+        category: true,
+      },
+    });
+
     return {
       success: true,
-      data: user,
+      data: {
+        ...user,
+        interests: interests,
+      },
     };
   } catch (error) {
     console.error("Error in getUserById implementation:", error);
@@ -103,11 +128,11 @@ export const updateUserProfile = async (userId, updateData, localFilePath) => {
       const absolutePath = path.isAbsolute(localFilePath)
         ? localFilePath
         : path.join(
-            process.cwd(),
-            "src",
-            "uploads",
-            path.basename(localFilePath),
-          );
+          process.cwd(),
+          "src",
+          "uploads",
+          path.basename(localFilePath),
+        );
 
       try {
         const uploadResult = await cloudinary.uploader.upload(absolutePath, {
@@ -121,7 +146,7 @@ export const updateUserProfile = async (userId, updateData, localFilePath) => {
       } catch (uploadErr) {
         console.error("Cloudinary Upload Error:", uploadErr);
 
-        await fs.unlink(absolutePath).catch(() => {});
+        await fs.unlink(absolutePath).catch(() => { });
         throw new Error("Failed to upload image to Cloudinary");
       }
     }
