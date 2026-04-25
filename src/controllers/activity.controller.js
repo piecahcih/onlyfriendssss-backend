@@ -1,195 +1,246 @@
-import { cancelActivityStatus, changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId } from "../services/activity.service.js";
+import { cancelActivityStatus, changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId, getUpcomingActivities } from "../services/activity.service.js";
 import createHttpError from 'http-errors'
 
-export async function getAllActivitiesCtrl (req,res,next) {
+export async function getAllActivitiesCtrl(req, res, next) {
     const foundActivities = await getAllActivities()
 
-    res.json({ 
-        message: "Get all activities successfully",        
+    if (!foundActivities) {
+        return next(createHttpError[404]('There\'s no activities'))
+    }
+
+    res.json({
+        message: "Get all activities successfully",
         activities: foundActivities
     })
 }
 
-export async function getAllCurrentActivitiesCtrl (req,res,next) {
-    const foundActivities = await getAllCurrentActivities()
-    res.json({ 
-        message: "Get all current activities successfully",        
-        activities: foundActivities 
+export async function getUpcomingActivitiesCtrl(req, res, next) {
+    const { id } = req.result
+
+    console.log('id', id)
+    const foundUpcomingActivities = await getUpcomingActivities(id)
+    console.log('foundUpcomin', foundUpcomingActivities)
+
+    if (!foundUpcomingActivities) {
+        return next(createHttpError[404]('There\'s no upcoming activities'))
+    }
+
+    res.json({
+        message: "Get upcoming activities successfully",
+        activities: foundUpcomingActivities
     })
 }
 
-export async function getAllFinishedActivitiesOnThisAccountCtrl (req,res,next) {
+export async function getAllCurrentActivitiesCtrl(req, res, next) {
+    const foundActivities = await getAllCurrentActivities()
+
+    if (!foundActivities) {
+        return next(createHttpError[404]('There\'s no current activities'))
+    }
+
+    res.json({
+        message: "Get all current activities successfully",
+        activities: foundActivities
+    })
+}
+
+export async function getAllFinishedActivitiesOnThisAccountCtrl(req, res, next) {
     const { id } = req.result
 
     const foundMyPastActivities = await getFinishedActivitiesOnThisAccount(id)
-    res.json({ 
-        message: "Successfully get all finished activities on this profile",        
+
+    if (!foundMyPastActivities) {
+        return next(createHttpError[404]('There\'s no past activities'))
+    }
+
+    res.json({
+        message: "Successfully get all finished activities on this profile",
         activities: foundMyPastActivities
     })
 }
 
-export async function getAllActivitiesCreatedByThisAccountCtrl (req,res,next) {
+export async function getAllActivitiesCreatedByThisAccountCtrl(req, res, next) {
     const { id } = req.result
 
     const foundMyCreatedActivities = await getActivitiesCreatedByThisAccount(id)
-    res.json({ 
-        message: "Successfully get all activities created by this profile",        
+
+    if (!foundMyCreatedActivities) {
+        return next(createHttpError[404]('This account haven\'t create activity yet'))
+    }
+
+    res.json({
+        message: "Successfully get all activities created by this profile",
         activities: foundMyCreatedActivities
     })
 }
 
-export async function getAllActivitiesJoinedByThisAccountCtrl (req,res,next) {
+export async function getAllActivitiesJoinedByThisAccountCtrl(req, res, next) {
     const { id } = req.result
 
     const foundMyJoinedActivities = await getActivitiesJoinedByThisAccount(id)
-    res.json({ 
-        message: "Successfully get all activities joined by this profile",        
+
+    if (!foundMyJoinedActivities) {
+        return next(createHttpError[404]('This account haven\'t joined any activity yet'))
+    }
+
+    res.json({
+        message: "Successfully get all activities joined by this profile",
         activities: foundMyJoinedActivities
     })
 }
 
-export async function getActivityByIdCtrl (req,res,next) {
+export async function getActivityByIdCtrl(req, res, next) {
     const { activityid } = req.params
 
     const foundActivity = await getActivityById(Number(activityid))
 
-    if(!foundActivity) {
+    if (!foundActivity) {
         return next(createHttpError[404]('Activity Not Found'))
     }
 
-    res.json({ 
-        message: "Get specific activity successfully",        
-        activities: foundActivity 
+    res.json({
+        message: "Get specific activity successfully",
+        activities: foundActivity
     })
 }
 
-export async function getActivityByCategoryCtrl (req,res,next) {
+export async function getActivityByCategoryCtrl(req, res, next) {
     const { category } = req.params
 
     const foundActivityByCategory = await getActivityByCategory(category.toUpperCase())
-    res.json({ 
-        message: "Get specific activity successfully",        
-        activities: foundActivityByCategory 
+
+    if (!foundActivityByCategory) {
+        return next(createHttpError[404]('There\'s no activity in this category'))
+    }
+
+    res.json({
+        message: "Get specific activity successfully",
+        activities: foundActivityByCategory
     })
 }
 
 
 
 
-export async function createActivityCtrl (req,res,next) {
+export async function createActivityCtrl(req, res, next) {
+    // console.log('req', req)
     const { id } = req.result
-    const { maxParticipants,isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
+    const { maxParticipants, isPublic, category, title, description, eventStartTime, eventEndTime, placeName, address, latitude, longitude } = req.body
     const eventStTime = new Date(eventStartTime)
 
-    if(eventStTime < new Date()){
+
+    if (eventStTime < new Date()) {
         return next(createHttpError[400]('Event start time cannot be in the past.'))
     }
 
-    if(eventEndTime){
+    if (eventEndTime) {
         const eventETime = new Date(eventEndTime)
 
-        if(eventETime < new Date() ){
+        if (eventETime < new Date()) {
             return next(createHttpError[400]('Event end time cannot be in the past.'))
         }
 
-        if(eventStTime>=eventETime){
+        if (eventStTime >= eventETime) {
             return next(createHttpError[400]('Event start time must be before event end time.'))
         }
     }
 
-    const placeId = await getOrAddPlaceId(placeName,address,Number(latitude),Number(longitude))
+    const placeId = await getOrAddPlaceId(placeName, address, Number(latitude), Number(longitude))
     // console.log('placeId', placeId)
     // console.log(typeof placeId)
+    console.log('filepic', req.file)
 
     const localFilePath = req.file ? req.file.path : null;
-    
-    const Adata = { category,title,description,
+
+    const Adata = {
+        category, title, description,
         isPublic: JSON.parse(isPublic),
         placeId: Number(placeId),
-        hostId: id ,
+        hostId: id,
         eventStartTime: new Date(eventStartTime),
-    } 
+    }
 
     if (localFilePath) {
-      Adata.coverPhoto = `/uploads/${localFilePath}`;
+        Adata.coverPhoto = `/uploads/${localFilePath}`;
     }
 
-    if(eventEndTime){
+    if (eventEndTime) {
         Adata.eventEndTime = new Date(eventEndTime)
     }
-    if(maxParticipants){
+    if (maxParticipants) {
         Adata.maxParticipants = Number(maxParticipants)
     }
-    
-    const createdActivity = await createActivity(Adata,localFilePath)
+
+    const createdActivity = await createActivity(Adata, localFilePath)
     res.json({
         message: "Activity created successfully",
-        activities: createdActivity 
+        activities: createdActivity
     })
+
 }
 
-export async function editActivityByIdCtrl (req,res,next) {
+export async function editActivityByIdCtrl(req, res, next) {
     const { id } = req.result
     const { activityid } = req.params
-    const { maxParticipants,isPublic,category,title,description,eventStartTime,eventEndTime,placeName,address,latitude,longitude } = req.body
-    
-    if(new Date(eventStartTime) < new Date()){
+    const { maxParticipants, isPublic, category, title, description, eventStartTime, eventEndTime, placeName, address, latitude, longitude } = req.body
+
+    if (new Date(eventStartTime) < new Date()) {
         return next(createHttpError[400]('Event start time cannot be in the past.'))
     }
 
-    if(eventEndTime){
+    if (eventEndTime) {
         const eventETime = new Date(eventEndTime)
 
-        if(eventETime < new Date() ){
+        if (eventETime < new Date()) {
             return next(createHttpError[400]('Event end time cannot be in the past.'))
         }
 
-        if(new Date(eventStartTime)>=eventETime){
+        if (new Date(eventStartTime) >= eventETime) {
             return next(createHttpError[400]('Event start time must be before event end time.'))
         }
     }
 
     const localFilePath = req.file ? req.file.path : null;
-    
-    const Editdata = { hostId: id } 
 
-    if (isPublic !== undefined){
+    const Editdata = { hostId: id }
+
+    if (isPublic !== undefined) {
         Editdata.isPublic = JSON.parse(isPublic)
     }
     if (localFilePath) {
-      Editdata.coverPhoto = `/uploads/${localFilePath}`;
+        Editdata.coverPhoto = `/uploads/${localFilePath}`;
     }
-    if(placeName && address && latitude && longitude){
-        const placeId = await getOrAddPlaceId(placeName,address,Number(latitude),Number(longitude))
+    if (placeName && address && latitude && longitude) {
+        const placeId = await getOrAddPlaceId(placeName, address, Number(latitude), Number(longitude))
         Editdata.placeId = Number(placeId)
     }
-    if(category){
+    if (category) {
         Editdata.category = category
     }
-    if(title){
+    if (title) {
         Editdata.title = title
     }
-    if(description){
+    if (description) {
         Editdata.description = description
     }
-    if(eventStartTime){
+    if (eventStartTime) {
         Editdata.eventStartTime = new Date(eventStartTime)
     }
-    if(eventEndTime){
+    if (eventEndTime) {
         Editdata.eventEndTime = new Date(eventEndTime)
     }
-    if(maxParticipants){
+    if (maxParticipants) {
         Editdata.maxParticipants = Number(maxParticipants)
     }
-    
+
     const editActivity = await editActivityById(id, Number(activityid), Editdata, localFilePath)
-    res.json({ 
+    res.json({
         message: "Activity has been edited",
         activities: editActivity
-     })
+    })
 }
 
-export async function changeActivityStatusCtrl (req,res,next) {
+export async function changeActivityStatusCtrl(req, res, next) {
     const { id } = req.result
     const { activityid } = req.params
     const { status } = req.body
@@ -197,42 +248,42 @@ export async function changeActivityStatusCtrl (req,res,next) {
     const activity = await getActivityById(Number(activityid))
     if (!activity) return next(createHttpError[404]('Activity not found'))
     if (activity.hostId !== id) {
-        return next(createHttpError[403]('Only the host can cancel this activity!')) 
+        return next(createHttpError[403]('Only the host can cancel this activity!'))
     }
 
     const statusActivity = await changeActivityStatus(Number(activityid), status)
-    res.json({ 
+    res.json({
         message: "Activity Status changed successfully",
         activities: statusActivity
-     })
+    })
 }
 
-export async function cancelActivityStatusCtrl (req,res,next) {
+export async function cancelActivityStatusCtrl(req, res, next) {
     const { id } = req.result
     const { activityid } = req.params
 
     const activity = await getActivityById(Number(activityid))
     if (!activity) return next(createHttpError[404]('Activity not found'))
     if (activity.hostId !== id) {
-        return next(createHttpError[403]('Only the host can cancel this activity!')) 
+        return next(createHttpError[403]('Only the host can cancel this activity!'))
     }
 
     const cancelActivity = await cancelActivityStatus(Number(activityid))
-    res.json({ 
+    res.json({
         message: "Cancelled activity successfully",
         activities: cancelActivity
-     })
+    })
 }
 
-export async function deleteActivityByIdCtrl (req,res,next) {
+export async function deleteActivityByIdCtrl(req, res, next) {
     const { id } = req.result
     const { activityid } = req.params
     // console.log('id', id)
     // console.log('activityid', activityid)
 
     const deletedActivity = await deleteActivityById(id, Number(activityid))
-    res.json({ 
+    res.json({
         message: "Activity deleted successfully",
         activities: deletedActivity
-     })
+    })
 }

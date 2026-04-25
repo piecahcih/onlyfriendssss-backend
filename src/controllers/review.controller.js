@@ -1,5 +1,5 @@
 import { prisma } from "../lib/prisma.js"
-import { createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllReviewsMe, getAllUsersReviews, getSpecificReview, getUserById } from "../services/review.service.js"
+import { checkExistingPeerReview, checkExistingReview, createActivityReview, createUserReview, getActivityReviews, getActivityReviewsByLocation, getAllActivitiesReviews, getAllReviewsMe, getAllUsersReviews, getSpecificReview, getUserById ,getActivityRatings,getUserRatings,getPlaceRatings } from "../services/review.service.js"
 import createHttpError from 'http-errors'
 
 export async function reviewActivityCtrl(req, res, next) {
@@ -11,14 +11,20 @@ export async function reviewActivityCtrl(req, res, next) {
     }
 
     const { activityId } = req.params
-    const { rating, comment, imageUrl } = req.body
+    const { rating, comment } = req.body
     const reviewerId = user.id
+    const localFilePaths = req.files ? req.files.map(file => file.path) : []
+
+    const existingReview = await checkExistingReview(reviewerId, activityId)
+
+    if(existingReview) {
+      return next(createHttpError[409]('You have already reviewed this activity'))
+    }
 
     const result = await createActivityReview(reviewerId, activityId, {
       rating,
       comment,
-      imageUrl
-    })
+    }, localFilePaths)
 
     res.json({
       message: 'Review Submitted',
@@ -43,6 +49,12 @@ export async function reviewUserCtrl(req, res, next) {
     if (Number(reviewerId) === Number(receiverId)) {
       return res.json({ message: "You cannot review yourself" })
     }
+      
+    const existingReview = await checkExistingPeerReview(reviewerId, activityId, receiverId)
+
+    if(existingReview) {
+      return next(createHttpError[409]('You have already reviewed this user at this activity'))
+    }
 
     const result = await createUserReview(reviewerId, activityId, receiverId, {
       rating,
@@ -58,40 +70,6 @@ export async function reviewUserCtrl(req, res, next) {
     next(error)
   }
 }
-
-
-
-
-export async function getActivityRatingScoreCtrl(req, res, next) {
-  try {
-    const activities = await prisma.activity.findMany({
-      include: {
-        host: { select: { username: true } },
-        place: true,
-        reviews: {
-          where: { reviewType: 'ACTIVITY' },
-          select: { rating: true }
-        }
-      }
-    })
-
-    // คำนวณ rating เฉลี่ยในแต่ละ activity
-    const data = activities.map(act => {
-      const total = act.reviews.reduce((acc, curr) => acc + curr.rating, 0)
-      const avg = act.reviews.length > 0 ? total / act.reviews.length : 0
-      return {
-        ...act,
-        averageRating: avg.toFixed(1),
-        reviewCount: act.reviews.length
-      }
-    })
-
-    res.json(data)
-  } catch (error) {
-    next(error)
-  }
-}
-
 
 
 
@@ -195,3 +173,32 @@ export async function getUserCtrl(req, res, next) {
     next(error); 
   }
 };
+
+
+
+export async function getActivityRatingsCtrl (req, res, next)  {
+       try {
+         const data = await getActivityRatings();
+         res.json(data);
+       } catch (error) {
+         next(error);
+       }
+    };
+   
+  export async function getUserRatingsCtrl (req, res, next)  {
+      try {
+        const data = await getUserRatings();
+        res.json(data);
+      } catch (error) {
+        next(error);
+      }
+    };
+   
+  export async function getPlaceRatingsCtrl (req, res, next)  {
+      try {
+        const data = await getPlaceRatings();
+        res.json(data);
+      } catch (error) {
+        next(error);
+      }
+    };
