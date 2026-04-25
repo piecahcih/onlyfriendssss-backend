@@ -1,33 +1,8 @@
 import createHttpError from 'http-errors'
 import { getUserInterest, getUserSuggestedActivitiesByInterest } from '../services/interest.service.js'
 
-export async function getUserInterestCtrl(req, res, next) {
-    const {id} = req.result
 
-    const userInterests = await getUserInterest(id)
-
-    if (!userInterests) {
-        return next(createHttpError[404]('User has no interest'))
-    }
-
-    res.json({
-        message: "Get all uesr interests successfully",
-        interests: userInterests
-    })
-}
-
-
-export async function suggestActivityByYourInterestCtrl(req, res, next) {
-    const { id } = req.result
-
-    const userInterests = await getUserInterest(id)
-    if (!userInterests) {
-        return next(createHttpError[404]('User has no interest'))
-    }
-    console.log('userInterests', userInterests)
-
-
-    export const INTEREST_MAP = {
+export const INTEREST_MAP = {
     // Food & Drink
     foodie: 'FOOD',
     cafe_hopping: 'FOOD',
@@ -71,11 +46,38 @@ export async function suggestActivityByYourInterestCtrl(req, res, next) {
     beach_vibes: 'TRAVEL',
     hiking_trekking: 'TRAVEL',
     sightseeing: 'TRAVEL',
-    };
+};
+export async function getUserInterestCtrl(req, res, next) {
+    const { id } = req.result
 
-    
+    const userInterests = await getUserInterest(id)
+
+    if (!userInterests) {
+        return next(createHttpError[404]('User has no interest'))
+    }
+
+    res.json({
+        message: "Get all uesr interests successfully",
+        interests: userInterests
+    })
+}
+
+
+export async function suggestActivityByYourInterestCtrl(req, res, next) {
+    const { id } = req.result
+
+    const userInterests = await getUserInterest(id)
+    if (!userInterests) {
+        return next(createHttpError[404]('User has no interest'))
+    }
+    console.log('userInterests', userInterests)
+
+
+
+
+
     const userInterestCategories = []
-    
+
     const suggestActivities = await getUserSuggestedActivitiesByInterest(id, userInterestCategories)
 
     res.json({
