@@ -74,12 +74,12 @@ export async function loginCtrl(req, res, next) {
     const foundUser = await getUserBy('email', data.email)
     console.log(foundUser)
     if (!foundUser) {
-      return next(createHttpError[401]('Invalid Login 1'))
+      return next(createHttpError[401]('Email is not correct'))
     }
 
     let rightPW = await bcrypt.compare(data.password, foundUser.password)
     if (!rightPW) {
-      return next(createHttpError[401]('Invalid Login 2'))
+      return next(createHttpError[401]('Password is not correct'))
     }
 
     const payload = { id: foundUser.id }

@@ -20,10 +20,10 @@ export function getUserSuggestedActivitiesByInterest(userid, categoriesArray) {
                     userId: userid,
                 }
             },
-            orderBy: {
-                eventStartTime: 'asc'
-            },
-            take: 25
-        }
+        },
+        orderBy: {
+            eventStartTime: 'asc'
+        },
+        take: 25
     })
 }
