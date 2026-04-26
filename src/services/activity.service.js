@@ -16,6 +16,41 @@ export async function getAllActivities() {
     })
 }
 
+export async function getUpcomingActivities(userid) {
+    const now = new Date();
+
+    const nextWeek = new Date();
+    nextWeek.setDate(now.getDate() + 7);
+
+    return await prisma.activity.findMany({
+        orderBy: { eventStartTime: 'asc' },
+        where: {
+            eventStartTime: {
+                gte: now,
+                lte: nextWeek
+            },
+            OR: [
+                { hostId: userid },
+                {
+                    joinRequests: {
+                        some: {
+                            userId: userid,
+                            status: 'APPROVED'
+                        }
+                    }
+                }
+            ]
+        },
+        include: {
+            place: true,
+            host: true,
+            joinRequests: {
+                include: { user: true }
+            }
+        }
+    })
+}
+
 export async function getAllCurrentActivities() {
     return await prisma.activity.findMany({
         where: {
@@ -102,8 +137,6 @@ export async function getActivityById(activityId) {
         include: {
             place: true,
             host: true,
-            chatRoom: true,
-
             joinRequests: {
                 include: { user: true }
             }
