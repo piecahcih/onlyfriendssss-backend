@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors'
-import { getUserInterest, getUserSuggestedActivitiesByInterest } from '../services/interest.service.js'
+import { exploreActivities, getUserInterest, getUserSuggestedActivitiesByInterest } from '../services/interest.service.js'
 
 export const INTEREST_MAP = {
 // Food & Drink
@@ -61,6 +61,21 @@ export async function getUserInterestCtrl(req, res, next) {
     })
 }
 
+export async function exploreActivityCtrl(req, res, next) {
+    const {id} = req.result
+
+    const suggestsAct = await exploreActivities(id)
+
+    if (!suggestsAct) {
+        return next(createHttpError[404]('User has no interest'))
+    }
+
+    res.json({
+        message: "Get all uesr interests successfully",
+        suggests: suggestsAct
+    })
+}
+
 
 export async function suggestActivityByYourInterestCtrl(req, res, next) {
     const { id } = req.result
@@ -73,10 +88,17 @@ export async function suggestActivityByYourInterestCtrl(req, res, next) {
 
 
 
-    
-    const userInterestCategories = []
+    const userInterestCategories = [
+        ...new Set(userInterests.map(interest =>INTEREST_MAP[interest.category]))
+    ]
+    // console.log('userInterestCategories', userInterestCategories)
     
     const suggestActivities = await getUserSuggestedActivitiesByInterest(id, userInterestCategories)
+    // console.log('suggestActivities', suggestActivities)
+    if (!suggestActivities) {
+        return next(createHttpError[404]('There\'s no suggest activities'))
+    }
+
 
     res.json({
         message: "Get sugested activities successfully",

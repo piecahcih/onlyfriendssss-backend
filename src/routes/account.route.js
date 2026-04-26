@@ -2,6 +2,7 @@ import express from "express";
 import {
   deleteMeCtrl,
   getMeCtrl,
+  getUserProfileCtrl,
   updateMeCtrl,
 } from "../controllers/account.controller.js";
 import { authCheckUser } from "../middlewares/authenticate.js";
@@ -17,5 +18,6 @@ accountRoute.patch(
   updateMeCtrl,
 );
 accountRoute.delete("/profile", authCheckUser, deleteMeCtrl);
+accountRoute.get("/profile/:userId", authCheckUser, getUserProfileCtrl);
 
 export default accountRoute;
