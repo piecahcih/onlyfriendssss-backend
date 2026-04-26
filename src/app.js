@@ -22,7 +22,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://organize-riders-describe-marker.trycloudflare.com"
+      "https://post-chain-beast-buildings.trycloudflare.com"
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,

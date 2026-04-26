@@ -57,7 +57,7 @@ export async function getAllCurrentActivities() {
             status: { not: 'CANCELLED' },
             eventStartTime: { gte: new Date() }
         },
-        orderBy: { id: 'desc' },
+        orderBy: { eventStartTime: 'asc' },
         include: {
             place: true,
             host: true,
@@ -70,7 +70,7 @@ export async function getAllCurrentActivities() {
 
 export async function getFinishedActivitiesOnThisAccount(userid) {
     return await prisma.activity.findMany({
-        orderBy: { id: 'desc' },
+        orderBy: { eventStartTime: 'desc' },
         where: {
             status: 'FINISHED',
             OR: [
@@ -151,7 +151,7 @@ export async function getActivityByCategory(category) {
             eventStartTime: { gte: new Date() },
             category: category
         },
-        orderBy: { id: 'desc' },
+        orderBy: { eventStartTime: 'asc' },
         include: {
             place: true,
             host: true,
@@ -163,9 +163,9 @@ export async function getActivityByCategory(category) {
 }
 
 export async function createActivity(Adata, localFilePath) {
-    console.log('first')
-    console.log('Adata', Adata)
-    console.log('local', localFilePath)
+    // console.log('first')
+    // console.log('Adata', Adata)
+    // console.log('local', localFilePath)
     if (localFilePath) {
         const absolutePath = path.isAbsolute(localFilePath)
             ? localFilePath
