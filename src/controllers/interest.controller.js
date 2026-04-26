@@ -27,7 +27,7 @@ export async function suggestActivityByYourInterestCtrl(req, res, next) {
     console.log('userInterests', userInterests)
 
 
-    export const INTEREST_MAP = {
+    const INTEREST_MAP = {
     // Food & Drink
     foodie: 'FOOD',
     cafe_hopping: 'FOOD',
