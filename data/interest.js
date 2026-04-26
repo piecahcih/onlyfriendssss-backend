@@ -7,7 +7,7 @@ export const interestData = [
 
   // User 2: The Energetic Socialite
   { userId: 2, category: "foodie" },
-  { userId: 2, category: "running_marathon" },
+  { userId: 2, category: "running" },
   { userId: 2, category: "beach_vibes" },
   { userId: 2, category: "volunteer" },
 

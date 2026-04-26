@@ -22,7 +22,7 @@ export const placeData = [
     },
     {
         id: 4,
-        placeName: "Thonglor (Karaoke District)",
+        placeName: "Thonglor",
         latitude: 13.7341,
         longitude: 100.5830,
         address: "Sukhumvit 55, Watthana, Bangkok"
@@ -69,7 +69,7 @@ export const placeData = [
         longitude: 100.5615,
         address: "Phra Pradaeng District, Samut Prakan"
     },
-// --- NEW PLACES FOR HOST 1 & 2 ---
+    // --- NEW PLACES FOR HOST 1 & 2 ---
     {
         id: 11,
         placeName: "Ekkamai Comedy Club",
@@ -125,5 +125,54 @@ export const placeData = [
         latitude: 13.7516,
         longitude: 100.5011,
         address: "Bamrung Mueang Rd, Phra Nakhon, Bangkok"
+    },
+    {
+        id: 19,
+        placeName: "AIS eSports Studio (Samyan Mitrtown)",
+        latitude: 13.7335944,
+        longitude: 100.5285548,
+        address: "ชั้น 2 สามย่านมิตรทาวน์, ถ.พระรามที่ 4, แขวงวังใหม่, เขตปทุมวัน, กรุงเทพมหานคร"
+    },
+    {
+        id: 20,
+        placeName: "BITEC Bangna",
+        latitude: 13.6698,
+        longitude: 100.6104,
+        address: "Bang Na-Trad Road, Bang Na, Bangkok"
+    },
+    {
+        id: 21,
+        placeName: "Wat Mangkon area (Chinatown)",
+        latitude: 13.7444,
+        longitude: 100.5085,
+        address: "Charoen Krung Road, Pom Prap Sattru Phai, Bangkok"
+    },
+    {
+        id: 22,
+        placeName: "Embassy Cineplex",
+        latitude: 13.7441,
+        longitude: 100.5461,
+        address: "Central Embassy, Pathum Wan, Bangkok"
+    },
+    {
+        id: 23,
+        placeName: "Urban Playground Climbing",
+        latitude: 13.7371,
+        longitude: 100.5772,
+        address: "Sukhumvit 49, Watthana, Bangkok"
+    },
+    {
+        id: 24,
+        placeName: "ABC Cooking Studio (Central World)",
+        latitude: 13.7462,
+        longitude: 100.5397,
+        address: "Ratchadamri Road, Pathum Wan, Bangkok"
+    },
+    {
+        id: 25,
+        placeName: "Virgin Active Siam Discovery",
+        latitude: 13.7468291,
+        longitude: 100.5313447,
+        address: "ชั้น 5 สยามดิสคัฟเวอรี, 194 ถ. พญาไท, แขวงปทุมวัน, เขตปทุมวัน, กรุงเทพมหานคร"
     }
 ];
