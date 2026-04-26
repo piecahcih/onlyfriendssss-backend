@@ -18,7 +18,7 @@ export const initSocket = (server) => {
 
   io.on("connection", (socket) => {
     socket.join(`user:${socket.user.id}`);
-    console.log(`🔌 New connection: ${socket.user.username} (${socket.id})`);
+    console.log(` New connection: ${socket.user.username} (${socket.id})`);
 
     registerChatHandlers(io, socket);
     registerPresenceHandlers(io, socket);
