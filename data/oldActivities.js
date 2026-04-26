@@ -1,7 +1,7 @@
 // back/data/oldActivities.js
 export const oldActivityData = [
   // --- HEALTH ---
-  {
+  { // 1
     category: "HEALTH",
     title: "Morning Yoga at Benjakitti",
     description: "คลาสโยคะยามเช้าเพื่อยืดเหยียดร่างกายก่อนเริ่มวันใหม่ ท่ามกลางบรรยากาศสวนกลางเมือง",
@@ -11,7 +11,7 @@ export const oldActivityData = [
     coverPhoto: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000",
     status: "FINISHED"
   },
-  { 
+  { // 2
     category: "HEALTH", 
     title: "Midnight City Cycling", 
     description: "ปั่นจักรยานชมเมืองยามค่ำคืน ช่วงที่อากาศเริ่มร้อน", 
@@ -23,7 +23,7 @@ export const oldActivityData = [
   },
 
   // --- ENTERTAINMENT ---
-  {
+  { // 3
     category: "ENTERTAINMENT",
     title: "Board Game Marathon",
     description: "รวมก๊วนเล่นบอร์ดเกมสาย Strategy ตั้งแต่บ่ายยันค่ำ สนุกและได้มิตรภาพใหม่ๆ",
@@ -33,7 +33,7 @@ export const oldActivityData = [
     coverPhoto: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?q=80&w=1000",
     status: "FINISHED"
   },
-  {
+  { // 4
     category: "ENTERTAINMENT",
     title: "Retro Arcade Night",
     description: "ย้อนวัยไปกับตู้เกมยุค 90s และแข่งเกมต่อสู้ในตำนาน",
@@ -45,7 +45,7 @@ export const oldActivityData = [
   },
 
   // --- ART ---
-  {
+  { // 5
     category: "ART",
     title: "Minimalist Pottery Class",
     description: "เวิร์กชอปปั้นดินเผาแฮนด์เมด สอนตั้งแต่พื้นฐานจนได้ชิ้นงานกลับบ้าน",
@@ -55,7 +55,7 @@ export const oldActivityData = [
     coverPhoto: "https://images.unsplash.com/photo-1565191999001-551c187427bb?q=80&w=1000",
     status: "FINISHED"
   },
-  {
+  { // 6
     category: "ART",
     title: "Street Art Tour: Talat Noi",
     description: "เดินชมงานศิลปะบนกำแพงย่านตลาดน้อย",
@@ -67,7 +67,7 @@ export const oldActivityData = [
   },
 
   // --- FOOD ---
-  {
+  { // 7
     category: "FOOD",
     title: "Street Food Tour: Ban Tad Thong",
     description: "ตะลุยกินร้านเด็ดร้านดังย่านบรรทัดทอง ตั้งแต่โจ๊กยันขนมหวาน",
@@ -77,7 +77,7 @@ export const oldActivityData = [
     coverPhoto: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1000",
     status: "FINISHED"
   },
-  {
+  { // 8
     category: "FOOD",
     title: "Thai Dessert Class",
     description: "หัดทำขนมไทยมงคล ทองหยิบ ทองหยอด และฝอยทอง",
@@ -89,7 +89,7 @@ export const oldActivityData = [
   },
 
   // --- TRAVEL ---
-  { 
+  { // 9
     category: "TRAVEL", 
     title: "Summer Beach Trip (One Day)", 
     description: "ทริปเที่ยวทะเลใกล้กรุง รับลมร้อนช่วงเดือนมีนา", 
@@ -99,7 +99,7 @@ export const oldActivityData = [
     coverPhoto: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1000",
     status: "FINISHED"
   },
-  {
+  { // 10
     category: "TRAVEL",
     title: "Bang Krachao Green Lung Walk",
     description: "เดินเล่นรับอากาศบริสุทธิ์ที่บางกระเจ้า",

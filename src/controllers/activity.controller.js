@@ -17,9 +17,9 @@ export async function getAllActivitiesCtrl(req, res, next) {
 export async function getUpcomingActivitiesCtrl(req, res, next) {
     const { id } = req.result
 
-    console.log('id', id)
+    // console.log('id', id)
     const foundUpcomingActivities = await getUpcomingActivities(id)
-    console.log('foundUpcomin', foundUpcomingActivities)
+    // console.log('foundUpcomin', foundUpcomingActivities)
 
     if (!foundUpcomingActivities) {
         return next(createHttpError[404]('There\'s no upcoming activities'))
