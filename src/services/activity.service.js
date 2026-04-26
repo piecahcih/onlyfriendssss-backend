@@ -63,6 +63,9 @@ export async function getAllCurrentActivities() {
             host: true,
             joinRequests: {
                 include: { user: true }
+            },
+            chatRoom: {
+                select: { id: true }
             }
         }
     })
@@ -90,6 +93,9 @@ export async function getFinishedActivitiesOnThisAccount(userid) {
             host: true,
             joinRequests: {
                 include: { user: true }
+            },
+            chatRoom: {
+                select: { id: true }
             }
         }
     })
@@ -104,6 +110,9 @@ export async function getActivitiesCreatedByThisAccount(userid) {
             host: true,
             joinRequests: {
                 include: { user: true }
+            },
+            chatRoom: {
+                select: { id: true }
             }
         }
     })
@@ -126,6 +135,9 @@ export async function getActivitiesJoinedByThisAccount(userid) {
             host: true,
             joinRequests: {
                 include: { user: true }
+            },
+            chatRoom: {
+                select: { id: true }
             }
         }
     })
@@ -139,6 +151,9 @@ export async function getActivityById(activityId) {
             host: true,
             joinRequests: {
                 include: { user: true }
+            },
+            chatRoom: {
+                select: { id: true }
             }
         }
     })
