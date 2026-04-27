@@ -25,9 +25,11 @@ export async function getFriendListCtrl(req, res, next) {
 //ขอเป็นเพื่อน
 export async function sendRequestCtrl(req, res, next) {
   try {
-    const senderId = Number(req.result.id);
-    const receiverId = Number(req.params.id);
-    const result = await sendFriendRequest(senderId, receiverId);
+    const senderId = req.result.id;
+    const receiverId = req.params.id;
+    const io = req.app.get("io");
+
+    const result = await sendFriendRequest(io, senderId, receiverId);
     res.status(201).json({
       message: "Friend request sent.",
       data: result,
@@ -42,8 +44,11 @@ export async function acceptRequestCtrl(req, res, next) {
   try {
     const userId = req.result.id;
     const friendshipId = req.params.id;
+    const io = req.app.get("io");
 
-    const result = await acceptFriendRequest(userId, friendshipId);
+    const result = await acceptFriendRequest(io, userId, friendshipId);
+
+    console.log('result', result)
 
     res.json({
       message: "Friend request accepted.",

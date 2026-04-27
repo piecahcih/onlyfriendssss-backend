@@ -45,6 +45,7 @@ export async function reviewUserCtrl(req, res, next) {
     const { activityId, receiverId } = req.params
     const { rating, comment, imageUrl } = req.body
     const reviewerId = user.id
+    const io = req.app.get("io");
 
     if (Number(reviewerId) === Number(receiverId)) {
       return res.json({ message: "You cannot review yourself" })
@@ -56,7 +57,7 @@ export async function reviewUserCtrl(req, res, next) {
       return next(createHttpError[409]('You have already reviewed this user at this activity'))
     }
 
-    const result = await createUserReview(reviewerId, activityId, receiverId, {
+    const result = await createUserReview(io, reviewerId, activityId, receiverId, {
       rating,
       comment,
       imageUrl
@@ -84,11 +85,11 @@ export async function getAllUsersReviewsCtrl(req, res, next) {
 }
 
 export async function getAllReviewsMeCtrl(req, res, next) {
-  const {id} = req.result
+  const { id } = req.result
 
   const reviews = await getAllReviewsMe(id)
-  
-  if(!reviews) {
+
+  if (!reviews) {
     return next(createHttpError[404]('There\'s no one review this account yet'))
   }
 
@@ -112,8 +113,8 @@ export async function getAllActivitiessReviewsCtrl(req, res, next) {
 export async function getActivityReviewsCtrl(req, res, next) {
   const { activityId } = req.params
   const reviews = await getActivityReviews(Number(activityId))
-  
-  if(!reviews) {
+
+  if (!reviews) {
     return next(createHttpError[404]('There\'s no review on this activity yet'))
   }
 
@@ -128,7 +129,7 @@ export async function getSpecificReviewCtrl(req, res, next) {
   const { reviewid } = req.params
   const review = await getSpecificReview(Number(reviewid))
 
-  if(!review) {
+  if (!review) {
     return next(createHttpError[404]('This Review Not Found'))
   }
 
@@ -142,8 +143,8 @@ export async function getSpecificReviewCtrl(req, res, next) {
 export async function getActivityReviewsByLocationCtrl(req, res, next) {
   const { placeid } = req.params
   const reviews = await getActivityReviewsByLocation(Number(placeid))
-  
-  if(!reviews) {
+
+  if (!reviews) {
     return next(createHttpError[404]('There\'s no review on this location yet'))
   }
 
@@ -170,7 +171,7 @@ export async function getUserCtrl(req, res, next) {
     res.status(200).json({ user });
   } catch (error) {
     console.log(error);
-    next(error); 
+    next(error);
   }
 };
 
