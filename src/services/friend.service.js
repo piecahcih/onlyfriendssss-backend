@@ -139,3 +139,21 @@ export async function unfriend(userId, friendshipId) {
     where: { id: fId },
   });
 }
+
+export async function getSentRequests(userId) {
+  return await prisma.friendShip.findMany({
+    where: {
+      status: "PENDING",
+      senderId: userId,
+    },
+    include: {
+      receiver: {
+        select: {
+          id: true,
+          username: true,
+          profileImg: true,
+        },
+      },
+    },
+  });
+}

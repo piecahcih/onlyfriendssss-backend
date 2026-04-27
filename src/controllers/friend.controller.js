@@ -2,6 +2,7 @@ import {
   acceptFriendRequest,
   getFriendList,
   getPendingRequests,
+  getSentRequests,
   sendFriendRequest,
   unfriend,
 } from "../services/friend.service.js";
@@ -10,11 +11,12 @@ import {
 export async function getFriendListCtrl(req, res, next) {
   try {
     const { id } = req.result;
-    const [friends, requests] = await Promise.all([
+    const [friends, requests, sentRequests] = await Promise.all([
       getFriendList(id),
       getPendingRequests(id),
+      getSentRequests(id),
     ]);
-    res.json({ friends: friends, requests: requests });
+    res.json({ friends, requests, sentRequests });
   } catch (error) {
     next(error);
   }
@@ -23,8 +25,8 @@ export async function getFriendListCtrl(req, res, next) {
 //ขอเป็นเพื่อน
 export async function sendRequestCtrl(req, res, next) {
   try {
-    const senderId = req.result.id;
-    const receiverId = req.params.id;
+    const senderId = Number(req.result.id);
+    const receiverId = Number(req.params.id);
     const result = await sendFriendRequest(senderId, receiverId);
     res.status(201).json({
       message: "Friend request sent.",
