@@ -183,3 +183,75 @@ export async function unfriend(userId, friendshipId) {
     where: { id: fId },
   });
 }
+
+export async function getFriendActivities(userId) {
+  const friends = await getFriendList(userId);
+  const friendIds = friends.map((f) => f.id);
+
+  if (friendIds.length === 0) return [];
+
+  const hostingActivities = await prisma.activity.findMany({
+    where: {
+      hostId: { in: friendIds },
+    },
+    include: {
+      host: { select: { id: true, username: true, profileImg: true } },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+  });
+
+  const joiningActivities = await prisma.joinRequest.findMany({
+    where: {
+      userId: { in: friendIds },
+      status: "APPROVED",
+    },
+    include: {
+      user: { select: { id: true, username: true, profileImg: true } },
+      activity: { select: { id: true, title: true } },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+  });
+
+  const feed = [
+    ...hostingActivities.map((act) => ({
+      id: `host-${act.id}`,
+      user: act.host,
+      action: "hosting",
+      activityId: act.id,
+      activityTitle: act.title,
+      createdAt: act.createdAt,
+    })),
+    ...joiningActivities.map((req) => ({
+      id: `join-${req.id}`,
+      user: req.user,
+      action: "joined",
+      activityId: req.activity.id,
+      activityTitle: req.activity.title,
+      createdAt: req.createdAt,
+    })),
+  ];
+
+  return feed
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 15);
+}
+
+export async function getSentRequests(userId) {
+  return await prisma.friendShip.findMany({
+    where: {
+      status: "PENDING",
+      senderId: userId,
+    },
+    include: {
+      receiver: {
+        select: {
+          id: true,
+          username: true,
+          profileImg: true,
+        },
+      },
+    },
+  });
+}

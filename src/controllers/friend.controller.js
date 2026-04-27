@@ -2,19 +2,32 @@ import {
   acceptFriendRequest,
   getFriendList,
   getPendingRequests,
+  getSentRequests,
   sendFriendRequest,
   unfriend,
+  getFriendActivities,
 } from "../services/friend.service.js";
 
 //ดึงรายชื่อเพื่อนทั้งหมด
 export async function getFriendListCtrl(req, res, next) {
   try {
     const { id } = req.result;
-    const [friends, requests] = await Promise.all([
+    const [friends, requests, sentRequests] = await Promise.all([
       getFriendList(id),
       getPendingRequests(id),
+      getSentRequests(id),
     ]);
-    res.json({ friends: friends, requests: requests });
+    res.json({ friends, requests, sentRequests });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getFriendActivitiesCtrl(req, res, next) {
+  try {
+    const { id } = req.result;
+    const activities = await getFriendActivities(id);
+    res.json(activities);
   } catch (error) {
     next(error);
   }
