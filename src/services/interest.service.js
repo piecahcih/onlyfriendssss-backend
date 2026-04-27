@@ -1,9 +1,16 @@
 import { prisma } from "../lib/prisma.js";
 
 export async function getUserInterest(userid) {
-    return await prisma.interest.findMany({
-        where: { userId: userid }
-    })
+    try {
+        return await prisma.interest.findMany({
+            where: { userId: userid }
+        })
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
+
 }
 
 export async function exploreActivities(userid) {
@@ -14,30 +21,37 @@ export async function exploreActivities(userid) {
 
     const wishlistIds = AreInWishlist.map(item => item.activityId)
 
-    return prisma.activity.findMany({
-        where: {
-            id: { notIn: wishlistIds },
-            status: { not: 'CANCELLED' },
-            eventStartTime: { gte: new Date() },
-            hostId: { not: userid },
-            joinRequests: {
-                none: {
-                    userId: userid,
+    try {
+        return prisma.activity.findMany({
+            where: {
+                id: { notIn: wishlistIds },
+                status: { not: 'CANCELLED' },
+                eventStartTime: { gte: new Date() },
+                hostId: { not: userid },
+                joinRequests: {
+                    none: {
+                        userId: userid,
+                    }
+                },
+            },
+            orderBy: {
+                eventStartTime: 'asc'
+            },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
                 }
             },
-        },
-        orderBy: {
-            eventStartTime: 'asc'
-        },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
-            }
-        },
-        take: 25
-    })
+            take: 25
+        })
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
+
 }
 
 export async function getUserSuggestedActivitiesByInterest(userid, categoriesArray) {
@@ -50,31 +64,38 @@ export async function getUserSuggestedActivitiesByInterest(userid, categoriesArr
 
     const wishlistIds = AreInWishlist.map(item => item.activityId)
 
-    return prisma.activity.findMany({
-        where: {
-            id: { notIn: wishlistIds },
-            status: { not: 'CANCELLED' },
-            eventStartTime: { gte: new Date() },
-            category: {
-                in: categoriesArray
+    try {
+        return prisma.activity.findMany({
+            where: {
+                id: { notIn: wishlistIds },
+                status: { not: 'CANCELLED' },
+                eventStartTime: { gte: new Date() },
+                category: {
+                    in: categoriesArray
+                },
+                hostId: { not: userid },
+                joinRequests: {
+                    none: {
+                        userId: userid,
+                    }
+                },
             },
-            hostId: { not: userid },
-            joinRequests: {
-                none: {
-                    userId: userid,
+            orderBy: {
+                eventStartTime: 'asc'
+            },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
                 }
             },
-        },
-        orderBy: {
-            eventStartTime: 'asc'
-        },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
-            }
-        },
-        take: 25
-    })
+            take: 25
+        })
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
+
 }

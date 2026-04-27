@@ -56,119 +56,170 @@ export const createActivityReview = async (reviewerId, activityId, data, localFi
 
 
 export const getAllReviewsMe = async (id) => {
-  return await prisma.review.findMany({
-    where: {
-      receiverId: id,
-      reviewType: 'PERSON'
-    },
-    include: {
-      activity: {
-        select: { id: true, coverPhoto: true }
+  try {
+    return await prisma.review.findMany({
+      where: {
+        receiverId: id,
+        reviewType: 'PERSON'
       },
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+      include: {
+        activity: {
+          select: { id: true, coverPhoto: true }
+        },
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 export const getAllUsersReviews = async () => {
-  return await prisma.review.findMany({
-    where: {
-      reviewType: 'PERSON'
-    },
-    include: {
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+  try {
+    return await prisma.review.findMany({
+      where: {
+        reviewType: 'PERSON'
+      },
+      include: {
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 export const getAllActivitiesReviews = async () => {
-  return await prisma.review.findMany({
-    where: {
-      reviewType: 'ACTIVITY'
-    },
-    include: {
-      activity: {
-        include: { place: true }
+  try {
+    return await prisma.review.findMany({
+      where: {
+        reviewType: 'ACTIVITY'
       },
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+      include: {
+        activity: {
+          include: { place: true }
+        },
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const getActivityReviews = async (activityId) => {
-  return await prisma.review.findMany({
-    where: {
-      activityId: Number(activityId),
-      reviewType: 'ACTIVITY'
-    },
-    include: {
-      activity: true,
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+  try {
+    return await prisma.review.findMany({
+      where: {
+        activityId: Number(activityId),
+        reviewType: 'ACTIVITY'
+      },
+      include: {
+        activity: true,
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const getSpecificReview = async (reviewid) => {
-  return await prisma.review.findFirst({
-    where: { id: reviewid },
-    include: {
-      activity: true,
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
+  try {
+    return await prisma.review.findFirst({
+      where: { id: reviewid },
+      include: {
+        activity: true,
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
       }
-    }
-  })
+    })
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const getActivityReviewsByLocation = async (placeid) => {
-  return await prisma.review.findMany({
-    where: {
-      reviewType: 'ACTIVITY',
-      activity: {
-        placeId: Number(placeid)
-      }
-    },
-    include: {
-      activity: {
-        include: { place: true }
+  try {
+    return await prisma.review.findMany({
+      where: {
+        reviewType: 'ACTIVITY',
+        activity: {
+          placeId: Number(placeid)
+        }
       },
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+      include: {
+        activity: {
+          include: { place: true }
+        },
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const checkExistingReview = async (reviewerId, activityId) => {
-  return await prisma.review.findFirst({
-    where: {
-      reviewType: 'ACTIVITY',
-      reviewerId: Number(reviewerId),
-      activityId: Number(activityId)
-    },
-  })
+  try {
+    return await prisma.review.findFirst({
+      where: {
+        reviewType: 'ACTIVITY',
+        reviewerId: Number(reviewid),
+        activityId: Number(activityId)
+      },
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const checkExistingPeerReview = async (reviewerId, activityId, receiverId) => {
-  return await prisma.review.findFirst({
-    where: {
-      reviewType: 'PERSON',
-      reviewerId: Number(reviewerId),
-      activityId: Number(activityId),
-      receiverId: Number(receiverId)
-    },
-  })
+  try {
+    return await prisma.review.findFirst({
+      where: {
+        reviewType: 'PERSON',
+        reviewerId: Number(reviewid),
+        activityId: Number(activityId),
+        receiverId: Number(receiverId)
+      },
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 
@@ -187,17 +238,24 @@ export const createUserReview = async (io, reviewerId, activityId, receiverId, d
     throw new Error("You have already reviewed this user for this activity");
   }
 
-  const review = await prisma.review.create({
-    data: {
-      rating: Number(data.rating),
-      comment: data.comment,
-      imageUrl: data.imageUrl,
-      reviewType: 'PERSON',
-      reviewerId: Number(reviewerId),
-      activityId: Number(activityId),
-      receiverId: Number(receiverId)
-    }
-  })
+  try {
+    const reviews = await prisma.review.create({
+      data: {
+        rating: Number(data.rating),
+        comment: data.comment,
+        imageUrl: data.imageUrl,
+        reviewType: 'PERSON',
+        reviewerId: Number(reviewerId),
+        activityId: Number(activityId),
+        receiverId: Number(receiverId)
+      }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 
   const reviewer = await getUserById(reviewerId);
   const notificationMessage = `${reviewer?.username || 'Someone'} gave you a review`;
@@ -220,40 +278,54 @@ export const createUserReview = async (io, reviewerId, activityId, receiverId, d
     });
   }
 
-  return review;
+  return reviews;
 }
 
 export async function getUserReviews(userId) {
-  return await prisma.review.findMany({
-    where: {
-      receiverId: Number(userId)
-    },
-    include: {
-      reviewer: {
-        select: {
-          firstName: true,
-          profileImg: true
-        }
-      },
-      activity: {
-        select: { title: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+    try {
+      return await prisma.review.findMany({
+        where: {
+          receiverId: Number(userId)
+        },
+        include: {
+          reviewer: {
+            select: {
+              firstName: true,
+              profileImg: true
+            }
+          },
+          activity: {
+            select: { title: true }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function getUserById(userId) {
-  return await prisma.user.findUnique({
-    where: {
-      id: Number(userId),
-    },
-    select: {
-      id: true,
-      username: true,
-      profileImg: true,
-    },
-  });
+    try {
+      return await prisma.user.findUnique({
+        where: {
+          id: Number(userId),
+        },
+        select: {
+          id: true,
+          username: true,
+          profileImg: true,
+        },
+      });
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 };
 
 

@@ -4,16 +4,23 @@ import path from "path";
 import cloudinary from "../../config/cloudinary.js";
 
 export async function getAllActivities() {
-    return await prisma.activity.findMany({
-        orderBy: { id: 'desc' },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
+    try {
+        return await prisma.activity.findMany({
+            orderBy: { id: 'desc' },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
+                }
             }
-        }
-    })
+        })
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function getUpcomingActivities(userid) {
@@ -22,159 +29,190 @@ export async function getUpcomingActivities(userid) {
     const nextWeek = new Date();
     nextWeek.setDate(now.getDate() + 7);
 
-    return await prisma.activity.findMany({
-        orderBy: { eventStartTime: 'asc' },
-        where: {
-            eventStartTime: {
-                gte: now,
-                lte: nextWeek
+    try {
+        return await prisma.activity.findMany({
+            orderBy: { eventStartTime: 'asc' },
+            where: { 
+                eventStartTime: {
+                    gte: now,
+                    lte: nextWeek
+                },
+                OR: [
+                    { hostId: userid }, 
+                    { 
+                        joinRequests: { 
+                            some: { 
+                                userId: userid,
+                                status: 'APPROVED'
+                            } 
+                        } 
+                    } 
+                ]
             },
-            OR: [
-                { hostId: userid },
-                {
-                    joinRequests: {
-                        some: {
-                            userId: userid,
-                            status: 'APPROVED'
-                        }
-                    }
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
                 }
-            ]
-        },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
             }
-        }
-    })
+        })
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
+
 }
 
 export async function getAllCurrentActivities() {
-    return await prisma.activity.findMany({
-        where: {
-            status: { not: 'CANCELLED' },
-            eventStartTime: { gte: new Date() }
-        },
-        orderBy: { eventStartTime: 'asc' },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
+    try {
+        return await prisma.activity.findMany({
+            where: {
+                status: { not: 'CANCELLED' },
+                eventStartTime: { gte: new Date() }
             },
-            chatRoom: {
-                select: { id: true }
+            orderBy: { eventStartTime: 'asc' },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
+                }
             }
-        }
-    })
+        })
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function getFinishedActivitiesOnThisAccount(userid) {
-    return await prisma.activity.findMany({
-        orderBy: { eventStartTime: 'desc' },
-        where: {
-            status: 'FINISHED',
-            OR: [
-                { hostId: userid },
-                {
-                    joinRequests: {
-                        some: {
-                            userId: userid,
-                            status: 'APPROVED'
+    try {
+        return await prisma.activity.findMany({
+            orderBy: { eventStartTime: 'desc' },
+            where: {
+                status: 'FINISHED',
+                OR: [
+                    { hostId: userid },
+                    {
+                        joinRequests: {
+                            some: {
+                                userId: userid,
+                                status: 'APPROVED'
+                            }
                         }
                     }
-                }
-            ]
-        },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
+                ]
             },
-            chatRoom: {
-                select: { id: true }
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
+                }
             }
-        }
-    })
+        })
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function getActivitiesCreatedByThisAccount(userid) {
-    return await prisma.activity.findMany({
-        orderBy: { id: 'desc' },
-        where: { hostId: userid },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
-            },
-            chatRoom: {
-                select: { id: true }
+    try {
+        return await prisma.activity.findMany({
+            orderBy: { id: 'desc' },
+            where: { hostId: userid },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
+                }
             }
-        }
-    })
+        })   
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function getActivitiesJoinedByThisAccount(userid) {
-    return await prisma.activity.findMany({
-        orderBy: { eventStartTime: 'asc' },
-        where: {
-            //some เพราะมีคนjoinหลายคน ถ้าสักคนที่จอยในแอคทิวิตี้นั้นเป็นuserเราก็จะใช่ (มีnone/everyด้วย)
-            joinRequests: {
-                some: {
-                    userId: userid,
-                    status: 'APPROVED'
+    try {
+        return await prisma.activity.findMany({
+            orderBy: { eventStartTime: 'asc' },
+            where: {
+                //some เพราะมีคนjoinหลายคน ถ้าสักคนที่จอยในแอคทิวิตี้นั้นเป็นuserเราก็จะใช่ (มีnone/everyด้วย)
+                joinRequests: {
+                    some: {
+                        userId: userid,
+                        status: 'APPROVED'
+                    }
+                }
+            },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
                 }
             }
-        },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
-            },
-            chatRoom: {
-                select: { id: true }
-            }
-        }
-    })
+        })
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function getActivityById(activityId) {
-    return await prisma.activity.findUnique({
-        where: { id: activityId },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
-            },
-            chatRoom: {
-                select: { id: true }
+    try {
+        return await prisma.activity.findUnique({
+            where: { id: activityId },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
+                }
             }
-        }
-    })
+        })
+
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
-export async function getActivityByCategory(category) {
-    return await prisma.activity.findMany({
-        where: {
-            status: { not: 'CANCELLED' },
-            eventStartTime: { gte: new Date() },
-            category: category
-        },
-        orderBy: { eventStartTime: 'asc' },
-        include: {
-            place: true,
-            host: true,
-            joinRequests: {
-                include: { user: true }
+export async function getActivityByCategory(category) {4
+    try {
+        return await prisma.activity.findMany({
+            where: {
+                status: { not: 'CANCELLED' },
+                eventStartTime: { gte: new Date() },
+                category: category
+            },
+            orderBy: { eventStartTime: 'asc' },
+            include: {
+                place: true,
+                host: true,
+                joinRequests: {
+                    include: { user: true }
+                }
             }
-        }
-    })
+        })
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function createActivity(Adata, localFilePath) {
@@ -203,28 +241,47 @@ export async function createActivity(Adata, localFilePath) {
         }
     }
 
-    //เพิ่มของ Chat : สร้างกิจกรรมปกติ
-    const activity = await prisma.activity.create({
-        data: Adata
-    })
-    //สร้างห้องแชทสำหรับกิจกรรมนี้ และดึง Host เข้าห้อง
-    await prisma.chatRoom.create({
-        data: {
-            type: 'ACTIVITY',
-            activityId: activity.id,
-            members: {
-                create: {
-                    userId: activity.hostId
+    try {
+        const activity = await prisma.activity.create({
+            data: Adata
+        })
+        //สร้างห้องแชทสำหรับกิจกรรมนี้ และดึง Host เข้าห้อง
+        await prisma.chatRoom.create({
+            data: {
+                type: 'ACTIVITY',
+                activityId: activity.id,
+                members: {
+                    create: {
+                        userId: activity.hostId
+                    }
+    
                 }
-
             }
-        }
-    })
+        })
+        return activity
 
-    return activity
-    // return await prisma.activity.create({
-    //     data: Adata
-    // })
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
+
+}
+
+export async function letHostBeFirstMember(userid,actid){
+    try {
+        return await prisma.joinRequest.create({
+            data: {
+                status: 'APPROVED',
+                userId: userid,
+                activityId: actid
+            }
+        })
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
+
 }
 
 export async function getOrAddPlaceId(placeName, address, latitude, longitude) {
@@ -248,10 +305,15 @@ export async function getOrAddPlaceId(placeName, address, latitude, longitude) {
         return existingPlace.id
     }
 
-    const newPlace = await prisma.place.create({
-        data: { placeName, address, latitude, longitude }
-    })
-    return newPlace.id
+    try {
+        const newPlace = await prisma.place.create({
+            data: { placeName, address, latitude, longitude }
+        })
+        return newPlace.id
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function editActivityById(userid, activityId, Editdata, localFilePath) {
@@ -319,21 +381,36 @@ export async function editActivityById(userid, activityId, Editdata, localFilePa
 }
 
 export async function changeActivityStatus(activityId, status) {
-    return await prisma.activity.update({
-        where: { id: activityId },
-        data: { status: status }
-    })
+    try {
+        return await prisma.activity.update({
+            where: { id: activityId },
+            data: { status: status }
+        })
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function cancelActivityStatus(activityId) {
-    return await prisma.activity.update({
-        where: { id: activityId },
-        data: { status: 'CANCELLED' }
-    })
+    try {
+        return await prisma.activity.update({
+            where: { id: activityId },
+            data: { status: 'CANCELLED' }
+        })
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
 export async function deleteActivityById(userid, activityId) {
-    return await prisma.activity.delete({
-        where: { hostId: userid, id: activityId }
-    })
+    try {
+        return await prisma.activity.delete({
+            where: { hostId: userid, id: activityId }
+        })  
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
