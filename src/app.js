@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://post-chain-beast-buildings.trycloudflare.com"
+      "https://neon-news-sociology-instead.trycloudflare.com"
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
@@ -44,7 +44,6 @@ app.use('/api/place', placeRoute)
 app.use('/api/noti', notiRoute)
 
 
-initSocket(server) //Path แยก
 const io = initSocket(server);
 app.set("io", io);
 
