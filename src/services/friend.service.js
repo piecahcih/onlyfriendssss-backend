@@ -185,13 +185,11 @@ export async function unfriend(userId, friendshipId) {
 }
 
 export async function getFriendActivities(userId) {
-  // 1. Get friend IDs
   const friends = await getFriendList(userId);
   const friendIds = friends.map((f) => f.id);
 
   if (friendIds.length === 0) return [];
 
-  // 2. Get activities hosted by friends
   const hostingActivities = await prisma.activity.findMany({
     where: {
       hostId: { in: friendIds },
@@ -203,7 +201,6 @@ export async function getFriendActivities(userId) {
     take: 10,
   });
 
-  // 3. Get activities joined by friends
   const joiningActivities = await prisma.joinRequest.findMany({
     where: {
       userId: { in: friendIds },
@@ -217,7 +214,6 @@ export async function getFriendActivities(userId) {
     take: 10,
   });
 
-  // 4. Combine and format
   const feed = [
     ...hostingActivities.map((act) => ({
       id: `host-${act.id}`,
@@ -237,7 +233,6 @@ export async function getFriendActivities(userId) {
     })),
   ];
 
-  // 5. Sort by most recent
   return feed
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .slice(0, 15);
