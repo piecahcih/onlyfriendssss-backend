@@ -2,7 +2,7 @@ import createHttpError from 'http-errors'
 import { exploreActivities, getUserInterest, getUserSuggestedActivitiesByInterest } from '../services/interest.service.js'
 
 export async function getUserInterestCtrl(req, res, next) {
-    const {id} = req.result
+    const { id } = req.result
 
     const userInterests = await getUserInterest(id)
 
@@ -17,7 +17,7 @@ export async function getUserInterestCtrl(req, res, next) {
 }
 
 export async function exploreActivityCtrl(req, res, next) {
-    const {id} = req.result
+    const { id } = req.result
 
     const suggestsAct = await exploreActivities(id)
 
@@ -52,10 +52,10 @@ export async function suggestActivityByYourInterestCtrl(req, res, next) {
 
 
     const userInterestCategories = [
-        ...new Set(userInterests.map(interest =>INTEREST_MAP[interest.category]))
+        ...new Set(userInterests.map(interest => INTEREST_MAP[interest.category]))
     ]
     // console.log('userInterestCategories', userInterestCategories)
-    
+
     const suggestActivities = await getUserSuggestedActivitiesByInterest(id, userInterestCategories)
     // console.log('suggestActivities', suggestActivities)
     if (!suggestActivities) {

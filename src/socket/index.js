@@ -2,6 +2,8 @@ import { Server } from "socket.io";
 import { socketAuth } from "./auth.middleware.js";
 import { registerChatHandlers } from "./chat.handler.js";
 import { registerPresenceHandlers } from "./presence.handler.js";
+import { registerNotificationHandlers } from "./noti.handler.js";
+
 
 export const initSocket = (server) => {
   const io = new Server(server, {
@@ -12,17 +14,15 @@ export const initSocket = (server) => {
     }
   });
 
-  // ใช้ Middleware ตรวจสอบ Token (Security)
   io.use(socketAuth);
 
   io.on("connection", (socket) => {
-    console.log(`🔌 New connection: ${socket.user.username} (${socket.id})`);
+    socket.join(`user:${socket.user.id}`);
+    console.log(` New connection: ${socket.user.username} (${socket.id})`);
 
-    //  Chat Handlers (Send/Join/Typing)
     registerChatHandlers(io, socket);
-
-    // Presence Handlers (Online/Offline)
     registerPresenceHandlers(io, socket);
+    registerNotificationHandlers(io, socket);
 
     socket.on("disconnect", () => {
       console.log(`❌ Disconnected: ${socket.id}`);
