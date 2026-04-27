@@ -1,4 +1,6 @@
 import { prisma } from "../lib/prisma.js";
+import { sendNotification } from "../socket/noti.handler.js";
+import { createNoti } from "./notification.service.js";
 
 export async function getFriendList(userId) {
   const friends = await prisma.friendShip.findMany({
@@ -24,7 +26,7 @@ export async function getFriendList(userId) {
   });
 }
 
-export async function sendFriendRequest(senderId, receiverId) {
+export async function sendFriendRequest(io, senderId, receiverId) {
   const targetId = Number(receiverId);
   //ห้ามแอดตัวเอง
   if (senderId === targetId) {
@@ -49,13 +51,35 @@ export async function sendFriendRequest(senderId, receiverId) {
     throw error;
   }
 
-  return await prisma.friendShip.create({
+  const friendship = await prisma.friendShip.create({
     data: {
       senderId: senderId,
       receiverId: targetId,
       status: "PENDING",
     },
+    include: {
+      sender: { select: { username: true } }
+    }
   });
+
+  // ส่งแจ้งเตือน
+  await createNoti({
+    userId: targetId,
+    senderId: senderId,
+    type: "FRIEND_REQUEST",
+    message: `${friendship.sender.username} sent you a friend request.`,
+    refId: friendship.id,
+  });
+
+  sendNotification(io, {
+    userId: targetId,
+    senderId: senderId,
+    type: "FRIEND_REQUEST",
+    message: `${friendship.sender.username} sent you a friend request.`,
+    refId: friendship.id,
+  });
+
+  return friendship;
 }
 
 export async function getPendingRequests(userId) {
@@ -76,12 +100,15 @@ export async function getPendingRequests(userId) {
   });
 }
 
-export async function acceptFriendRequest(userId, friendshipId) {
+export async function acceptFriendRequest(io, userId, friendshipId) {
   const fId = Number(friendshipId);
   const uId = Number(userId);
 
   const request = await prisma.friendShip.findUnique({
     where: { id: fId },
+    include: {
+      receiver: { select: { username: true } }
+    }
   });
 
   if (!request) throw new Error("Friend request not found");
@@ -113,6 +140,23 @@ export async function acceptFriendRequest(userId, friendshipId) {
     }
   });
 
+  // ส่งแจ้งเตือนให้คนส่ง (Sender) ว่าตอบรับแล้ว
+  await createNoti({
+    userId: friendship.senderId,
+    senderId: uId,
+    type: "FRIEND_ACCEPTED",
+    message: `${request.receiver.username} accepted your friend request.`,
+    refId: friendship.id,
+  });
+
+  sendNotification(io, {
+    userId: friendship.senderId,
+    senderId: uId,
+    type: "FRIEND_ACCEPTED",
+    message: `${request.receiver.username} accepted your friend request.`,
+    refId: friendship.id,
+  });
+
   return friendship;
 }
 
@@ -137,5 +181,77 @@ export async function unfriend(userId, friendshipId) {
   }
   return await prisma.friendShip.delete({
     where: { id: fId },
+  });
+}
+
+export async function getFriendActivities(userId) {
+  const friends = await getFriendList(userId);
+  const friendIds = friends.map((f) => f.id);
+
+  if (friendIds.length === 0) return [];
+
+  const hostingActivities = await prisma.activity.findMany({
+    where: {
+      hostId: { in: friendIds },
+    },
+    include: {
+      host: { select: { id: true, username: true, profileImg: true } },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+  });
+
+  const joiningActivities = await prisma.joinRequest.findMany({
+    where: {
+      userId: { in: friendIds },
+      status: "APPROVED",
+    },
+    include: {
+      user: { select: { id: true, username: true, profileImg: true } },
+      activity: { select: { id: true, title: true } },
+    },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+  });
+
+  const feed = [
+    ...hostingActivities.map((act) => ({
+      id: `host-${act.id}`,
+      user: act.host,
+      action: "hosting",
+      activityId: act.id,
+      activityTitle: act.title,
+      createdAt: act.createdAt,
+    })),
+    ...joiningActivities.map((req) => ({
+      id: `join-${req.id}`,
+      user: req.user,
+      action: "joined",
+      activityId: req.activity.id,
+      activityTitle: req.activity.title,
+      createdAt: req.createdAt,
+    })),
+  ];
+
+  return feed
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 15);
+}
+
+export async function getSentRequests(userId) {
+  return await prisma.friendShip.findMany({
+    where: {
+      status: "PENDING",
+      senderId: userId,
+    },
+    include: {
+      receiver: {
+        select: {
+          id: true,
+          username: true,
+          profileImg: true,
+        },
+      },
+    },
   });
 }

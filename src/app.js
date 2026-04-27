@@ -9,10 +9,10 @@ import errorMiddleware from './middlewares/error.middleware.js'
 import wishlistRouter from "./routes/wishlist.route.js";
 import joinRouter from "./routes/join.route.js";
 import { createServer } from 'node:http'
-
 import chatRoute from "./routes/chat.route.js";
 import { initSocket } from "./socket/index.js";
 import reviewRouter from "./routes/review.route.js";
+import notiRoute from "./routes/notification.route.js";
 import interestRoute from "./routes/interest.route.js";
 
 const app = express();
@@ -39,8 +39,13 @@ app.use('/api/join', joinRouter)
 app.use("/api/chat", chatRoute);
 app.use("/api/interest", interestRoute);
 
-initSocket(server) //Path แยก
+const io = initSocket(server);
+app.set("io", io);
+
+//Path แยก
 app.use('/api/review', reviewRouter)
+app.use('/api/noti', notiRoute)
+
 
 activityStatusUpdater()
 

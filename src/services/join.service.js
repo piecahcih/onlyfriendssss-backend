@@ -1,10 +1,13 @@
 import { prisma } from "../lib/prisma.js";
+import { sendNotification } from "../socket/noti.handler.js";
+import { createNoti } from "./notification.service.js";
 
 
-export async function requestToJoin(userId, activityId) {
+export async function requestToJoin(io, userId, activityId) {
   const activity = await prisma.activity.findUnique({
     where: { id: Number(activityId) },
     include: {
+      host: { select: { id: true, username: true } },
       _count: {
         select: {
           joinRequests: { where: { status: 'APPROVED' } }
@@ -87,6 +90,9 @@ export async function requestToJoin(userId, activityId) {
       userId: userId,
       activityId: Number(activityId),
       status: targetStatus
+    },
+    include: {
+      user: { select: { username: true } }
     }
   });
 
@@ -100,13 +106,30 @@ export async function requestToJoin(userId, activityId) {
         create: { roomId: chatRoom.id, userId: userId }
       });
     }
+  } else if (targetStatus === 'PENDING') {
+    // แจ้งเตือน Host เมื่อมีคนขอจอย (เฉพาะห้องส่วนตัว)
+    await createNoti({
+      userId: activity.hostId,
+      senderId: userId,
+      type: "JOIN_REQUEST",
+      message: `${request.user.username} Request to join the activity "${activity.title}"`,
+      refId: Number(activityId),
+    });
+
+    sendNotification(io, {
+      userId: activity.hostId,
+      senderId: userId,
+      type: "JOIN_REQUEST",
+      message: `${request.user.username} Request to join the activity "${activity.title}"`,
+      refId: Number(activityId),
+    });
   }
 
   return request;
 }
 
 
-export async function updateRequestStatus(hostId, requestId, status) {
+export async function updateRequestStatus(io, hostId, requestId, status) {
   const allowedStatuses = ['APPROVED', 'REJECTED'];
   if (!allowedStatuses.includes(status)) {
     throw new Error("Invalid status. Must be APPROVED or REJECTED");
@@ -125,7 +148,7 @@ export async function updateRequestStatus(hostId, requestId, status) {
 
   const updatedRequest = await prisma.joinRequest.update({
     where: { id: Number(requestId) },
-    data: { status } 
+    data: { status }
   });
 
   //เพิ่มของChat : เมื่อ Host กดอนุมัติ (APPROVED) ให้ดึง User เข้าห้องแชท
@@ -138,6 +161,28 @@ export async function updateRequestStatus(hostId, requestId, status) {
         create: { roomId: chatRoom.id, userId: updatedRequest.userId }
       });
     }
+    // ดึงชื่อ Activity
+    const activity = await prisma.activity.findUnique({
+      where: { id: updatedRequest.activityId },
+      select: { title: true },
+    });
+    // เพิ่ม notification
+    await createNoti({
+      userId: updatedRequest.userId,
+      senderId: Number(hostId),
+      type: "ACTIVITY_APPROVED",
+      message: `Approved to join "${activity.title}"`,
+      refId: updatedRequest.activityId,
+    });
+    sendNotification(io, {
+      userId: updatedRequest.userId,
+      senderId: Number(hostId),
+      type: "ACTIVITY_APPROVED",
+      message: `Approved to join "${activity.title}"`,
+      refId: updatedRequest.activityId,
+    });
+
+
   }
 
   return updatedRequest;
