@@ -1,4 +1,4 @@
-import { cancelActivityStatus, changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId, getUpcomingActivities } from "../services/activity.service.js";
+import { cancelActivityStatus, changeActivityStatus, createActivity, deleteActivityById, editActivityById, getActivitiesCreatedByThisAccount, getActivitiesJoinedByThisAccount, getActivityByCategory, getActivityById, getAllActivities, getAllCurrentActivities, getFinishedActivitiesOnThisAccount, getOrAddPlaceId, getUpcomingActivities, letHostBeFirstMember } from "../services/activity.service.js";
 import createHttpError from 'http-errors'
 
 export async function getAllActivitiesCtrl(req, res, next) {
@@ -172,6 +172,9 @@ export async function createActivityCtrl(req, res, next) {
     }
 
     const createdActivity = await createActivity(Adata, localFilePath)
+
+    const hostAsAMember = await letHostBeFirstMember(id,Number(createdActivity.id))
+
     res.json({
         message: "Activity created successfully",
         activities: createdActivity

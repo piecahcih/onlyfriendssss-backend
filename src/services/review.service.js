@@ -32,7 +32,7 @@ export const createActivityReview = async (reviewerId, activityId, data, localFi
         });
         imageUrls.push(uploadResult.secure_url);
         console.log(`Uploaded: ${uploadResult.secure_url}`);
-        await fs.unlink(absolutePath).catch(() => {});
+        await fs.unlink(absolutePath).catch(() => { });
       } catch (uploadErr) {
         console.error("Cloudinary Upload Error for file:", localFilePath, uploadErr);
         await fs.unlink(absolutePath).catch(() => { });
@@ -54,117 +54,170 @@ export const createActivityReview = async (reviewerId, activityId, data, localFi
 
 
 export const getAllReviewsMe = async (id) => {
-  return await prisma.review.findMany({
-    where: {
-      receiverId: id,
-      reviewType: 'PERSON'
-    },
-    include: {
-      activity: {
-        select: { id: true,coverPhoto:true }
+  try {
+    return await prisma.review.findMany({
+      where: {
+        receiverId: id,
+        reviewType: 'PERSON'
       },
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+      include: {
+        activity: {
+          select: { id: true, coverPhoto: true }
+        },
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 export const getAllUsersReviews = async () => {
-  return await prisma.review.findMany({
-    where: {
-      reviewType: 'PERSON'
-    },
-    include: {
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+  try {
+    return await prisma.review.findMany({
+      where: {
+        reviewType: 'PERSON'
+      },
+      include: {
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 export const getAllActivitiesReviews = async () => {
-  return await prisma.review.findMany({
-    where: {
-      reviewType: 'ACTIVITY'
-    },
-    include: {
-      activity: {
-        include: { place: true }
+  try {
+    return await prisma.review.findMany({
+      where: {
+        reviewType: 'ACTIVITY'
       },
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+      include: {
+        activity: {
+          include: { place: true }
+        },
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const getActivityReviews = async (activityId) => {
-  return await prisma.review.findMany({
-    where: {
-      activityId: Number(activityId),
-      reviewType: 'ACTIVITY'
-    },
-    include: {
-      activity: true,
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+  try {
+    return await prisma.review.findMany({
+      where: {
+        activityId: Number(activityId),
+        reviewType: 'ACTIVITY'
+      },
+      include: {
+        activity: true,
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const getSpecificReview = async (reviewid) => {
-  return await prisma.review.findFirst({
-    where: { id: reviewid },
-    include: {
-      activity: true,
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
+  try {
+    return await prisma.review.findFirst({
+      where: { id: reviewid },
+      include: {
+        activity: true,
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
       }
-    }
-  })
+    })
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export const getActivityReviewsByLocation = async (placeid) => {
-  return await prisma.review.findMany({
-    where: {
-      reviewType: 'ACTIVITY',
-      activity: {
-        placeId: Number(placeid)
-      }
-    },
-    include: {
-      activity: {
-        include : { place: true }
+  try {
+    return await prisma.review.findMany({
+      where: {
+        reviewType: 'ACTIVITY',
+        activity: {
+          placeId: Number(placeid)
+        }
       },
-      reviewer: {
-        select: { id: true, username: true, profileImg: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+      include: {
+        activity: {
+          include: { place: true }
+        },
+        reviewer: {
+          select: { id: true, username: true, profileImg: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
-export const checkExistingReview =  async (reviewerId, activityId) => {
-  return await prisma.review.findFirst({
-    where: { 
-      reviewType: 'ACTIVITY',
-      reviewerId: Number(reviewid), 
-      activityId: Number(activityId) },
-  })
+export const checkExistingReview = async (reviewerId, activityId) => {
+  try {
+    return await prisma.review.findFirst({
+      where: {
+        reviewType: 'ACTIVITY',
+        reviewerId: Number(reviewid),
+        activityId: Number(activityId)
+      },
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
-export const checkExistingPeerReview =  async (reviewerId, activityId, receiverId) => {
-  return await prisma.review.findFirst({
-    where: { 
-      reviewType: 'PERSON',
-      reviewerId: Number(reviewid), 
-      activityId: Number(activityId), 
-      receiverId: Number(receiverId) },
-  })
+export const checkExistingPeerReview = async (reviewerId, activityId, receiverId) => {
+  try {
+    return await prisma.review.findFirst({
+      where: {
+        reviewType: 'PERSON',
+        reviewerId: Number(reviewid),
+        activityId: Number(activityId),
+        receiverId: Number(receiverId)
+      },
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 
@@ -183,141 +236,162 @@ export const createUserReview = async (reviewerId, activityId, receiverId, data)
     throw new Error("You have already reviewed this user for this activity");
   }
 
-  return await prisma.review.create({
-    data: {
-      rating: Number(data.rating),
-      comment: data.comment,
-      imageUrl: data.imageUrl,
-      reviewType: 'PERSON',
-      reviewerId: Number(reviewerId),
-      activityId: Number(activityId),
-      receiverId: Number(receiverId)
-    }
-  })
+  try {
+    return await prisma.review.create({
+      data: {
+        rating: Number(data.rating),
+        comment: data.comment,
+        imageUrl: data.imageUrl,
+        reviewType: 'PERSON',
+        reviewerId: Number(reviewerId),
+        activityId: Number(activityId),
+        receiverId: Number(receiverId)
+      }
+    })
+
+
+  } catch (error) {
+    console.error("Prisma Error:", error);
+    throw error
+  }
 }
 
 export async function getUserReviews(userId) {
-  return await prisma.review.findMany({
-    where: {
-      receiverId: Number(userId)
-    },
-    include: {
-      reviewer: {
-        select: {
-          firstName: true,
-          profileImg: true
-        }
-      },
-      activity: {
-        select: { title: true }
-      }
-    },
-    orderBy: { createdAt: 'desc' }
-  })
+    try {
+      return await prisma.review.findMany({
+        where: {
+          receiverId: Number(userId)
+        },
+        include: {
+          reviewer: {
+            select: {
+              firstName: true,
+              profileImg: true
+            }
+          },
+          activity: {
+            select: { title: true }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 }
 
-export async function getUserById (userId) {
-  return await prisma.user.findUnique({
-    where: {
-      id: Number(userId),
-    },
-    select: {
-      id: true,
-      username: true,
-      profileImg: true,
-    },
-  });
+export async function getUserById(userId) {
+    try {
+      return await prisma.user.findUnique({
+        where: {
+          id: Number(userId),
+        },
+        select: {
+          id: true,
+          username: true,
+          profileImg: true,
+        },
+      });
+
+        
+    } catch (error) {
+        console.error("Prisma Error:", error);
+        throw error     
+    }
 };
 
 
 export const getActivityRatings = async () => {
-       const activities = await prisma.activity.findMany({
-         include: {
-           host: { select: { username: true, profileImg: true } },
-           place: true,
-           reviews: {
+  const activities = await prisma.activity.findMany({
+    include: {
+      host: { select: { username: true, profileImg: true } },
+      place: true,
+      reviews: {
+        where: { reviewType: "ACTIVITY" },
+        select: { rating: true },
+      },
+      _count: {
+        select: { reviews: { where: { reviewType: "ACTIVITY" } } },
+      },
+    },
+  });
+
+  return activities.map((act) => {
+    const total = act.reviews.reduce((acc, curr) => acc + curr.rating, 0);
+    const avg = act.reviews.length > 0 ? total / act.reviews.length : 0;
+    const { reviews, ...rest } = act;
+    return {
+      ...rest,
+      averageRating: Number(avg.toFixed(1)),
+      reviewCount: act._count.reviews,
+    };
+  });
+};
+
+
+
+
+export const getUserRatings = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      username: true,
+      firstName: true,
+      lastName: true,
+      profileImg: true,
+      reviewsReceived: {
+        where: { reviewType: "PERSON" },
+        select: { rating: true },
+      },
+      _count: {
+        select: { reviewsReceived: { where: { reviewType: "PERSON" } } },
+      },
+    },
+  });
+
+  return users.map((user) => {
+    const total = user.reviewsReceived.reduce((acc, curr) => acc + curr.rating, 0);
+    const avg = user.reviewsReceived.length > 0 ? total / user.reviewsReceived.length : 0;
+    const { reviewsReceived, ...rest } = user;
+    return {
+      ...rest,
+      averageRating: Number(avg.toFixed(1)),
+      reviewCount: user._count.reviewsReceived,
+    };
+  });
+};
+
+
+
+
+export const getPlaceRatings = async () => {
+  const places = await prisma.place.findMany({
+    include: {
+      activities: {
+        include: {
+          reviews: {
             where: { reviewType: "ACTIVITY" },
             select: { rating: true },
-         },
-          _count: {
-            select: { reviews: { where: { reviewType: "ACTIVITY" } } },
           },
         },
-      });
-   
-      return activities.map((act) => {
-        const total = act.reviews.reduce((acc, curr) => acc + curr.rating, 0);
-        const avg = act.reviews.length > 0 ? total / act.reviews.length : 0;
-        const { reviews, ...rest } = act;
-        return {
-          ...rest,
-          averageRating: Number(avg.toFixed(1)),
-          reviewCount: act._count.reviews,
-        };
-      });
+      },
+    },
+  });
+
+  return places.map((place) => {
+    // รวมรีวิวจากทุก Activity ที่เคยจัดในสถานที่นี้
+    const allReviews = place.activities.flatMap((act) => act.reviews);
+    const total = allReviews.reduce((acc, curr) => acc + curr.rating, 0);
+    const avg = allReviews.length > 0 ? total / allReviews.length : 0;
+
+    const { activities, ...rest } = place;
+    return {
+      ...rest,
+      averageRating: Number(avg.toFixed(1)),
+      reviewCount: allReviews.length,
     };
-   
-
-
-
-    export const getUserRatings = async () => {
-      const users = await prisma.user.findMany({
-        select: {
-          id: true,
-          username: true,
-          firstName: true,
-          lastName: true,
-          profileImg: true,
-          reviewsReceived: {
-            where: { reviewType: "PERSON" },
-            select: { rating: true },
-          },
-          _count: {
-            select: { reviewsReceived: { where: { reviewType: "PERSON" } } },
-          },
-        },
-      });
-   
-      return users.map((user) => {
-        const total = user.reviewsReceived.reduce((acc, curr) => acc + curr.rating, 0);
-        const avg = user.reviewsReceived.length > 0 ? total / user.reviewsReceived.length : 0;
-        const { reviewsReceived, ...rest } = user;
-        return {
-          ...rest,
-          averageRating: Number(avg.toFixed(1)),
-          reviewCount: user._count.reviewsReceived,
-        };
-      });
-    };
-   
-
-
-    
-    export const getPlaceRatings = async () => {
-      const places = await prisma.place.findMany({
-        include: {
-          activities: {
-            include: {
-              reviews: {
-                where: { reviewType: "ACTIVITY" },
-                select: { rating: true },
-              },
-            },
-          },
-        },
-      });
-   
-      return places.map((place) => {
-        // รวมรีวิวจากทุก Activity ที่เคยจัดในสถานที่นี้
-        const allReviews = place.activities.flatMap((act) => act.reviews);
-        const total = allReviews.reduce((acc, curr) => acc + curr.rating, 0);
-        const avg = allReviews.length > 0 ? total / allReviews.length : 0;
-   
-        const { activities, ...rest } = place;
-        return {
-          ...rest,
-          averageRating: Number(avg.toFixed(1)),
-          reviewCount: allReviews.length,
-        };
-      });
-    };
+  });
+};

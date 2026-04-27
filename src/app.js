@@ -14,6 +14,7 @@ import chatRoute from "./routes/chat.route.js";
 import { initSocket } from "./socket/index.js";
 import reviewRouter from "./routes/review.route.js";
 import interestRoute from "./routes/interest.route.js";
+import placeRoute from "./routes/place.route.js";
 
 const app = express();
 const server = createServer(app)
@@ -38,9 +39,11 @@ app.use('/api/wishlist', wishlistRouter)
 app.use('/api/join', joinRouter)
 app.use("/api/chat", chatRoute);
 app.use("/api/interest", interestRoute);
+app.use('/api/review', reviewRouter)
+app.use('/api/place', placeRoute)
+
 
 initSocket(server) //Path แยก
-app.use('/api/review', reviewRouter)
 
 activityStatusUpdater()
 
