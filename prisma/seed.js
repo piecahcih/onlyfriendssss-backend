@@ -7,6 +7,7 @@ import { oldActivityData } from '../data/oldActivities.js'
 import { friendshipData } from '../data/friendship.js';
 import { activityReviewData } from '../data/activitiesReview.js';
 import { userReviewData } from '../data/userReview.js';
+import { backfillChatRooms } from '../src/utils/backfillChatRoom.js';
 import { interestData } from '../data/interest.js';
 
 async function main() {
@@ -24,36 +25,36 @@ async function main() {
     await tx.$executeRawUnsafe("SET FOREIGN_KEY_CHECKS = 1;");
   });
 
-    console.log(`Start seeding...`)
-    const createdUsers = await prisma.user.createMany({
-        data: userData,
-        skipDuplicates: true
-    })
-    const createdInterests = await prisma.interest.createMany({
-        data: interestData,
-        skipDuplicates: true
-    })
-    const createdPlaces = await prisma.place.createMany({
-        data: placeData,
-        skipDuplicates: true
-    })
+  console.log(`Start seeding...`)
+  const createdUsers = await prisma.user.createMany({
+    data: userData,
+    skipDuplicates: true
+  })
+  const createdInterests = await prisma.interest.createMany({
+    data: interestData,
+    skipDuplicates: true
+  })
+  const createdPlaces = await prisma.place.createMany({
+    data: placeData,
+    skipDuplicates: true
+  })
 
-    const allActivities = [...oldActivityData, ...activityData]
+  const allActivities = [...oldActivityData, ...activityData]
 
-    const createdActivities = await prisma.activity.createMany({
-        data: allActivities,
-        skipDuplicates: true
-    })
-    const createdJoinRequest = await prisma.joinRequest.createMany({
-        data: joinRequestData,
-        skipDuplicates: true
-    })
+  const createdActivities = await prisma.activity.createMany({
+    data: allActivities,
+    skipDuplicates: true
+  })
+  const createdJoinRequest = await prisma.joinRequest.createMany({
+    data: joinRequestData,
+    skipDuplicates: true
+  })
 
-    const allReviews = [...activityReviewData, ...userReviewData];
-    const createdReviews = await prisma.review.createMany({
-        data: allReviews,
-        skipDuplicates: true
-    });
+  const allReviews = [...activityReviewData, ...userReviewData];
+  const createdReviews = await prisma.review.createMany({
+    data: allReviews,
+    skipDuplicates: true
+  });
 
   const ceratedFriendships = await prisma.friendShip.createMany({
     data: friendshipData,
@@ -67,6 +68,7 @@ async function main() {
   console.log(`Created : ${createdJoinRequest.count} join requests`);
   console.log(`Created : ${createdReviews.count} reviews`);
   console.log(`Created : ${ceratedFriendships.count} friendships`);
+  await backfillChatRooms();
 }
 
 main()
