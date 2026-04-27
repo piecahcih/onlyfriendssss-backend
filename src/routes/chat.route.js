@@ -1,6 +1,6 @@
 import express from "express";
 import { getRoomsCtrl, getMessagesCtrl, markAsReadCtrl, getOrCreatePrivateRoomCtrl } from "../controllers/chat.controller.js";
-import { authCheckUser } from "../middlewares/authenticate.js";
+import { authCheckUser } from '../middlewares/authenticate.js';
 
 const chatRoute = express.Router();
 
