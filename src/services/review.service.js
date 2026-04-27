@@ -1,4 +1,6 @@
 import { prisma } from "../lib/prisma.js";
+import { createNoti } from "./notification.service.js";
+import { sendNotification } from "../socket/noti.handler.js";
 import cloudinary from "../../config/cloudinary.js";
 import fs from "fs/promises";
 import path from "path";
@@ -221,7 +223,7 @@ export const checkExistingPeerReview = async (reviewerId, activityId, receiverId
 }
 
 
-export const createUserReview = async (reviewerId, activityId, receiverId, data) => {
+export const createUserReview = async (io, reviewerId, activityId, receiverId, data) => {
   // ตรวจสอบว่าเคยรีวิวคนนี้ในกิจกรรมนี้ไปแล้วหรือยัง
   const existingReview = await prisma.review.findFirst({
     where: {
@@ -237,7 +239,7 @@ export const createUserReview = async (reviewerId, activityId, receiverId, data)
   }
 
   try {
-    return await prisma.review.create({
+    const reviews = await prisma.review.create({
       data: {
         rating: Number(data.rating),
         comment: data.comment,
@@ -254,6 +256,29 @@ export const createUserReview = async (reviewerId, activityId, receiverId, data)
     console.error("Prisma Error:", error);
     throw error
   }
+
+  const reviewer = await getUserById(reviewerId);
+  const notificationMessage = `${reviewer?.username || 'Someone'} gave you a review`;
+
+  await createNoti({
+    userId: Number(receiverId),
+    senderId: Number(reviewerId),
+    type: "NEW_REVIEW",
+    message: notificationMessage,
+    refId: review.id,
+  });
+
+  if (io) {
+    sendNotification(io, {
+      userId: Number(receiverId),
+      senderId: Number(reviewerId),
+      type: "NEW_REVIEW",
+      message: notificationMessage,
+      refId: review.id,
+    });
+  }
+
+  return reviews;
 }
 
 export async function getUserReviews(userId) {

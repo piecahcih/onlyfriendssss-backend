@@ -1,8 +1,53 @@
 import createHttpError from 'http-errors'
 import { exploreActivities, getUserInterest, getUserSuggestedActivitiesByInterest } from '../services/interest.service.js'
 
+export const INTEREST_MAP = {
+// Food & Drink
+foodie: 'FOOD',
+cafe_hopping: 'FOOD',
+street_food: 'FOOD',
+fine_dining: 'FOOD',
+cooking_baking: 'FOOD',
+drinks_nightout: 'FOOD',
+
+// Health & Active
+slowlife: 'HEALTH',
+health: 'HEALTH',
+sport: 'HEALTH',
+camping: 'HEALTH',
+gym_workout: 'HEALTH',
+yoga_pilates: 'HEALTH',
+running: 'HEALTH',
+mental_wellness: 'HEALTH',
+team_sports: 'HEALTH',
+
+// Art & Culture
+art: 'ART',
+museum_gallery: 'ART',
+photography: 'ART',
+crafting_diy: 'ART',
+live_music: 'ART',
+book_club: 'ART',
+
+// Entertainment & Fun
+gaming: 'ENTERTAINMENT',
+movies_cinema: 'ENTERTAINMENT',
+board_games: 'ENTERTAINMENT',
+video_games: 'ENTERTAINMENT',
+karaoke: 'ENTERTAINMENT',
+concerts_festivals: 'ENTERTAINMENT',
+
+// Travel & Adventure
+travel: 'TRAVEL',
+volunteer: 'TRAVEL',
+backpacking: 'TRAVEL',
+road_trip: 'TRAVEL',
+beach_vibes: 'TRAVEL',
+hiking_trekking: 'TRAVEL',
+sightseeing: 'TRAVEL',
+};
 export async function getUserInterestCtrl(req, res, next) {
-    const {id} = req.result
+    const { id } = req.result
 
     const userInterests = await getUserInterest(id)
 
@@ -17,7 +62,7 @@ export async function getUserInterestCtrl(req, res, next) {
 }
 
 export async function exploreActivityCtrl(req, res, next) {
-    const {id} = req.result
+    const { id } = req.result
 
     const suggestsAct = await exploreActivities(id)
 
@@ -42,20 +87,12 @@ export async function suggestActivityByYourInterestCtrl(req, res, next) {
     // console.log('userInterests', userInterests)
 
 
-    const INTEREST_MAP = {
-        foodie: 'FOOD', cafe_hopping: 'FOOD', street_food: 'FOOD', fine_dining: 'FOOD', cooking_baking: 'FOOD', drinks_nightout: 'FOOD',
-        slowlife: 'HEALTH', health: 'HEALTH', sport: 'HEALTH', camping: 'HEALTH', gym_workout: 'HEALTH', yoga_pilates: 'HEALTH', running: 'HEALTH', mental_wellness: 'HEALTH', team_sports: 'HEALTH',
-        art: 'ART', museum_gallery: 'ART', photography: 'ART', crafting_diy: 'ART', live_music: 'ART', book_club: 'ART',
-        gaming: 'ENTERTAINMENT', movies_cinema: 'ENTERTAINMENT', board_games: 'ENTERTAINMENT', video_games: 'ENTERTAINMENT', karaoke: 'ENTERTAINMENT', concerts_festivals: 'ENTERTAINMENT',
-        travel: 'TRAVEL', volunteer: 'TRAVEL', backpacking: 'TRAVEL', road_trip: 'TRAVEL', beach_vibes: 'TRAVEL', hiking_trekking: 'TRAVEL', sightseeing: 'TRAVEL'
-    };
-
 
     const userInterestCategories = [
-        ...new Set(userInterests.map(interest =>INTEREST_MAP[interest.category]))
+        ...new Set(userInterests.map(interest => INTEREST_MAP[interest.category]))
     ]
     // console.log('userInterestCategories', userInterestCategories)
-    
+
     const suggestActivities = await getUserSuggestedActivitiesByInterest(id, userInterestCategories)
     // console.log('suggestActivities', suggestActivities)
     if (!suggestActivities) {

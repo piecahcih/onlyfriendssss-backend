@@ -76,10 +76,14 @@ export const getUserById = async (userId) => {
           select: {
             createdActivities: true, // จำนวนกิจกรรมที่สร้าง
             visitedPlaces: true, // จำนวนสถานที่ที่เคยไป
-            receivedFriendRequests: true, // จำนวนเพื่อน
+           sentFriendRequests: { where: { status: "ACCEPTED" } },
+           receivedFriendRequests: { where: { status: "ACCEPTED" } },
           },
         },
+        
       },
+      
+    
     });
 
     if (!user) {
@@ -96,11 +100,13 @@ export const getUserById = async (userId) => {
         category: true,
       },
     });
+    const friendsCount = (user._count?.sentFriendRequests || 0) + (user._count?.receivedFriendRequests || 0);
 
     return {
       success: true,
       data: {
         ...user,
+        friendsCount: friendsCount,
         interests: interests,
       },
     };

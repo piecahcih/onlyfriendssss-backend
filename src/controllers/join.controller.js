@@ -5,8 +5,9 @@ export async function joinActivityCtrl(req, res, next) {
   try {
     const userId = req.result.id
     const { activityId } = req.body
+    const io = req.app.get("io");
 
-    const result = await requestToJoin(userId, activityId)
+    const result = await requestToJoin(io, userId, activityId)
 
     const message = result.status === 'APPROVED'
       ? "Joined activity successfully"
@@ -26,8 +27,9 @@ export async function manageJoinRequestCtrl(req, res, next) {
   try {
     const hostId = req.result.id
     const { requestId, status } = req.body
+    const io = req.app.get("io");
 
-    const result = await updateRequestStatus(hostId, requestId, status)
+    const result = await updateRequestStatus(io, hostId, requestId, status)
     res.json({
       message: `Request ${status.toLowerCase()} successfully`,
       data: result

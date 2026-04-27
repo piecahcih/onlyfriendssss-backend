@@ -25,9 +25,9 @@ export async function getAllActivities() {
 
 export async function getUpcomingActivities(userid) {
     const now = new Date();
-    
+
     const nextWeek = new Date();
-    nextWeek.setDate(now.getDate() + 7); 
+    nextWeek.setDate(now.getDate() + 7);
 
     try {
         return await prisma.activity.findMany({
