@@ -146,7 +146,6 @@ model User {
   reviewsReceived   Review[]       @relation("Receiver")
   visitedPlaces     VisitedPlace[]
   messages          Message[]
-  createdRoutes     Route[]
   wishlist          Wishlist[]
 
   sentFriendRequests     FriendShip[]   @relation("SentFriendRequests")
@@ -204,7 +203,7 @@ model Place {
 
   visitedBy  VisitedPlace[]
   activities Activity[]
-  routeItems RouteItem[]
+
 }
 
 model Review {
@@ -225,24 +224,7 @@ model Review {
   activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 }
 
-model Route {
-  id          Int         @id @default(autoincrement())
-  name        String
-  description String?
-  creatorId   Int
-  creator     User        @relation(fields: [creatorId], references: id, onDelete: Cascade)
-  items       RouteItem[]
-  createdAt   DateTime    @default(now())
-}
 
-model RouteItem {
-  id      Int   @id @default(autoincrement())
-  order   Int
-  routeId Int
-  route   Route @relation(fields: [routeId], references: id)
-  placeId Int
-  place   Place @relation(fields: [placeId], references: id)
-}
 
 model FriendShip {
   id        Int              @id @default(autoincrement())
