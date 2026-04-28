@@ -8,10 +8,14 @@ import { registerNotificationHandlers } from "./noti.handler.js";
 export const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "*",
+     origin: [
+        "http://localhost:5173/",
+        "https://neon-news-sociology-instead.trycloudflare.com/"
+      ],
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
       credentials: true
-    }
+    },
+    transports: ['websocket', 'polling']
   });
 
   io.use(socketAuth);

@@ -23,7 +23,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://neon-news-sociology-instead.trycloudflare.com"
+      "https://stick-silicon-premiere-hamburg.trycloudflare.com"
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
