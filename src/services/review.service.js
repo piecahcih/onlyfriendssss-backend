@@ -145,7 +145,7 @@ export const getActivityReviews = async (activityId) => {
 export const getSpecificReview = async (reviewid) => {
   try {
     return await prisma.review.findFirst({
-      where: { id: reviewid },
+      where: { id: Number(reviewid) },
       include: {
         activity: true,
         reviewer: {
@@ -192,7 +192,7 @@ export const checkExistingReview = async (reviewerId, activityId) => {
     return await prisma.review.findFirst({
       where: {
         reviewType: 'ACTIVITY',
-        reviewerId: Number(reviewid),
+        reviewerId: Number(reviewerId),
         activityId: Number(activityId)
       },
     })
@@ -209,7 +209,7 @@ export const checkExistingPeerReview = async (reviewerId, activityId, receiverId
     return await prisma.review.findFirst({
       where: {
         reviewType: 'PERSON',
-        reviewerId: Number(reviewid),
+        reviewerId: Number(reviewerId),
         activityId: Number(activityId),
         receiverId: Number(receiverId)
       },
@@ -238,8 +238,9 @@ export const createUserReview = async (io, reviewerId, activityId, receiverId, d
     throw new Error("You have already reviewed this user for this activity");
   }
 
+  let reviews;
   try {
-    const reviews = await prisma.review.create({
+    reviews = await prisma.review.create({
       data: {
         rating: Number(data.rating),
         comment: data.comment,
@@ -265,7 +266,7 @@ export const createUserReview = async (io, reviewerId, activityId, receiverId, d
     senderId: Number(reviewerId),
     type: "NEW_REVIEW",
     message: notificationMessage,
-    refId: review.id,
+    refId: reviews.id,
   });
 
   if (io) {
@@ -274,7 +275,7 @@ export const createUserReview = async (io, reviewerId, activityId, receiverId, d
       senderId: Number(reviewerId),
       type: "NEW_REVIEW",
       message: notificationMessage,
-      refId: review.id,
+      refId: reviews.id,
     });
   }
 
