@@ -108,5 +108,16 @@ export const oldActivityData = [
     placeId: 10,
     coverPhoto: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1000",
     status: "FINISHED"
+  },
+
+  { // 11
+    category: "TRAVEL",
+    title: "Big C",
+    description: "เดินเล่นรับอากาศบริสุทธิ์ที่ Big C",
+    eventStartTime: new Date("2026-03-05T09:30:00"),
+    hostId: 10,
+    placeId: 10,
+    coverPhoto: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=1000",
+    status: "FINISHED"
   }
 ];
