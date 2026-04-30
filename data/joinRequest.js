@@ -53,295 +53,300 @@ export const joinRequestData = [
         { userId: 4, activityId: 10, status: "APPROVED" },
         { userId: 5, activityId: 10, status: "APPROVED" },
 
+        // กิจกรรม 10 (Bang Krachao Green Lung Walk): 2 approved 0 pending 0 rejected
+        { userId: 11, activityId: 11, status: "APPROVED" },
+        { userId: 4, activityId: 11, status: "APPROVED" },
+        { userId: 5, activityId: 11, status: "APPROVED" },
+
   // --- HEALTH ---
   
-  // กิจกรรม 11 (Morning Run at Benjakitti): 5 approved 1 pending 0 rejected
-  { userId: 1, activityId: 11, status: "APPROVED" },
-  { userId: 2, activityId: 11, status: "APPROVED" },
-  { userId: 3, activityId: 11, status: "APPROVED" },
-  { userId: 4, activityId: 11, status: "APPROVED" },
-  { userId: 5, activityId: 11, status: "APPROVED" },
-  { userId: 7, activityId: 11, status: "APPROVED" },
+  // กิจกรรม 12 (Morning Run at Benjakitti)
+{ userId: 1, activityId: 12, status: "APPROVED" },
+{ userId: 2, activityId: 12, status: "APPROVED" },
+{ userId: 3, activityId: 12, status: "APPROVED" },
+{ userId: 4, activityId: 12, status: "APPROVED" },
+{ userId: 5, activityId: 12, status: "APPROVED" },
+{ userId: 7, activityId: 12, status: "APPROVED" },
 
-  // กิจกรรม 12 (Yoga in the Park): 4 approved 1 pending 0 rejected
-  { userId: 2, activityId: 12, status: "APPROVED" },
-  { userId: 3, activityId: 12, status: "APPROVED" },
-  { userId: 4, activityId: 12, status: "APPROVED" },
-  { userId: 5, activityId: 12, status: "APPROVED" },
+// กิจกรรม 13 (Yoga in the Park)
+{ userId: 2, activityId: 13, status: "APPROVED" },
+{ userId: 3, activityId: 13, status: "APPROVED" },
+{ userId: 4, activityId: 13, status: "APPROVED" },
+{ userId: 5, activityId: 13, status: "APPROVED" },
 
-  // กิจกรรม 13 (เต้นแอโรบิคสวนลุม): 5 approved 1 pending 0 rejected
-  { userId: 3, activityId: 13, status: "APPROVED" },
-  { userId: 1, activityId: 13, status: "APPROVED" },
-  { userId: 2, activityId: 13, status: "APPROVED" },
-  { userId: 4, activityId: 13, status: "APPROVED" },
-  { userId: 5, activityId: 13, status: "APPROVED" },
-  { userId: 6, activityId: 13, status: "APPROVED" },
+// กิจกรรม 14 (เต้นแอโรบิคสวนลุม)
+{ userId: 3, activityId: 14, status: "APPROVED" },
+{ userId: 11, activityId: 14, status: "APPROVED" },
+{ userId: 2, activityId: 14, status: "APPROVED" },
+{ userId: 4, activityId: 14, status: "APPROVED" },
+{ userId: 5, activityId: 14, status: "APPROVED" },
+{ userId: 6, activityId: 14, status: "APPROVED" },
 
   // --- ENTERTAINMENT ---
   
-  // กิจกรรม 14 (Board Game Night @Siam): 3 approved 1 pending 0 rejected
-  { userId: 3, activityId: 14, status: "APPROVED" },
-  { userId: 1, activityId: 14, status: "APPROVED" },
-  { userId: 2, activityId: 14, status: "APPROVED" },
-  { userId: 4, activityId: 14, status: "PENDING" },
-  { userId: 5, activityId: 14, status: "PENDING" },
+ // กิจกรรม 15 (Board Game Night @Siam)
+{ userId: 3, activityId: 15, status: "APPROVED" },
+{ userId: 1, activityId: 15, status: "APPROVED" },
+{ userId: 2, activityId: 15, status: "APPROVED" },
+{ userId: 4, activityId: 15, status: "PENDING" },
+{ userId: 5, activityId: 15, status: "PENDING" },
 
-  // กิจกรรม 15 (ร้องเกะ @Thonglor): 4 approved 1 pending 0 rejected
-  { userId: 4, activityId: 15, status: "APPROVED" },
-  { userId: 2, activityId: 15, status: "APPROVED" },
-  { userId: 3, activityId: 15, status: "APPROVED" },
-  { userId: 5, activityId: 15, status: "APPROVED" },
-  { userId: 6, activityId: 15, status: "PENDING" },
-
+// กิจกรรม 16 (ร้องเกะ @Thonglor)
+{ userId: 4, activityId: 16, status: "APPROVED" },
+{ userId: 2, activityId: 16, status: "APPROVED" },
+{ userId: 3, activityId: 16, status: "APPROVED" },
+{ userId: 5, activityId: 16, status: "APPROVED" },
+{ userId: 11, activityId: 16, status: "APPROVED" },
+{ userId: 7, activityId: 16, status: "APPROVED" },
   // --- ART ---
   
-  // กิจกรรม 16 (Watercolor Workshop @Ari): 4 approved 1 pending 0 rejected
-  { userId: 5, activityId: 16, status: "APPROVED" },
-  { userId: 2, activityId: 16, status: "APPROVED" },
-  { userId: 3, activityId: 16, status: "APPROVED" },
-  { userId: 4, activityId: 16, status: "APPROVED" },
-  { userId: 6, activityId: 16, status: "APPROVED" },
+// กิจกรรม 17 (Watercolor Workshop @Ari)
+{ userId: 5, activityId: 17, status: "APPROVED" },
+{ userId: 4, activityId: 17, status: "APPROVED" },
+{ userId: 2, activityId: 17, status: "APPROVED" },
+{ userId: 3, activityId: 17, status: "APPROVED" },
+{ userId: 6, activityId: 17, status: "APPROVED" },
+{ userId: 7, activityId: 17, status: "APPROVED" },
 
-  // กิจกรรม 17 (ตลาดน้อย Gallery Hopping): 5 approved 1 pending 0 rejected
-  { userId: 6, activityId: 17, status: "APPROVED" },
-  { userId: 1, activityId: 17, status: "APPROVED" },
-  { userId: 2, activityId: 17, status: "APPROVED" },
-  { userId: 7, activityId: 17, status: "APPROVED" },
-  { userId: 4, activityId: 17, status: "APPROVED" },
-  { userId: 5, activityId: 17, status: "APPROVED" },
+// กิจกรรม 18 (ตลาดน้อย Gallery Hopping)
+{ userId: 6, activityId: 18, status: "APPROVED" },
+{ userId: 1, activityId: 18, status: "APPROVED" },
+{ userId: 2, activityId: 18, status: "APPROVED" },
+{ userId: 7, activityId: 18, status: "APPROVED" },
+{ userId: 4, activityId: 18, status: "APPROVED" },
+{ userId: 5, activityId: 18, status: "APPROVED" },
 
   // --- FOOD ---
   
-  // กิจกรรม 18 (Ban Tad Thong Foodie Tour): 6 approved 1 pending 0 rejected
-  { userId: 7, activityId: 18, status: "APPROVED" },
-  { userId: 1, activityId: 18, status: "APPROVED" },
-  { userId: 2, activityId: 18, status: "APPROVED" },
-  { userId: 3, activityId: 18, status: "APPROVED" },
-  { userId: 4, activityId: 18, status: "APPROVED" },
-  { userId: 5, activityId: 18, status: "APPROVED" },
-  { userId: 6, activityId: 18, status: "APPROVED" },
+// กิจกรรม 19 (Ban Tad Thong Foodie Tour)
+{ userId: 7, activityId: 19, status: "APPROVED" },
+{ userId: 1, activityId: 19, status: "APPROVED" },
+{ userId: 2, activityId: 19, status: "APPROVED" },
+{ userId: 3, activityId: 19, status: "APPROVED" },
+{ userId: 4, activityId: 19, status: "APPROVED" },
+{ userId: 5, activityId: 19, status: "APPROVED" },
+{ userId: 6, activityId: 19, status: "APPROVED" },
 
-  // กิจกรรม 19 (Yaowarat Night Market Feast): 5 approved 1 pending 0 rejected
-  { userId: 8, activityId: 19, status: "APPROVED" },
-  { userId: 1, activityId: 19, status: "APPROVED" },
-  { userId: 2, activityId: 19, status: "APPROVED" },
-  { userId: 6, activityId: 19, status: "APPROVED" },
-  { userId: 4, activityId: 19, status: "APPROVED" },
-  { userId: 5, activityId: 19, status: "APPROVED" },
+// กิจกรรม 20 (Yaowarat Night Market Feast)
+{ userId: 8, activityId: 20, status: "APPROVED" },
+{ userId: 1, activityId: 20, status: "APPROVED" },
+{ userId: 2, activityId: 20, status: "APPROVED" },
+{ userId: 6, activityId: 20, status: "APPROVED" },
+{ userId: 4, activityId: 20, status: "APPROVED" },
+{ userId: 5, activityId: 20, status: "APPROVED" },
 
   // --- TRAVEL ---
   
-  // กิจกรรม 20 (Chao Phraya River Cruise): 5 approved 1 pending 0 rejected
-  { userId: 9, activityId: 20, status: "APPROVED" },
-  { userId: 2, activityId: 20, status: "APPROVED" },
-  { userId: 3, activityId: 20, status: "APPROVED" },
-  { userId: 4, activityId: 20, status: "APPROVED" },
-  { userId: 5, activityId: 20, status: "APPROVED" },
+// กิจกรรม 21 (Chao Phraya River Cruise)
+{ userId: 9, activityId: 21, status: "APPROVED" },
+{ userId: 2, activityId: 21, status: "APPROVED" },
+{ userId: 3, activityId: 21, status: "APPROVED" },
+{ userId: 4, activityId: 21, status: "APPROVED" },
+{ userId: 5, activityId: 21, status: "APPROVED" },
 
-  // กิจกรรม 21 (Hidden Bangkok Bicycle Tour): 4 approved 1 pending 0 rejected
-  { userId: 10, activityId: 21, status: "APPROVED" },
-  { userId: 2, activityId: 21, status: "APPROVED" },
-  { userId: 3, activityId: 21, status: "APPROVED" },
-  { userId: 7, activityId: 21, status: "APPROVED" },
-  { userId: 4, activityId: 21, status: "APPROVED" },
-  { userId: 5, activityId: 21, status: "APPROVED" },
+// กิจกรรม 22 (Hidden Bangkok Bicycle Tour)
+{ userId: 10, activityId: 22, status: "APPROVED" },
+{ userId: 2, activityId: 22, status: "APPROVED" },
+{ userId: 3, activityId: 22, status: "APPROVED" },
+{ userId: 7, activityId: 22, status: "APPROVED" },
+{ userId: 4, activityId: 22, status: "APPROVED" },
+{ userId: 5, activityId: 22, status: "APPROVED" },
 
   // --- HOST 1 ---
   
-  // กิจกรรม 22 (หาก๊วนตีแบตวันเสาร์): 4 approved 1 pending 0 rejected
-  { userId: 1, activityId: 22, status: "APPROVED" },
-  { userId: 2, activityId: 22, status: "APPROVED" },
-  { userId: 3, activityId: 22, status: "APPROVED" },
-  { userId: 5, activityId: 22, status: "APPROVED" },
-  { userId: 4, activityId: 22, status: "PENDING" },
-  { userId: 6, activityId: 22, status: "PENDING" },
+  // กิจกรรม 23 (หาก๊วนตีแบตวันเสาร์)
+{ userId: 1, activityId: 23, status: "APPROVED" },
+{ userId: 2, activityId: 23, status: "APPROVED" },
+{ userId: 3, activityId: 23, status: "APPROVED" },
+{ userId: 5, activityId: 23, status: "APPROVED" },
+{ userId: 4, activityId: 23, status: "PENDING" },
+{ userId: 6, activityId: 23, status: "PENDING" },
 
-  // กิจกรรม 23 (MOCA Museum Hopping): 5 approved 1 pending 0 rejected
-  { userId: 1, activityId: 23, status: "APPROVED" },
-  { userId: 2, activityId: 23, status: "APPROVED" },
-  { userId: 7, activityId: 23, status: "APPROVED" },
-  { userId: 4, activityId: 23, status: "APPROVED" },
-  { userId: 5, activityId: 23, status: "APPROVED" },
-  { userId: 6, activityId: 23, status: "APPROVED" },
+// กิจกรรม 24 (MOCA Museum Hopping)
+{ userId: 1, activityId: 24, status: "APPROVED" },
+{ userId: 2, activityId: 24, status: "APPROVED" },
+{ userId: 7, activityId: 24, status: "APPROVED" },
+{ userId: 4, activityId: 24, status: "APPROVED" },
+{ userId: 5, activityId: 24, status: "APPROVED" },
+{ userId: 6, activityId: 24, status: "APPROVED" },
 
-  // กิจกรรม 24 (หาตี้วาโร AIS สามย่าน): 3 approved 1 pending 0 rejected
-  { userId: 1, activityId: 24, status: "APPROVED" },
-  { userId: 2, activityId: 24, status: "APPROVED" },
-  { userId: 3, activityId: 24, status: "APPROVED" },
-  { userId: 4, activityId: 24, status: "APPROVED" },
-  { userId: 5, activityId: 24, status: "APPROVED" },
+// กิจกรรม 25 (หาตี้วาโร AIS สามย่าน)
+{ userId: 1, activityId: 25, status: "APPROVED" },
+{ userId: 2, activityId: 25, status: "APPROVED" },
+{ userId: 3, activityId: 25, status: "APPROVED" },
+{ userId: 4, activityId: 25, status: "APPROVED" },
+{ userId: 5, activityId: 25, status: "APPROVED" },
 
-  // กิจกรรม 25 (Late Night Gym Squad): 5 approved 1 pending 0 rejected
-  { userId: 1, activityId: 25, status: "APPROVED" },
-  { userId: 2, activityId: 25, status: "APPROVED" },
-  { userId: 3, activityId: 25, status: "APPROVED" },
-  { userId: 4, activityId: 25, status: "APPROVED" },
-  { userId: 5, activityId: 25, status: "APPROVED" },
-  { userId: 6, activityId: 25, status: "APPROVED" },
-  { userId: 7, activityId: 25, status: "APPROVED" },
+// กิจกรรม 26 (Late Night Gym Squad)
+{ userId: 1, activityId: 26, status: "APPROVED" },
+{ userId: 2, activityId: 26, status: "APPROVED" },
+{ userId: 3, activityId: 26, status: "APPROVED" },
+{ userId: 4, activityId: 26, status: "APPROVED" },
+{ userId: 5, activityId: 26, status: "APPROVED" },
+{ userId: 6, activityId: 26, status: "APPROVED" },
+{ userId: 7, activityId: 26, status: "APPROVED" },
 
   // --- HOST 2 ---
   
-  // กิจกรรม 26 (Indy Live Music): 5 approved 1 pending 0 rejected
-  { userId: 2, activityId: 26, status: "APPROVED" },
-  { userId: 1, activityId: 26, status: "APPROVED" },
-  { userId: 10, activityId: 26, status: "APPROVED" },
-  { userId: 4, activityId: 26, status: "APPROVED" },
-  { userId: 7, activityId: 26, status: "APPROVED" },
-  { userId: 6, activityId: 26, status: "APPROVED" },
+// กิจกรรม 27 (Indy Live Music)
+{ userId: 2, activityId: 27, status: "APPROVED" },
+{ userId: 1, activityId: 27, status: "APPROVED" },
+{ userId: 10, activityId: 27, status: "APPROVED" },
+{ userId: 4, activityId: 27, status: "APPROVED" },
+{ userId: 7, activityId: 27, status: "APPROVED" },
+{ userId: 6, activityId: 27, status: "APPROVED" },
 
-  // กิจกรรม 27 (ถ่ายรูปฟิล์มหัวลำโพง): 3 approved 1 pending 1 rejected
-  { userId: 2, activityId: 27, status: "APPROVED" },
-  { userId: 1, activityId: 27, status: "APPROVED" },
-  { userId: 3, activityId: 27, status: "APPROVED" },
-  { userId: 5, activityId: 27, status: "PENDING" },
-  { userId: 8, activityId: 27, status: "PENDING" },
-  { userId: 4, activityId: 27, status: "REJECTED" },
+// กิจกรรม 28 (ถ่ายรูปฟิล์มหัวลำโพง)
+{ userId: 2, activityId: 28, status: "APPROVED" },
+{ userId: 1, activityId: 28, status: "APPROVED" },
+{ userId: 3, activityId: 28, status: "APPROVED" },
+{ userId: 5, activityId: 28, status: "PENDING" },
+{ userId: 8, activityId: 28, status: "PENDING" },
+{ userId: 4, activityId: 28, status: "REJECTED" },
 
-  // กิจกรรม 28 (Jodd Fairs Night Market): 5 approved 1 pending 0 rejected
-  { userId: 2, activityId: 28, status: "APPROVED" },
-  { userId: 7, activityId: 28, status: "APPROVED" },
-  { userId: 3, activityId: 28, status: "APPROVED" },
-  { userId: 9, activityId: 28, status: "APPROVED" },
-  { userId: 5, activityId: 28, status: "APPROVED" },
-  { userId: 6, activityId: 28, status: "APPROVED" },
+// กิจกรรม 29 (Jodd Fairs Night Market)
+{ userId: 2, activityId: 29, status: "APPROVED" },
+{ userId: 7, activityId: 29, status: "APPROVED" },
+{ userId: 3, activityId: 29, status: "APPROVED" },
+{ userId: 9, activityId: 29, status: "APPROVED" },
+{ userId: 5, activityId: 29, status: "APPROVED" },
+{ userId: 6, activityId: 29, status: "APPROVED" },
 
-  // กิจกรรม 29 (Rattanakosin Tuk-Tuk Tour): 5 approved 1 pending 0 rejected
-  { userId: 2, activityId: 29, status: "APPROVED" },
-  { userId: 3, activityId: 29, status: "APPROVED" },
-  { userId: 4, activityId: 29, status: "APPROVED" },
-  { userId: 9, activityId: 29, status: "APPROVED" },
-  { userId: 6, activityId: 29, status: "APPROVED" },
-  { userId: 7, activityId: 29, status: "APPROVED" },
+// กิจกรรม 30 (Rattanakosin Tuk-Tuk Tour)
+{ userId: 2, activityId: 30, status: "APPROVED" },
+{ userId: 3, activityId: 30, status: "APPROVED" },
+{ userId: 4, activityId: 30, status: "APPROVED" },
+{ userId: 9, activityId: 30, status: "APPROVED" },
+{ userId: 6, activityId: 30, status: "APPROVED" },
+{ userId: 7, activityId: 30, status: "APPROVED" },
 
   // --- HOST 3 ---
   
-  // กิจกรรม 30 (Stand-up Comedy Night): 5 approved 1 pending 0 rejected
-  { userId: 3, activityId: 30, status: "APPROVED" },
-  { userId: 2, activityId: 30, status: "APPROVED" },
-  { userId: 10, activityId: 30, status: "APPROVED" },
-  { userId: 5, activityId: 30, status: "APPROVED" },
-  { userId: 6, activityId: 30, status: "APPROVED" },
+// กิจกรรม 31 (Stand-up Comedy Night)
+{ userId: 3, activityId: 31, status: "APPROVED" },
+{ userId: 2, activityId: 31, status: "APPROVED" },
+{ userId: 10, activityId: 31, status: "APPROVED" },
+{ userId: 5, activityId: 31, status: "APPROVED" },
+{ userId: 6, activityId: 31, status: "APPROVED" },
 
-  // กิจกรรม 31 (Talat Phlu Street Food Crawl): 5 approved 1 pending 0 rejected
-  { userId: 3, activityId: 31, status: "APPROVED" },
-  { userId: 11, activityId: 31, status: "APPROVED" },
-  { userId: 7, activityId: 31, status: "APPROVED" },
-  { userId: 4, activityId: 31, status: "APPROVED" },
-  { userId: 5, activityId: 31, status: "APPROVED" },
-  { userId: 6, activityId: 31, status: "APPROVED" },
+// กิจกรรม 32 (Talat Phlu Street Food Crawl)
+{ userId: 3, activityId: 32, status: "APPROVED" },
+{ userId: 11, activityId: 32, status: "APPROVED" },
+{ userId: 7, activityId: 32, status: "APPROVED" },
+{ userId: 4, activityId: 32, status: "APPROVED" },
+{ userId: 5, activityId: 32, status: "APPROVED" },
+{ userId: 6, activityId: 32, status: "APPROVED" },
 
   // --- HOST 4 ---
   
-  // กิจกรรม 32 (ปั่นจักรยาน @Bang Krachao): 4 approved 1 pending 0 rejected
-  { userId: 4, activityId: 32, status: "APPROVED" },
-  { userId: 2, activityId: 32, status: "APPROVED" },
-  { userId: 11, activityId: 32, status: "APPROVED" },
-  { userId: 3, activityId: 32, status: "APPROVED" },
-  { userId: 5, activityId: 32, status: "APPROVED" },
+// กิจกรรม 33 (ปั่นจักรยาน @Bang Krachao)
+{ userId: 4, activityId: 33, status: "APPROVED" },
+{ userId: 2, activityId: 33, status: "APPROVED" },
+{ userId: 11, activityId: 33, status: "APPROVED" },
+{ userId: 3, activityId: 33, status: "APPROVED" },
+{ userId: 5, activityId: 33, status: "APPROVED" },
 
-  // กิจกรรม 33 (Omakase Experience @Thonglor): 3 approved 1 pending 0 rejected
-  { userId: 4, activityId: 33, status: "APPROVED" },
-  { userId: 1, activityId: 33, status: "APPROVED" },
-  { userId: 2, activityId: 33, status: "APPROVED" },
-  { userId: 3, activityId: 33, status: "APPROVED" },
-
+// กิจกรรม 34 (Omakase Experience @Thonglor)
+{ userId: 4, activityId: 34, status: "APPROVED" },
+{ userId: 1, activityId: 34, status: "APPROVED" },
+{ userId: 2, activityId: 34, status: "APPROVED" },
+{ userId: 3, activityId: 34, status: "APPROVED" },
   // --- HOST 5 ---
   
-  // กิจกรรม 34 (Pottery Workshop for Beginners): 4 approved 1 pending 0 rejected
-  { userId: 5, activityId: 34, status: "APPROVED" },
-  { userId: 1, activityId: 34, status: "APPROVED" },
-  { userId: 11, activityId: 34, status: "APPROVED" },
-  { userId: 3, activityId: 34, status: "APPROVED" },
-  { userId: 10, activityId: 34, status: "PENDING" },
-  { userId: 6, activityId: 34, status: "PENDING" },
+// กิจกรรม 35 (Pottery Workshop for Beginners)
+{ userId: 5, activityId: 35, status: "APPROVED" },
+{ userId: 1, activityId: 35, status: "APPROVED" },
+{ userId: 11, activityId: 35, status: "APPROVED" },
+{ userId: 3, activityId: 35, status: "APPROVED" },
+{ userId: 10, activityId: 35, status: "PENDING" },
+{ userId: 6, activityId: 35, status: "PENDING" },
 
-  // กิจกรรม 35 (Mahanakhon Skywalk Sunset): 5 approved 1 pending 0 rejected
-  { userId: 5, activityId: 35, status: "APPROVED" },
-  { userId: 11, activityId: 35, status: "APPROVED" },
-  { userId: 3, activityId: 35, status: "APPROVED" },
-  { userId: 4, activityId: 35, status: "APPROVED" },
-  { userId: 10, activityId: 35, status: "APPROVED" },
-  { userId: 6, activityId: 35, status: "APPROVED" },
+// กิจกรรม 36 (Mahanakhon Skywalk Sunset)
+{ userId: 5, activityId: 36, status: "APPROVED" },
+{ userId: 11, activityId: 36, status: "APPROVED" },
+{ userId: 3, activityId: 36, status: "APPROVED" },
+{ userId: 4, activityId: 36, status: "APPROVED" },
+{ userId: 10, activityId: 36, status: "APPROVED" },
+{ userId: 6, activityId: 36, status: "APPROVED" },
 
-  // กิจกรรม 36 (หาเพื่อนไปวิ่งสวนลุม): 4 approved 1 pending 0 rejected
-  { userId: 5, activityId: 36, status: "APPROVED" },
-  { userId: 2, activityId: 36, status: "APPROVED" },
-  { userId: 3, activityId: 36, status: "APPROVED" },
-  { userId: 10, activityId: 36, status: "APPROVED" },
-  { userId: 11, activityId: 36, status: "APPROVED" },
-  { userId: 6, activityId: 36, status: "APPROVED" },
+// กิจกรรม 37 (หาเพื่อนไปวิ่งสวนลุม)
+{ userId: 5, activityId: 37, status: "APPROVED" },
+{ userId: 2, activityId: 37, status: "APPROVED" },
+{ userId: 3, activityId: 37, status: "APPROVED" },
+{ userId: 10, activityId: 37, status: "APPROVED" },
+{ userId: 11, activityId: 37, status: "APPROVED" },
+{ userId: 6, activityId: 37, status: "APPROVED" },
 
   // --- HOST 6 ---
   
-  // กิจกรรม 37 (หาเพื่อนวาดรูปเล่นแถววัดอรุณ): 4 approved 1 pending 0 rejected
-  { userId: 6, activityId: 37, status: "APPROVED" },
-  { userId: 2, activityId: 37, status: "APPROVED" },
-  { userId: 3, activityId: 37, status: "APPROVED" },
-  { userId: 4, activityId: 37, status: "APPROVED" },
+// กิจกรรม 38 (หาเพื่อนวาดรูปเล่นแถววัดอรุณ)
+{ userId: 6, activityId: 38, status: "APPROVED" },
+{ userId: 2, activityId: 38, status: "APPROVED" },
+{ userId: 3, activityId: 38, status: "APPROVED" },
+{ userId: 4, activityId: 38, status: "APPROVED" },
 
-  // กิจกรรม 38 (Music Festival @Bitec): 5 approved 1 pending 0 rejected
-  { userId: 6, activityId: 38, status: "APPROVED" },
-  { userId: 11, activityId: 38, status: "APPROVED" },
-  { userId: 6, activityId: 38, status: "APPROVED" },
-  { userId: 3, activityId: 38, status: "APPROVED" },
-  { userId: 10, activityId: 38, status: "APPROVED" },
-  { userId: 5, activityId: 38, status: "APPROVED" },
+// กิจกรรม 39 (Music Festival @Bitec)
+{ userId: 6, activityId: 39, status: "APPROVED" },
+{ userId: 11, activityId: 39, status: "APPROVED" },
+{ userId: 6, activityId: 39, status: "APPROVED" },
+{ userId: 3, activityId: 39, status: "APPROVED" },
+{ userId: 10, activityId: 39, status: "APPROVED" },
+{ userId: 5, activityId: 39, status: "APPROVED" },
 
   // --- HOST 7 ---
   
-  // กิจกรรม 39 (หาเพื่อนกินติ่มซำจร้าาา): 3 approved 1 pending 0 rejected
-  { userId: 7, activityId: 39, status: "APPROVED" },
-  { userId: 10, activityId: 39, status: "APPROVED" },
-  { userId: 2, activityId: 39, status: "APPROVED" },
-  { userId: 3, activityId: 39, status: "APPROVED" },
+// กิจกรรม 40 (หาเพื่อนกินติ่มซำจร้าาา)
+{ userId: 7, activityId: 40, status: "APPROVED" },
+{ userId: 10, activityId: 40, status: "APPROVED" },
+{ userId: 2, activityId: 40, status: "APPROVED" },
+{ userId: 3, activityId: 40, status: "APPROVED" },
 
-  // กิจกรรม 40 (Chinatown Hidden Gems Walk): 5 approved 1 pending 0 rejected
-  { userId: 7, activityId: 40, status: "APPROVED" },
-  { userId: 1, activityId: 40, status: "APPROVED" },
-  { userId: 11, activityId: 40, status: "APPROVED" },
-  { userId: 4, activityId: 40, status: "APPROVED" },
-  { userId: 5, activityId: 40, status: "APPROVED" },
+// กิจกรรม 41 (Chinatown Hidden Gems Walk)
+{ userId: 7, activityId: 41, status: "APPROVED" },
+{ userId: 1, activityId: 41, status: "APPROVED" },
+{ userId: 11, activityId: 41, status: "APPROVED" },
+{ userId: 4, activityId: 41, status: "APPROVED" },
+{ userId: 5, activityId: 41, status: "APPROVED" },
 
   // --- HOST 8 ---
   
-  // กิจกรรม 41 (Café Hopping @สยาม): 5 approved 1 pending 0 rejected
-  { userId: 8, activityId: 41, status: "APPROVED" },
-  { userId: 1, activityId: 41, status: "APPROVED" },
-  { userId: 2, activityId: 41, status: "APPROVED" },
-  { userId: 3, activityId: 41, status: "APPROVED" },
-  { userId: 4, activityId: 41, status: "APPROVED" },
-  { userId: 5, activityId: 41, status: "APPROVED" },
+// กิจกรรม 42 (Café Hopping @สยาม)
+{ userId: 8, activityId: 42, status: "APPROVED" },
+{ userId: 1, activityId: 42, status: "APPROVED" },
+{ userId: 2, activityId: 42, status: "APPROVED" },
+{ userId: 3, activityId: 42, status: "APPROVED" },
+{ userId: 4, activityId: 42, status: "APPROVED" },
+{ userId: 5, activityId: 42, status: "APPROVED" },
 
-  // กิจกรรม 42 (VIP Movie Night @Ploenchit): 4 approved 1 pending 0 rejected
-  { userId: 8, activityId: 42, status: "APPROVED" },
-  { userId: 1, activityId: 42, status: "APPROVED" },
-  { userId: 2, activityId: 42, status: "APPROVED" },
-  { userId: 3, activityId: 42, status: "APPROVED" },
-  { userId: 4, activityId: 42, status: "APPROVED" },
+// กิจกรรม 43 (VIP Movie Night @Ploenchit)
+{ userId: 8, activityId: 43, status: "APPROVED" },
+{ userId: 1, activityId: 43, status: "APPROVED" },
+{ userId: 2, activityId: 43, status: "APPROVED" },
+{ userId: 3, activityId: 43, status: "APPROVED" },
+{ userId: 4, activityId: 43, status: "APPROVED" },
 
   // --- HOST 9 ---
   
-  // กิจกรรม 43 (รวมพลน้องหมา น้องแมว): 6 approved 1 pending 0 rejected
-  { userId: 9, activityId: 43, status: "APPROVED" },
-  { userId: 1, activityId: 43, status: "APPROVED" },
-  { userId: 10, activityId: 43, status: "APPROVED" },
-  { userId: 11, activityId: 43, status: "APPROVED" },
-  { userId: 4, activityId: 43, status: "APPROVED" },
-  { userId: 5, activityId: 43, status: "APPROVED" },
-  { userId: 6, activityId: 43, status: "APPROVED" },
+// กิจกรรม 44 (รวมพลน้องหมา น้องแมว)
+{ userId: 9, activityId: 44, status: "APPROVED" },
+{ userId: 1, activityId: 44, status: "APPROVED" },
+{ userId: 10, activityId: 44, status: "APPROVED" },
+{ userId: 11, activityId: 44, status: "APPROVED" },
+{ userId: 4, activityId: 44, status: "APPROVED" },
+{ userId: 5, activityId: 44, status: "APPROVED" },
+{ userId: 6, activityId: 44, status: "APPROVED" },
 
-  // กิจกรรม 44 (Sunset Yoga on the Skywalk): 4 approved 1 pending 0 rejected
-  { userId: 9, activityId: 44, status: "APPROVED" },
-  { userId: 2, activityId: 44, status: "APPROVED" },
-  { userId: 3, activityId: 44, status: "APPROVED" },
-  { userId: 4, activityId: 44, status: "APPROVED" },
+// กิจกรรม 45 (Sunset Yoga on the Skywalk)
+{ userId: 9, activityId: 45, status: "APPROVED" },
+{ userId: 2, activityId: 45, status: "APPROVED" },
+{ userId: 3, activityId: 45, status: "APPROVED" },
+{ userId: 4, activityId: 45, status: "APPROVED" },
 
   // --- HOST 10 ---
   
-  // กิจกรรม 45 (หาเพื่อนปีนผา @Sukhumvit 49): 3 approved 1 pending 0 rejected
-  { userId: 10, activityId: 45, status: "APPROVED" },
-  { userId: 2, activityId: 45, status: "APPROVED" },
-  { userId: 3, activityId: 45, status: "APPROVED" },
-  { userId: 4, activityId: 45, status: "APPROVED" },
+// กิจกรรม 46 (หาเพื่อนปีนผา @Sukhumvit 49)
+{ userId: 10, activityId: 46, status: "APPROVED" },
+{ userId: 2, activityId: 46, status: "APPROVED" },
+{ userId: 3, activityId: 46, status: "APPROVED" },
+{ userId: 4, activityId: 46, status: "APPROVED" },
 ];
