@@ -1,1 +1,122 @@
 @baseURL = http://localhost:3999
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzc2ODI4OTk2LCJleHAiOjE3Nzk0MjA5OTZ9.vW5ecNhg7QtpT_jMOeMeFEEd4kkxkuKJsoFmK-YpplQ
+
+
+### Login
+POST {{baseURL}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email":"peach@gmail.com",
+    "password": "123456" 
+}
+
+
+
+##################INTEREST
+### GET interests on this acc
+GET {{baseURL}}/api/interest
+Authorization: Bearer {{token}}
+
+### GET interests on this acc
+GET {{baseURL}}/api/interest/suggested
+Authorization: Bearer {{token}}
+
+
+
+##################ACTIVITY
+### GET act
+GET {{baseURL}}/api/activity
+
+### GET act on this acc
+GET {{baseURL}}/api/activity/my-activities
+Authorization: Bearer {{token}}
+
+### GET act by cat
+GET {{baseURL}}/api/activity/category/art
+
+### POST Activity
+POST {{baseURL}}/api/activity
+Authorization: Bearer {{token}}
+
+    {
+        "category": "ART",
+        "title": "TODLONG Workshop @Ari 🎨",
+        "description": "Workshops ระบายสีน้ำแถวอารีย์ ไม่ต้องมีพื้นฐานก็มาได้นะ มาลองสร้าง Masterpiece ของตัวเองในคาเฟ่บรรยากาศ Cozy สุดๆ",
+        "eventStartTime": "2026-04-21T13:00:00.000Z",
+        "hostId": 5,
+        "placeId": 5
+    }
+
+
+### GET act id
+GET {{baseURL}}/api/activity/2
+
+### GET act id
+GET {{baseURL}}/api/activity/5
+
+### DELETE act id
+DELETE {{baseURL}}/api/activity/1
+Authorization: Bearer {{token}}
+
+
+### status act
+PATCH {{baseURL}}/api/activity/status/5
+Content-Type: application/json
+
+{
+    "status": "FULL"
+}
+
+### activity edit
+PATCH {{baseURL}}/api/activity/31
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "maxParticipants": 15,
+  "isPublic": true,
+  "category": "HEALTH",
+  "title": "Morning Run & Stretching",
+  "description": "Join us for a casual 5k run around the park followed by a 30-minute stretching session. All fitness levels welcome! We'll meet by the main gates.",
+  "eventStartTime": "2026-04-25T07:00:00.000Z",
+  "eventEndTime": "2026-04-25T08:30:00.000Z",
+  "placeName": "Lumphini Park",
+  "address": "Rama IV Rd, Lumphini, Pathum Wan, Bangkok 10330, Thailand",
+  "latitude": 13.730833,
+  "longitude": 100.541667
+}
+
+
+### GET all UPCOMING act me
+GET {{baseURL}}/api/activity/upcoming-activities
+Authorization: Bearer {{token}}
+
+
+##################PROFILE
+### GET profile
+GET {{baseURL}}/api/account/profile
+
+
+
+##################REVIEWS
+### GET all user reviews
+GET {{baseURL}}/api/review/users
+
+
+### GET all WHO reviews me
+GET {{baseURL}}/api/review/who-reviews-me
+Authorization: Bearer {{token}}
+
+### GET all act reviews
+GET {{baseURL}}/api/review/activities
+
+### GET specific review
+GET {{baseURL}}/api/review/1
+
+### GET act reviews
+GET {{baseURL}}/api/review/activity/1
+
+### GET location reviews
+GET {{baseURL}}/api/review/place/1
+

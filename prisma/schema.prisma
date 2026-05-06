@@ -5,9 +5,326 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum genderStatus {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum ActivityCategory {
+  HEALTH
+  ENTERTAINMENT
+  ART
+  FOOD
+  TRAVEL
+}
+
+enum ActivityStatus {
+  OPEN
+  FULL
+  FINISHED
+  CANCELLED
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+}
+
+enum ActivityInterest {
+  // Food & Drink
+  foodie
+  cafe_hopping
+  street_food
+  fine_dining
+  cooking_baking
+  drinks_nightout
+
+  // Health & Active
+  slowlife
+  health
+  sport
+  camping
+  gym_workout
+  yoga_pilates
+  running
+  mental_wellness
+  team_sports
+
+  // Art & Culture
+  art
+  museum_gallery
+  photography
+  crafting_diy
+  live_music
+  book_club
+
+  // Entertainment & Fun
+  gaming
+  movies_cinema
+  board_games
+  video_games
+  karaoke
+  concerts_festivals
+
+  // Travel & Adventure
+  travel
+  volunteer
+  backpacking
+  road_trip
+  beach_vibes
+  hiking_trekking
+  sightseeing
+}
+
+enum ChatRoomType {
+  ACTIVITY
+  PRIVATE
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  SYSTEM
+}
+
+enum ReviewType {
+  PERSON
+  ACTIVITY
+}
+
+enum NotificationType {
+  FRIEND_REQUEST
+  FRIEND_ACCEPTED
+  JOIN_REQUEST
+  NEW_MESSAGE
+  GROUP_MESSAGE
+  ACTIVITY_APPROVED
+  NEW_REVIEW
+}
+
+model User {
+  id           Int          @id @default(autoincrement())
+  username     String?      @unique
+  firebase_uid String?      @unique
+  firstName    String?
+  lastName     String?
+  email        String       @unique
+  password     String
+  gender       genderStatus @default(OTHER)
+  role         Role         @default(USER)
+  profileImg   String?
+  bio          String?
+
+  isVerified     Boolean @default(false)
+  faceDescriptor String? @db.LongText
+
+  trustScore Int      @default(100)
+  createdAt  DateTime @default(now())
+
+  createdActivities Activity[]     @relation("UserCreatedActivities")
+  joinRequests      JoinRequest[]
+  reviewsGiven      Review[]       @relation("Reviewer")
+  reviewsReceived   Review[]       @relation("Receiver")
+  visitedPlaces     VisitedPlace[]
+  messages          Message[]
+  wishlist          Wishlist[]
+
+  sentFriendRequests     FriendShip[]   @relation("SentFriendRequests")
+  receivedFriendRequests FriendShip[]   @relation("ReceivedFriendRequests")
+  chatMembers            ChatMember[]
+  notificationsReceived  Notification[] @relation("NotificationReceiver")
+  notificationsSent      Notification[] @relation("NotificationSender")
+}
+
+model Activity {
+  id              Int              @id @default(autoincrement())
+  category        ActivityCategory
+  title           String
+  description     String           @db.Text
+  coverPhoto      String?
+  maxParticipants Int?
+  status          ActivityStatus   @default(OPEN)
+  eventStartTime  DateTime
+  eventEndTime    DateTime?
+  isPublic        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+
+  hostId Int
+  host   User @relation("UserCreatedActivities", fields: [hostId], references: [id])
+
+  placeId Int
+  place   Place? @relation(fields: [placeId], references: [id])
+
+  joinRequests JoinRequest[]
+  reviews      Review[]
+  wishlist     Wishlist[]
+
+  chatRoom ChatRoom?
+}
+
+model JoinRequest {
+  id        Int           @id @default(autoincrement())
+  status    RequestStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activityId Int
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, activityId])
+}
+
+model Place {
+  id        Int     @id @default(autoincrement())
+  placeName String
+  latitude  Float
+  longitude Float
+  address   String?
+
+  visitedBy  VisitedPlace[]
+  activities Activity[]
+
+}
+
+model Review {
+  id         Int        @id @default(autoincrement())
+  rating     Int
+  comment    String?    @db.Text
+  imageUrl   String?      @db.LongText
+  reviewType ReviewType
+  createdAt  DateTime   @default(now())
+
+  reviewerId Int
+  reviewer   User @relation("Reviewer", fields: [reviewerId], references: id, onDelete: Cascade)
+
+  receiverId Int?
+  receiver   User? @relation("Receiver", fields: [receiverId], references: id, onDelete: Cascade)
+
+  activityId Int
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+}
+
+
+
+model FriendShip {
+  id        Int              @id @default(autoincrement())
+  status    FriendshipStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now()) @updatedAt
+
+  senderId   Int
+  sender     User @relation("SentFriendRequests", fields: [senderId], references: id, onDelete: Cascade)
+  receiverId Int
+  receiver   User @relation("ReceivedFriendRequests", fields: [receiverId], references: id, onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+}
+
+model VisitedPlace {
+  id      Int      @id @default(autoincrement())
+  at      DateTime @default(now())
+  userId  Int
+  user    User     @relation(fields: [userId], references: id, onDelete: Cascade)
+  placeId Int
+  place   Place    @relation(fields: [placeId], references: id)
+}
+
+model ChatRoom {
+  id         Int          @id @default(autoincrement())
+  type       ChatRoomType
+  createdAt  DateTime     @default(now())
+  activityId Int?         @unique
+  activity   Activity?    @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  pairKey    String?      @unique
+  members    ChatMember[]
+  messages   Message[]
+}
+
+model ChatMember {
+  id                Int       @id @default(autoincrement())
+  roomId            Int
+  userId            Int
+  joinedAt          DateTime  @default(now())
+  lastReadMessageId Int?
+  lastReadAt        DateTime?
+  room              ChatRoom  @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id              Int         @id @default(autoincrement())
+  roomId          Int
+  senderId        Int
+  content         String      @db.Text
+  type            MessageType @default(TEXT)
+  createdAt       DateTime    @default(now())
+  editedAt        DateTime?
+  deletedAt       DateTime?
+  clientMessageId String?
+
+  room   ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([roomId, createdAt])
+  @@index([senderId])
+}
+
+model Interest {
+  id        Int               @id @default(autoincrement())
+  userId    Int
+  category  ActivityInterest?
+  createdAt DateTime          @default(now())
+}
+
+model Wishlist {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  activityId Int
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, activityId])
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  type      NotificationType
+  message   String
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  userId Int
+  user   User @relation("NotificationReceiver", fields: [userId], references: [id], onDelete: Cascade)
+
+  senderId Int?
+  sender   User? @relation("NotificationSender", fields: [senderId], references: [id], onDelete: SetNull)
+
+  refId Int?
+
+  @@index([userId, isRead])
+  @@index([userId, createdAt])
 }

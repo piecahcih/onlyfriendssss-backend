@@ -1,0 +1,187 @@
+import { createUser, createUserInterest, getUserBy, syncUserToDb, updateUserProfile } from "../services/auth.service.js"
+import admin from "../utils/firebase.js"
+import { loginSchema, registerSchema } from "../validations/schema.js"
+import createHttpError from "http-errors"
+import bcrypt from 'bcrypt'
+import { signToken } from '../utils/jwt.js'
+
+
+// login Google
+export const registerOrLoginCtrl = async (req, res, next) => {
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  const idToken = authHeader.split(' ')[1]
+
+  if (!idToken) {
+    return res.status(401).json({ error: 'No token provided' })
+  }
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken)
+    const { uid, email, name, picture } = decodedToken
+
+    const nameParts = (name || "").split(" ")
+    const firstName = nameParts[0] || ""
+    const lastName = nameParts.slice(1).join(" ") || ""
+
+    const user = await syncUserToDb(uid, email, firstName, lastName, picture)
+
+    const token = signToken({ id: user.id })
+
+    res.json({
+      message: 'Success',
+      token: token,
+      user: user
+    })
+  } catch (error) {
+    next(createHttpError[403]('Invalid or expired token'))
+  }
+}
+
+
+export async function registerCtrl(req, res, next) {
+  try {
+    const data = await registerSchema.parseAsync(req.body)
+
+    const foundUser = await getUserBy('email', data.email)
+    if (foundUser) {
+      throw createHttpError(409, 'Email already registered')
+    }
+
+    const createdUser = await createUser(data)
+
+    const userInfo = {
+      id: createdUser.id,
+      email: data.email,
+      username: createdUser.username
+    }
+    if (createdUser.role !== 'USER') {
+      userInfo.role = createdUser.role
+    }
+    res.json({
+      message: 'Register Success',
+      user: userInfo
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+export async function loginCtrl(req, res, next) {
+  try {
+    const data = loginSchema.parse(req.body)
+
+    const foundUser = await getUserBy('email', data.email)
+    console.log(foundUser)
+    if (!foundUser) {
+      return next(createHttpError[401]('Email is not correct'))
+    }
+
+    let rightPW = await bcrypt.compare(data.password, foundUser.password)
+    if (!rightPW) {
+      return next(createHttpError[401]('Password is not correct'))
+    }
+
+    const payload = { id: foundUser.id }
+    const token = signToken(payload)
+
+    // console.log(foundUser)
+    const userInfo = {
+      id: foundUser.id,
+      email: foundUser.email,
+      username: foundUser.username,
+      role: foundUser.role,
+      firstName: foundUser.firstName,
+      lastName: foundUser.lastName
+    }
+
+    if (foundUser.profileImg !== null) {
+      userInfo.profileImg = foundUser.profileImg
+    }
+    if (foundUser.name !== null) {
+      userInfo.name = foundUser.name
+    }
+    // if (foundUser.role !== 'USER') {
+    //   userInfo.role = foundUser.role
+    // }
+
+    res.json({
+      message: 'Login Success',
+      token: token,
+      user: userInfo
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+// register add profile
+export async function addProfileCtrl(req, res, next) {
+  try {
+    const { id } = req.params;
+    const updateData = req.body || {}
+    const localFilePath = req.file ? req.file.path : null
+
+    if (!localFilePath && Object.keys(updateData).length === 0) {
+      return res.status(400).json({
+        message: "กรุณาระบุข้อมูลหรือรูปภาพที่ต้องการอัปเดต"
+      })
+    }
+
+    const updatedUser = await updateUserProfile(
+      id,
+      updateData,
+      localFilePath
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'อัปเดตโปรไฟล์และรูปภาพสำเร็จ',
+      data: updatedUser
+    });
+
+  } catch (error) {
+    console.error("addProfileCtrl Error:", error);
+    if (error.code === 'P2002') {
+      return res.status(400).json({ message: 'Username already taken' });
+    }
+    next(error)
+  }
+}
+
+// add interest
+export async function addInterestCtrl(req, res, next) {
+  try {
+    const { id } = req.params
+    const { interests } = req.body
+
+    await createUserInterest(Number(id), interests)
+
+    const foundUser = await getUserBy('id', Number(id))
+
+    if (!foundUser) {
+      return next(createHttpError[404]('User not found'))
+    }
+
+    const payload = { id: foundUser.id }
+    const token = signToken(payload)
+
+    const userInfo = {
+      id: foundUser.id,
+      email: foundUser.email,
+      username: foundUser.username,
+      role: foundUser.role,
+      firstName: foundUser.firstName,
+      lastName: foundUser.lastName,
+      profileImg: foundUser.profileImg
+    }
+    res.json({
+      message: 'บันทึกสิ่งที่สนใจและเข้าสู่ระบบสำเร็จ',
+      token: token,
+      user: userInfo
+    })
+  } catch (error) {
+    next(error)
+  }
+}

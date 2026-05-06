@@ -6,3 +6,9 @@ node_modules
 
 .DS_Store
 **/.DS_Store
+
+serviceAccountKey.json
+
+/prisma/nineseed.js
+
+/src/uploads
