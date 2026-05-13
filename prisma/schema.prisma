@@ -153,6 +153,8 @@ model User {
   chatMembers            ChatMember[]
   notificationsReceived  Notification[] @relation("NotificationReceiver")
   notificationsSent      Notification[] @relation("NotificationSender")
+
+  @@map("User")
 }
 
 model Activity {
@@ -179,6 +181,8 @@ model Activity {
   wishlist     Wishlist[]
 
   chatRoom ChatRoom?
+
+  @@map("Activity")
 }
 
 model JoinRequest {
@@ -192,6 +196,8 @@ model JoinRequest {
   activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
 
   @@unique([userId, activityId])
+
+  @@map("JoinRequest")
 }
 
 model Place {
@@ -204,6 +210,7 @@ model Place {
   visitedBy  VisitedPlace[]
   activities Activity[]
 
+  @@map("Place")
 }
 
 model Review {
@@ -222,6 +229,8 @@ model Review {
 
   activityId Int
   activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@map("Review")
 }
 
 
@@ -238,6 +247,8 @@ model FriendShip {
   receiver   User @relation("ReceivedFriendRequests", fields: [receiverId], references: id, onDelete: Cascade)
 
   @@unique([senderId, receiverId])
+
+  @@map("FriendShip")
 }
 
 model VisitedPlace {
@@ -247,6 +258,8 @@ model VisitedPlace {
   user    User     @relation(fields: [userId], references: id, onDelete: Cascade)
   placeId Int
   place   Place    @relation(fields: [placeId], references: id)
+
+  @@map("VisitedPlace")
 }
 
 model ChatRoom {
@@ -258,6 +271,8 @@ model ChatRoom {
   pairKey    String?      @unique
   members    ChatMember[]
   messages   Message[]
+
+  @@map("ChatRoom")
 }
 
 model ChatMember {
@@ -272,6 +287,8 @@ model ChatMember {
 
   @@unique([roomId, userId])
   @@index([userId])
+
+  @@map("ChatMember")
 }
 
 model Message {
@@ -290,6 +307,8 @@ model Message {
 
   @@index([roomId, createdAt])
   @@index([senderId])
+
+  @@map("Message")
 }
 
 model Interest {
@@ -297,6 +316,8 @@ model Interest {
   userId    Int
   category  ActivityInterest?
   createdAt DateTime          @default(now())
+
+  @@map("Interest")
 }
 
 model Wishlist {
@@ -308,6 +329,8 @@ model Wishlist {
   createdAt  DateTime @default(now())
 
   @@unique([userId, activityId])
+
+  @@map("Wishlist")
 }
 
 model Notification {
@@ -327,4 +350,6 @@ model Notification {
 
   @@index([userId, isRead])
   @@index([userId, createdAt])
+
+  @@map("Notification")
 }
