@@ -23,6 +23,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
+      'https://onlyfriendssss.vercel.app',
       "https://stick-silicon-premiere-hamburg.trycloudflare.com"
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
