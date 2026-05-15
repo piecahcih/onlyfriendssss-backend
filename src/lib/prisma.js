@@ -22,8 +22,9 @@ import pg from "pg";
 //     connectionLimit: 5
 // })
 
-const pool = new pg.Pool({ 
-  connectionString: process.env.DATABASE_URL 
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 10,
 });
 const adapter = new PrismaPg(pool);
 
