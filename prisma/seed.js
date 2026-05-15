@@ -13,22 +13,40 @@ import { interestData } from '../data/interest.js';
 async function main() {
   console.log("Clear Data...");
 
-    const modelNames = Object.keys(prisma).filter(
-        (key) => !key.startsWith('$') && !key.startsWith('_') && key !== 'constructor'
-    )
-    await prisma.$transaction(async (tx) => {
-        await tx.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0;');
-        for(const name of modelNames) {
-            try {
-                await tx.$executeRawUnsafe(`TRUNCATE TABLE \`${name}\`;`)
-            } catch (error) {
-                console.log(`Table ${name} not found, skipping truncate...`);
-            }
-        }
-        await tx.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1;');
-    }, {
-        timeout: 20000 // 20 seconds
-    });
+    await prisma.$executeRawUnsafe(`
+    TRUNCATE TABLE 
+      "User", 
+      "Activity", 
+      "JoinRequest", 
+      "Place", 
+      "Review", 
+      "FriendShip", 
+      "VisitedPlace", 
+      "ChatRoom", 
+      "ChatMember", 
+      "Message", 
+      "Interest", 
+      "Wishlist", 
+      "Notification" 
+    CASCADE;
+  `);
+
+    // const modelNames = Object.keys(prisma).filter(
+    //     (key) => !key.startsWith('$') && !key.startsWith('_') && key !== 'constructor'
+    // )
+    // await prisma.$transaction(async (tx) => {
+    //     await tx.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 0;');
+    //     for(const name of modelNames) {
+    //         try {
+    //             await tx.$executeRawUnsafe(`TRUNCATE TABLE \`${name}\`;`)
+    //         } catch (error) {
+    //             console.log(`Table ${name} not found, skipping truncate...`);
+    //         }
+    //     }
+    //     await tx.$executeRawUnsafe('SET FOREIGN_KEY_CHECKS = 1;');
+    // }, {
+    //     timeout: 20000 // 20 seconds
+    // });
 
   console.log(`Start seeding...`)
   const createdUsers = await prisma.user.createMany({
