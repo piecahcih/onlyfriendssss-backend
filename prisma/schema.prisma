@@ -9,7 +9,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  // provider = "mysql"
+  provider = "postgresql"
 }
 
 enum Role {
@@ -136,7 +137,8 @@ model User {
   bio          String?
 
   isVerified     Boolean @default(false)
-  faceDescriptor String? @db.LongText
+  faceDescriptor String?
+  // faceDescriptor String? @db.LongText
 
   trustScore Int      @default(100)
   createdAt  DateTime @default(now())
@@ -218,7 +220,8 @@ model Review {
   id         Int        @id @default(autoincrement())
   rating     Int
   comment    String?    @db.Text
-  imageUrl   String?      @db.LongText
+  imageUrl   String?     
+  // imageUrl   String?      @db.LongText
   reviewType ReviewType
   createdAt  DateTime   @default(now())
 

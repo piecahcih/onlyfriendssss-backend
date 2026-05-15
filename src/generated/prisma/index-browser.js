@@ -257,50 +257,14 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
-};
-
-exports.Prisma.UserOrderByRelevanceFieldEnum = {
-  username: 'username',
-  firebase_uid: 'firebase_uid',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  email: 'email',
-  password: 'password',
-  profileImg: 'profileImg',
-  bio: 'bio',
-  faceDescriptor: 'faceDescriptor'
-};
-
-exports.Prisma.ActivityOrderByRelevanceFieldEnum = {
-  title: 'title',
-  description: 'description',
-  coverPhoto: 'coverPhoto'
-};
-
-exports.Prisma.PlaceOrderByRelevanceFieldEnum = {
-  placeName: 'placeName',
-  address: 'address'
-};
-
-exports.Prisma.ReviewOrderByRelevanceFieldEnum = {
-  comment: 'comment',
-  imageUrl: 'imageUrl'
-};
-
-exports.Prisma.ChatRoomOrderByRelevanceFieldEnum = {
-  pairKey: 'pairKey'
-};
-
-exports.Prisma.MessageOrderByRelevanceFieldEnum = {
-  content: 'content',
-  clientMessageId: 'clientMessageId'
-};
-
-exports.Prisma.NotificationOrderByRelevanceFieldEnum = {
-  message: 'message'
 };
 exports.genderStatus = exports.$Enums.genderStatus = {
   MALE: 'MALE',
