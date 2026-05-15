@@ -16,10 +16,10 @@ export async function getAllActivities() {
             }
         })
 
-        
+
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -32,21 +32,21 @@ export async function getUpcomingActivities(userid) {
     try {
         return await prisma.activity.findMany({
             orderBy: { eventStartTime: 'asc' },
-            where: { 
+            where: {
                 eventStartTime: {
                     gte: now,
                     lte: nextWeek
                 },
                 OR: [
-                    { hostId: userid }, 
-                    { 
-                        joinRequests: { 
-                            some: { 
+                    { hostId: userid },
+                    {
+                        joinRequests: {
+                            some: {
                                 userId: userid,
                                 status: 'APPROVED'
-                            } 
-                        } 
-                    } 
+                            }
+                        }
+                    }
                 ]
             },
             include: {
@@ -58,10 +58,10 @@ export async function getUpcomingActivities(userid) {
             }
         })
 
-        
+
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 
 }
@@ -83,10 +83,10 @@ export async function getAllCurrentActivities() {
             }
         })
 
-        
+
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -117,10 +117,10 @@ export async function getFinishedActivitiesOnThisAccount(userid) {
             }
         })
 
-        
+
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -128,7 +128,10 @@ export async function getActivitiesCreatedByThisAccount(userid) {
     try {
         return await prisma.activity.findMany({
             orderBy: { id: 'desc' },
-            where: { hostId: userid },
+            where: {
+                hostId: userid,
+                eventStartTime: { gte: new Date() }
+            },
             include: {
                 place: true,
                 host: true,
@@ -136,10 +139,10 @@ export async function getActivitiesCreatedByThisAccount(userid) {
                     include: { user: true }
                 }
             }
-        })   
+        })
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -148,6 +151,8 @@ export async function getActivitiesJoinedByThisAccount(userid) {
         return await prisma.activity.findMany({
             orderBy: { eventStartTime: 'asc' },
             where: {
+                eventStartTime: { gte: new Date() },
+                hostId: { not: userid },
                 //some เพราะมีคนjoinหลายคน ถ้าสักคนที่จอยในแอคทิวิตี้นั้นเป็นuserเราก็จะใช่ (มีnone/everyด้วย)
                 joinRequests: {
                     some: {
@@ -165,10 +170,10 @@ export async function getActivitiesJoinedByThisAccount(userid) {
             }
         })
 
-        
+
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -187,11 +192,12 @@ export async function getActivityById(activityId) {
 
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
-export async function getActivityByCategory(category) {4
+export async function getActivityByCategory(category) {
+    4
     try {
         return await prisma.activity.findMany({
             where: {
@@ -208,10 +214,10 @@ export async function getActivityByCategory(category) {4
                 }
             }
         })
-        
+
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -254,21 +260,21 @@ export async function createActivity(Adata, localFilePath) {
                     create: {
                         userId: activity.hostId
                     }
-    
+
                 }
             }
         })
         return activity
 
-        
+
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 
 }
 
-export async function letHostBeFirstMember(userid,actid){
+export async function letHostBeFirstMember(userid, actid) {
     try {
         return await prisma.joinRequest.create({
             data: {
@@ -279,7 +285,7 @@ export async function letHostBeFirstMember(userid,actid){
         })
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 
 }
@@ -312,7 +318,7 @@ export async function getOrAddPlaceId(placeName, address, latitude, longitude) {
         return newPlace.id
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -388,7 +394,7 @@ export async function changeActivityStatus(activityId, status) {
         })
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -400,7 +406,7 @@ export async function cancelActivityStatus(activityId) {
         })
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
 
@@ -408,9 +414,9 @@ export async function deleteActivityById(userid, activityId) {
     try {
         return await prisma.activity.delete({
             where: { hostId: userid, id: activityId }
-        })  
+        })
     } catch (error) {
         console.error("Prisma Error:", error);
-        throw error     
+        throw error
     }
 }
