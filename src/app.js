@@ -18,16 +18,36 @@ import interestRoute from "./routes/interest.route.js";
 const app = express();
 const server = createServer(app)
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://post-chain-beast-buildings.trycloudflare.com"
-    ],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true,
-  }),
-);
+
+const allowedOrigins = [
+  'https://onlyfriendssss.vercel.app', // Your production frontend
+  'http://localhost:5173',             // Your local development (Vite default)
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true // Crucial if you plan to use cookies or sessions later
+}));
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:5173",
+//       "https://post-chain-beast-buildings.trycloudflare.com"
+//     ],
+//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+//     credentials: true,
+//   }),
+// );
 app.use('/uploads', express.static('public/uploads'));
 
 app.use("/api/auth", authRoute);
