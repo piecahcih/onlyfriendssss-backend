@@ -20,7 +20,7 @@ const server = createServer(app)
 app.use(express.json());
 
 const allowedOrigins = [
-  'https://onlyfriendssss.vercel.app', // Your production frontend
+  'https://onlyfriendssss-frontend.vercel.app', // Your production frontend
   'http://localhost:5173',             // Your local development (Vite default)
 ];
 
