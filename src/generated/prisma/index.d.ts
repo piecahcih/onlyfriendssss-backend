@@ -2434,6 +2434,7 @@ export namespace Prisma {
     profileImg: string | null
     bio: string | null
     isVerified: boolean | null
+    onboardingCompleted: boolean | null
     faceDescriptor: string | null
     trustScore: number | null
     createdAt: Date | null
@@ -2452,6 +2453,7 @@ export namespace Prisma {
     profileImg: string | null
     bio: string | null
     isVerified: boolean | null
+    onboardingCompleted: boolean | null
     faceDescriptor: string | null
     trustScore: number | null
     createdAt: Date | null
@@ -2470,6 +2472,7 @@ export namespace Prisma {
     profileImg: number
     bio: number
     isVerified: number
+    onboardingCompleted: number
     faceDescriptor: number
     trustScore: number
     createdAt: number
@@ -2500,6 +2503,7 @@ export namespace Prisma {
     profileImg?: true
     bio?: true
     isVerified?: true
+    onboardingCompleted?: true
     faceDescriptor?: true
     trustScore?: true
     createdAt?: true
@@ -2518,6 +2522,7 @@ export namespace Prisma {
     profileImg?: true
     bio?: true
     isVerified?: true
+    onboardingCompleted?: true
     faceDescriptor?: true
     trustScore?: true
     createdAt?: true
@@ -2536,6 +2541,7 @@ export namespace Prisma {
     profileImg?: true
     bio?: true
     isVerified?: true
+    onboardingCompleted?: true
     faceDescriptor?: true
     trustScore?: true
     createdAt?: true
@@ -2641,6 +2647,7 @@ export namespace Prisma {
     profileImg: string | null
     bio: string | null
     isVerified: boolean
+    onboardingCompleted: boolean
     faceDescriptor: string | null
     trustScore: number
     createdAt: Date
@@ -2678,6 +2685,7 @@ export namespace Prisma {
     profileImg?: boolean
     bio?: boolean
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: boolean
     trustScore?: boolean
     createdAt?: boolean
@@ -2709,6 +2717,7 @@ export namespace Prisma {
     profileImg?: boolean
     bio?: boolean
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: boolean
     trustScore?: boolean
     createdAt?: boolean
@@ -2727,6 +2736,7 @@ export namespace Prisma {
     profileImg?: boolean
     bio?: boolean
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: boolean
     trustScore?: boolean
     createdAt?: boolean
@@ -2745,12 +2755,13 @@ export namespace Prisma {
     profileImg?: boolean
     bio?: boolean
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: boolean
     trustScore?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firebase_uid" | "firstName" | "lastName" | "email" | "password" | "gender" | "role" | "profileImg" | "bio" | "isVerified" | "faceDescriptor" | "trustScore" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "firebase_uid" | "firstName" | "lastName" | "email" | "password" | "gender" | "role" | "profileImg" | "bio" | "isVerified" | "onboardingCompleted" | "faceDescriptor" | "trustScore" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdActivities?: boolean | User$createdActivitiesArgs<ExtArgs>
     joinRequests?: boolean | User$joinRequestsArgs<ExtArgs>
@@ -2798,6 +2809,7 @@ export namespace Prisma {
       profileImg: string | null
       bio: string | null
       isVerified: boolean
+      onboardingCompleted: boolean
       faceDescriptor: string | null
       trustScore: number
       createdAt: Date
@@ -3248,6 +3260,7 @@ export namespace Prisma {
     readonly profileImg: FieldRef<"User", 'String'>
     readonly bio: FieldRef<"User", 'String'>
     readonly isVerified: FieldRef<"User", 'Boolean'>
+    readonly onboardingCompleted: FieldRef<"User", 'Boolean'>
     readonly faceDescriptor: FieldRef<"User", 'String'>
     readonly trustScore: FieldRef<"User", 'Int'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -17783,6 +17796,7 @@ export namespace Prisma {
     profileImg: 'profileImg',
     bio: 'bio',
     isVerified: 'isVerified',
+    onboardingCompleted: 'onboardingCompleted',
     faceDescriptor: 'faceDescriptor',
     trustScore: 'trustScore',
     createdAt: 'createdAt'
@@ -18206,6 +18220,7 @@ export namespace Prisma {
     profileImg?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolFilter<"User"> | boolean
+    onboardingCompleted?: BoolFilter<"User"> | boolean
     faceDescriptor?: StringNullableFilter<"User"> | string | null
     trustScore?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -18236,6 +18251,7 @@ export namespace Prisma {
     profileImg?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
     isVerified?: SortOrder
+    onboardingCompleted?: SortOrder
     faceDescriptor?: SortOrderInput | SortOrder
     trustScore?: SortOrder
     createdAt?: SortOrder
@@ -18269,6 +18285,7 @@ export namespace Prisma {
     profileImg?: StringNullableFilter<"User"> | string | null
     bio?: StringNullableFilter<"User"> | string | null
     isVerified?: BoolFilter<"User"> | boolean
+    onboardingCompleted?: BoolFilter<"User"> | boolean
     faceDescriptor?: StringNullableFilter<"User"> | string | null
     trustScore?: IntFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -18299,6 +18316,7 @@ export namespace Prisma {
     profileImg?: SortOrderInput | SortOrder
     bio?: SortOrderInput | SortOrder
     isVerified?: SortOrder
+    onboardingCompleted?: SortOrder
     faceDescriptor?: SortOrderInput | SortOrder
     trustScore?: SortOrder
     createdAt?: SortOrder
@@ -18325,6 +18343,7 @@ export namespace Prisma {
     profileImg?: StringNullableWithAggregatesFilter<"User"> | string | null
     bio?: StringNullableWithAggregatesFilter<"User"> | string | null
     isVerified?: BoolWithAggregatesFilter<"User"> | boolean
+    onboardingCompleted?: BoolWithAggregatesFilter<"User"> | boolean
     faceDescriptor?: StringNullableWithAggregatesFilter<"User"> | string | null
     trustScore?: IntWithAggregatesFilter<"User"> | number
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -19168,6 +19187,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -19198,6 +19218,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -19227,6 +19248,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19257,6 +19279,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19287,6 +19310,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -19304,6 +19328,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19322,6 +19347,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20280,6 +20306,7 @@ export namespace Prisma {
     profileImg?: SortOrder
     bio?: SortOrder
     isVerified?: SortOrder
+    onboardingCompleted?: SortOrder
     faceDescriptor?: SortOrder
     trustScore?: SortOrder
     createdAt?: SortOrder
@@ -20303,6 +20330,7 @@ export namespace Prisma {
     profileImg?: SortOrder
     bio?: SortOrder
     isVerified?: SortOrder
+    onboardingCompleted?: SortOrder
     faceDescriptor?: SortOrder
     trustScore?: SortOrder
     createdAt?: SortOrder
@@ -20321,6 +20349,7 @@ export namespace Prisma {
     profileImg?: SortOrder
     bio?: SortOrder
     isVerified?: SortOrder
+    onboardingCompleted?: SortOrder
     faceDescriptor?: SortOrder
     trustScore?: SortOrder
     createdAt?: SortOrder
@@ -23479,6 +23508,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -23508,6 +23538,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -23671,6 +23702,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23700,6 +23732,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23832,6 +23865,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -23861,6 +23895,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -23947,6 +23982,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23976,6 +24012,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24152,6 +24189,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24181,6 +24219,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24214,6 +24253,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24243,6 +24283,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24329,6 +24370,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24358,6 +24400,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24397,6 +24440,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24426,6 +24470,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24502,6 +24547,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24531,6 +24577,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24564,6 +24611,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24593,6 +24641,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24637,6 +24686,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24666,6 +24716,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24705,6 +24756,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24734,6 +24786,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24762,6 +24815,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24791,6 +24845,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -24857,6 +24912,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24886,6 +24942,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25142,6 +25199,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25171,6 +25229,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25243,6 +25302,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25272,6 +25332,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25322,6 +25383,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25351,6 +25413,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25423,6 +25486,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25452,6 +25516,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25480,6 +25545,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25509,6 +25575,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25595,6 +25662,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25624,6 +25692,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25700,6 +25769,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25729,6 +25799,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25762,6 +25833,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25791,6 +25863,7 @@ export namespace Prisma {
     profileImg?: string | null
     bio?: string | null
     isVerified?: boolean
+    onboardingCompleted?: boolean
     faceDescriptor?: string | null
     trustScore?: number
     createdAt?: Date | string
@@ -25835,6 +25908,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25864,6 +25938,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25903,6 +25978,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -25932,6 +26008,7 @@ export namespace Prisma {
     profileImg?: NullableStringFieldUpdateOperationsInput | string | null
     bio?: NullableStringFieldUpdateOperationsInput | string | null
     isVerified?: BoolFieldUpdateOperationsInput | boolean
+    onboardingCompleted?: BoolFieldUpdateOperationsInput | boolean
     faceDescriptor?: NullableStringFieldUpdateOperationsInput | string | null
     trustScore?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
