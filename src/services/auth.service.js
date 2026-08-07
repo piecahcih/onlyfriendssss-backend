@@ -35,6 +35,13 @@ export async function syncUserToDb(uid, email, firstName, lastName, picture) {
   })
 }
 
+export function markOnboardingComplete(userId) {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { onboardingCompleted: true }
+  })
+}
+
 export function getUserBy(field, value) {
   return prisma.user.findFirst({
     where: { [field]: value }

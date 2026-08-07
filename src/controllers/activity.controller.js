@@ -153,7 +153,8 @@ export async function createActivityCtrl(req, res, next) {
     const localFilePath = req.file ? req.file.path : null;
 
     const Adata = {
-        category, title, description,
+        category: category.toUpperCase(),
+        title, description,
         isPublic: JSON.parse(isPublic),
         placeId: Number(placeId),
         hostId: id,
@@ -173,7 +174,7 @@ export async function createActivityCtrl(req, res, next) {
 
     const createdActivity = await createActivity(Adata, localFilePath)
 
-    const hostAsAMember = await letHostBeFirstMember(id,Number(createdActivity.id))
+    const hostAsAMember = await letHostBeFirstMember(id, Number(createdActivity.id))
 
     res.json({
         message: "Activity created successfully",

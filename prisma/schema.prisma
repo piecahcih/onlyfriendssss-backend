@@ -136,7 +136,8 @@ model User {
   profileImg   String?
   bio          String?
 
-  isVerified     Boolean @default(false)
+  isVerified          Boolean @default(false)
+  onboardingCompleted Boolean @default(false)
   faceDescriptor String?
   // faceDescriptor String? @db.LongText
 

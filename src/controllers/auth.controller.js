@@ -1,4 +1,4 @@
-import { createUser, createUserInterest, getUserBy, syncUserToDb, updateUserProfile } from "../services/auth.service.js"
+import { createUser, createUserInterest, getUserBy, markOnboardingComplete, syncUserToDb, updateUserProfile } from "../services/auth.service.js"
 import admin from "../utils/firebase.js"
 import { loginSchema, registerSchema } from "../validations/schema.js"
 import createHttpError from "http-errors"
@@ -157,6 +157,7 @@ export async function addInterestCtrl(req, res, next) {
     const { interests } = req.body
 
     await createUserInterest(Number(id), interests)
+    await markOnboardingComplete(Number(id))
 
     const foundUser = await getUserBy('id', Number(id))
 
@@ -174,7 +175,8 @@ export async function addInterestCtrl(req, res, next) {
       role: foundUser.role,
       firstName: foundUser.firstName,
       lastName: foundUser.lastName,
-      profileImg: foundUser.profileImg
+      profileImg: foundUser.profileImg,
+      onboardingCompleted: foundUser.onboardingCompleted
     }
     res.json({
       message: 'บันทึกสิ่งที่สนใจและเข้าสู่ระบบสำเร็จ',

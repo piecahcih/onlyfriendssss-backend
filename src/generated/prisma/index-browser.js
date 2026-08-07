@@ -133,6 +133,7 @@ exports.Prisma.UserScalarFieldEnum = {
   profileImg: 'profileImg',
   bio: 'bio',
   isVerified: 'isVerified',
+  onboardingCompleted: 'onboardingCompleted',
   faceDescriptor: 'faceDescriptor',
   trustScore: 'trustScore',
   createdAt: 'createdAt'
