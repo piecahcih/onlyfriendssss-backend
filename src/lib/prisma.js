@@ -3,6 +3,8 @@ import "dotenv/config";
 import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
+import fs from "fs";
+import path from "path";
 
 // const adapter = new PrismaMariaDb({
 //   host: process.env.DATABASE_HOST,
@@ -25,7 +27,11 @@ import pg from "pg";
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   max: 10,
-  ssl: { rejectUnauthorized: false }
+  // ssl: { rejectUnauthorized: false }
+  ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync(path.join(import.meta.dirname, "certs/prod-ca-2021.crt")).toString(),
+  }
 });
 const adapter = new PrismaPg(pool);
 
